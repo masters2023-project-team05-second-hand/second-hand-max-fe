@@ -1,7 +1,7 @@
 ---
 name: refactor issue template
 about: " 리팩토링"
-title: "[FE] 새로 추가할 기능"
+title: 새로 추가할 기능
 labels: refactor
 assignees: ''
 

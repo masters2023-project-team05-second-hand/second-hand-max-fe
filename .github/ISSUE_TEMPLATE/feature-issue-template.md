@@ -1,7 +1,7 @@
 ---
 name: feature issue template
 about: 새로운 기능
-title: "[FE] 새로 추가할 기능"
+title: 새로 추가할 기능
 labels: feat
 assignees: ''
 
