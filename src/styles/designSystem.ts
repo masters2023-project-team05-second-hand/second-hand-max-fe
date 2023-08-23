@@ -1,6 +1,6 @@
 export type FontName = keyof typeof font;
 export type ColorName = keyof typeof designSystem.color;
-export type RadiusName = keyof typeof radius;
+export type Radius = keyof typeof radius;
 
 const colors = {
   white: "#FFF",
@@ -21,9 +21,9 @@ const colors = {
 };
 
 const radius = {
-  s: "8px",
-  m: "12px",
-  l: "16px",
+  8: "8px",
+  12: "12px",
+  16: "16px",
   half: "50%",
 };
 

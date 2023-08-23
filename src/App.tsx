@@ -32,7 +32,7 @@ export default function App() {
         leftIcon={<PlusIcon />}
         color="accentText"
         backgroundColor="accentPrimary"
-        radiusName="half"
+        radius="half"
       />
       <Button
         size={{ width: "288px", height: "56px" }}
@@ -40,7 +40,7 @@ export default function App() {
         fontName="availableStrong16"
         color="accentTextWeak"
         borderColor="neutralBorder"
-        radiusName="s">
+        radius={8}>
         추가
       </Button>
       <AddressSelector onClick={() => console.log("선택한 동네 변경")}>
@@ -74,7 +74,7 @@ const AddressSelector = styled.div`
   cursor: pointer;
 
   background-color: ${({ theme: { color } }) => color.accentPrimary};
-  border-radius: ${({ theme: { radius } }) => radius.s};
+  border-radius: ${({ theme: { radius } }) => radius[8]};
   font: ${({ theme: { font } }) => font.availableStrong16};
   color: ${({ theme: { color } }) => color.accentText};
 `;

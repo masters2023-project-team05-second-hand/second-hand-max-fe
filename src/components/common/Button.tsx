@@ -1,11 +1,11 @@
-import { ColorName, FontName, RadiusName } from "@styles/designSystem";
+import { ColorName, FontName, Radius } from "@styles/designSystem";
 import React from "react";
 import styled from "styled-components";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: { width: string; height: string };
   direction?: "row" | "column";
-  radiusName?: RadiusName;
+  radius?: Radius;
   fontName?: FontName;
   color?: ColorName;
   backgroundColor?: ColorName;
@@ -24,7 +24,7 @@ export default function Button({
   color,
   backgroundColor,
   borderColor,
-  radiusName,
+  radius,
   direction,
   fontName,
   leftIcon,
@@ -42,7 +42,7 @@ export default function Button({
       $borderColor={borderColor}
       $direction={direction}
       $fontName={fontName}
-      $radiusName={radiusName}
+      $radius={radius}
       {...props}>
       <ButtonContent {...contentProps} />
     </StyledButton>
@@ -70,7 +70,7 @@ const StyledButton = styled.button<{
   $backgroundColor?: ColorName;
   $borderColor?: ColorName;
   $fontName?: FontName;
-  $radiusName?: RadiusName;
+  $radius?: Radius;
 }>`
   display: flex;
   justify-content: center;
@@ -84,8 +84,8 @@ const StyledButton = styled.button<{
   flex-direction: ${({ $direction }) => $direction};
   font: ${({ $fontName, theme: { font } }) => $fontName && font[$fontName]};
 
-  border-radius: ${({ $radiusName, theme: { radius } }) => {
-    return $radiusName && radius[$radiusName];
+  border-radius: ${({ $radius, theme: { radius } }) => {
+    return $radius && radius[$radius];
   }};
 
   background: ${({ $backgroundColor, theme: { color } }) => {
