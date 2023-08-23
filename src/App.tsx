@@ -12,9 +12,11 @@ export default function App() {
   return (
     <ThemeProvider theme={designSystem}>
       <GlobalStyle />
-      <Button fontName="availableStrong16" rightIcon={<ChevronDownIcon />}>
-        역삼1동
-      </Button>
+      <Button
+        fontName="availableStrong16"
+        rightIcon={<ChevronDownIcon />}
+        value="역삼1동"
+      />
       <Button
         size={{ width: "40px", height: "40px" }}
         leftIcon={<LayoutGridIcon />}
@@ -24,9 +26,9 @@ export default function App() {
         color="neutralTextWeak"
         direction="column"
         fontName="enabledStrong10"
-        leftIcon={<HomeIcon />}>
-        홈화면
-      </Button>
+        leftIcon={<HomeIcon />}
+        value="홈화면"
+      />
       <Button
         size={{ width: "56px", height: "56px" }}
         leftIcon={<PlusIcon />}
@@ -40,11 +42,11 @@ export default function App() {
         fontName="availableStrong16"
         color="accentTextWeak"
         borderColor="neutralBorder"
-        radius={8}>
-        추가
-      </Button>
+        radius={8}
+        value="추가"
+      />
       <AddressSelector onClick={() => console.log("선택한 동네 변경")}>
-        역삼1동
+        <span>역삼1동</span>
         <Button
           leftIcon={<CircleXIcon />}
           color="accentText"
@@ -54,12 +56,8 @@ export default function App() {
           }}
         />
       </AddressSelector>
-      <Button color="accentTextWeak" fontName="displayDefault16">
-        취소
-      </Button>
-      <Button color="systemWarning" fontName="displayStrong16">
-        삭제
-      </Button>
+      <Button color="accentTextWeak" fontName="displayDefault16" value="취소" />
+      <Button color="systemWarning" fontName="displayStrong16" value="삭제" />
     </ThemeProvider>
   );
 }

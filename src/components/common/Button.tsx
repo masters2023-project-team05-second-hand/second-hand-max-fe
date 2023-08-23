@@ -16,7 +16,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 
 type ButtonContentProps = Pick<
   ButtonProps,
-  "leftIcon" | "rightIcon" | "children"
+  "leftIcon" | "rightIcon" | "children" | "value"
 >;
 
 export default function Button({
@@ -30,9 +30,10 @@ export default function Button({
   leftIcon,
   rightIcon,
   children,
+  value,
   ...props
 }: ButtonProps) {
-  const contentProps = { leftIcon, rightIcon, children };
+  const contentProps = { leftIcon, rightIcon, value, children };
 
   return (
     <StyledButton
@@ -51,12 +52,14 @@ export default function Button({
 
 const ButtonContent = ({
   leftIcon,
+  value,
   rightIcon,
   children,
 }: ButtonContentProps) => {
   return (
     <>
       {leftIcon}
+      {value}
       {children}
       {rightIcon}
     </>
