@@ -1,5 +1,3 @@
-// TODO: theme 타입 정의
-
 import { designSystem } from "./designSystem";
 
 declare module "styled-components" {
