@@ -1,5 +1,5 @@
 export type AddressInfo = {
-  addressId: number;
+  id: number;
   name: string;
 };
 
