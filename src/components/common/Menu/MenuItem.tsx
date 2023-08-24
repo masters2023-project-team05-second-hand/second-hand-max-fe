@@ -1,29 +1,31 @@
 import { styled } from "styled-components";
 import { designSystem } from "@styles/designSystem";
 
-export interface ItemProps extends React.ComponentPropsWithoutRef<"li"> {
+export type ItemProps = {
   itemId: number;
   value: string;
   isSelected?: boolean;
   isWarning?: boolean;
   onClickWithId?: (id: number) => void;
-}
+  onClick?: () => void;
+};
 
-export default function MenuItem({
-  itemId,
-  value,
-  isSelected,
-  isWarning,
-  onClick,
-  onClickWithId,
-}: ItemProps) {
+export default function MenuItem({ item }: { item: ItemProps }) {
+  const onItemClick = () => {
+    if (item.onClickWithId) {
+      item.onClickWithId(item.itemId);
+      return;
+    }
+
+    item.onClick?.();
+  };
+
   return (
     <StyledItem
-      key={itemId}
-      $isSelected={isSelected}
-      $isWarning={isWarning}
-      onClick={onClickWithId ? () => onClickWithId(itemId) : onClick}>
-      {value}
+      $isSelected={item.isSelected}
+      $isWarning={item.isWarning}
+      onClick={onItemClick}>
+      {item.value}
     </StyledItem>
   );
 }

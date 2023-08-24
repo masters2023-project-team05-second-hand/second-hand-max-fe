@@ -17,11 +17,11 @@ export default function MenuIndicator({
   withShadow,
   position,
 }: MenuIndicatorProps) {
-  const [menuIsOpen, menuRef, setMenuState] = useDropdown(false);
+  const [menuIsOpen, menuRef, toggleMenuOpenState] = useDropdown();
 
   return (
     <>
-      <StyledMenuIndicator ref={menuRef} onClick={setMenuState}>
+      <StyledMenuIndicator ref={menuRef} onClick={toggleMenuOpenState}>
         {children}
         {menuIsOpen && (
           <Menu

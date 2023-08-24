@@ -12,16 +12,7 @@ export default function Menu({ itemList, withShadow, position }: MenuProps) {
   return (
     <StyledMenu $withShadow={withShadow} $position={position}>
       {itemList.map((item) => (
-        <MenuItem
-          key={item.itemId}
-          itemId={item.itemId}
-          value={item.value}
-          isSelected={item.isSelected}
-          isWarning={item.isWarning}
-          onClick={item.onClick}
-          onClickWithId={item.onClickWithId}>
-          {item.value}
-        </MenuItem>
+        <MenuItem key={item.itemId} item={item} />
       ))}
     </StyledMenu>
   );

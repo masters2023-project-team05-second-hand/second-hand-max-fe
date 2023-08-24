@@ -6,29 +6,29 @@ type DropdownReturnType = [
   () => void
 ];
 
-export default function useDropdown(initialState: boolean): DropdownReturnType {
-  const [isOpen, setIsOpen] = useState(initialState);
+export default function useDropdown(): DropdownReturnType {
+  const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const onSetOpenState = () => {
+  const toggleOpenState = () => {
     setIsOpen((prev) => !prev);
   };
 
   useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (ref.current !== null && !ref.current.contains(e.target as Node)) {
+    const onOutsideClick = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
-      window.addEventListener("click", onClick);
+      window.addEventListener("click", onOutsideClick);
     }
 
     return () => {
-      window.removeEventListener("click", onClick);
+      window.removeEventListener("click", onOutsideClick);
     };
   }, [isOpen]);
 
-  return [isOpen, ref, onSetOpenState];
+  return [isOpen, ref, toggleOpenState];
 }
