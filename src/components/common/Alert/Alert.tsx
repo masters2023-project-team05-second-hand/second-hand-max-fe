@@ -1,17 +1,18 @@
 import { designSystem } from "@styles/designSystem";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
+import Button from "../Button";
 
 type AlertType = {
   message: string;
   closeAlertHandler: () => void;
-  buttons: ReactNode[];
+  onDeleteClick: () => void;
 };
 
 export default function Alert({
   message,
   closeAlertHandler,
-  buttons,
+  onDeleteClick,
 }: AlertType) {
   const modalRef = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -34,10 +35,28 @@ export default function Alert({
     };
   }, [isOpen, closeAlertHandler]);
 
+  const deleteHandler = () => {
+    onDeleteClick();
+    closeAlertHandler();
+  };
+
   return (
     <StyledAlert ref={modalRef}>
       <span>{message}</span>
-      <ButtonWrapper>{...buttons}</ButtonWrapper>
+      <ButtonWrapper>
+        <Button
+          color="accentTextWeak"
+          fontName="displayDefault16"
+          value="취소"
+          onClick={closeAlertHandler}
+        />
+        <Button
+          color="systemWarning"
+          fontName="displayStrong16"
+          value="삭제"
+          onClick={deleteHandler}
+        />
+      </ButtonWrapper>
     </StyledAlert>
   );
 }
