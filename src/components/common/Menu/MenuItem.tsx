@@ -2,11 +2,11 @@ import { designSystem } from "@styles/designSystem";
 import { styled } from "styled-components";
 
 export type ItemProps = {
-  itemId: number;
   value: string;
+  onClick: (id?: number) => void;
+  itemId?: number;
   isSelected?: boolean;
   isWarning?: boolean;
-  onClick?: (id: number) => void;
 };
 
 export default function MenuItem({ item }: { item: ItemProps }) {
@@ -14,7 +14,7 @@ export default function MenuItem({ item }: { item: ItemProps }) {
     <StyledItem
       $isSelected={item.isSelected}
       $isWarning={item.isWarning}
-      onClick={() => item.onClick?.(item.itemId)}>
+      onClick={() => item.onClick(item?.itemId)}>
       {item.value}
     </StyledItem>
   );
