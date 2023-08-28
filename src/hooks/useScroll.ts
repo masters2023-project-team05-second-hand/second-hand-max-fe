@@ -6,22 +6,19 @@ type ScrollReturnType = {
 };
 
 export default function useScroll(): ScrollReturnType {
-  const [scrollY, setScrollY] = useState<number | undefined>(0);
+  const [scrollY, setScrollY] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
 
   const onScroll = () => {
-    setScrollY(ref.current?.scrollTop);
+    setScrollY(ref.current?.scrollTop ?? 0);
   };
 
   useEffect(() => {
-    function watchScroll() {
+    const watchScroll = () => {
       ref.current?.addEventListener("scroll", onScroll);
-    }
-    watchScroll();
-
-    return () => {
-      ref.current?.removeEventListener("scroll", onScroll);
     };
+
+    watchScroll();
   });
 
   return {
