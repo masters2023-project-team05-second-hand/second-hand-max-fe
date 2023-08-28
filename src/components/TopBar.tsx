@@ -51,10 +51,8 @@ const StyledTopBar = styled.div<{
       ? $isScrolled &&
         `background-color: ${$backgroundColor && color[$backgroundColor]}`
       : `background-color: ${$backgroundColor && color[$backgroundColor]}`};
-  border-bottom: ${(props) =>
-    props.$isWithBorder
-      ? `0.8px solid ${designSystem.color.neutralBorder}`
-      : `none`};
+  border-bottom: ${($isWithBorder) =>
+    $isWithBorder ? `0.8px solid ${designSystem.color.neutralBorder}` : `none`};
   transition: background-color 0.5s linear;
 `;
 
