@@ -1,3 +1,10 @@
+import NavigationBar from "@components/NavigationBar";
+
 export default function SalesList() {
-  return <div>SalesList</div>;
+  return (
+    <div>
+      SalesList
+      <NavigationBar />
+    </div>
+  );
 }
