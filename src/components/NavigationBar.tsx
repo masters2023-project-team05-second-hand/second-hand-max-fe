@@ -11,9 +11,8 @@ export default function NavigationBar() {
   return (
     <StyledNavigationBar>
       {NAVIGATION.map(({ icon, value, path }) => (
-        <NavigationItem>
+        <NavigationItem key={path}>
           <NavLink
-            key={path}
             to={path}
             className={({ isActive }) => (isActive ? "active" : "")}>
             {icon}
