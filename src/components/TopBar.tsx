@@ -46,13 +46,17 @@ const StyledTopBar = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  ${({ $isScrolled, $backgroundColor, theme: { color } }) =>
+  background-color: ${({ $isScrolled, $backgroundColor, theme: { color } }) =>
     $isScrolled !== undefined
-      ? $isScrolled &&
-        `background-color: ${$backgroundColor && color[$backgroundColor]}`
-      : `background-color: ${$backgroundColor && color[$backgroundColor]}`};
-  border-bottom: ${($isWithBorder) =>
-    $isWithBorder ? `0.8px solid ${designSystem.color.neutralBorder}` : `none`};
+      ? $isScrolled && $backgroundColor && color[$backgroundColor]
+      : $backgroundColor && color[$backgroundColor]};
+  backdrop-filter: ${({ $backgroundColor, theme: { backdropFilter } }) => {
+    const isNeutralBackgroundBlur =
+      $backgroundColor === "neutralBackgroundBlur";
+    return isNeutralBackgroundBlur && backdropFilter.blur;
+  }};
+  border-bottom: ${({ $isWithBorder }) =>
+    $isWithBorder ? `0.8px solid ${designSystem.color.neutralBorder}` : "none"};
   transition: background-color 0.5s linear;
 `;
 
