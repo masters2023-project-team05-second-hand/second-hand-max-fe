@@ -4,26 +4,22 @@ import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import { ReactComponent as NewsIcon } from "@assets/icon/news.svg";
 import { ReactComponent as UserIcon } from "@assets/icon/user-circle.svg";
 import { PATH } from "constants/path";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import Button from "./common/Button";
 
 export default function NavigationBar() {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-
   return (
     <StyledNavigationBar>
       {NAVIGATION.map(({ icon, value, path }) => (
-        <Button
-          key={path}
-          direction="column"
-          leftIcon={icon}
-          value={value}
-          color={pathname === path ? "neutralTextStrong" : "neutralTextWeak"}
-          fontName={pathname === path ? "enabledStrong10" : "availableStrong10"}
-          onClick={() => navigate(path)}
-        />
+        <li className="navigation-item">
+          <NavLink
+            key={path}
+            to={path}
+            className={({ isActive }) => (isActive ? "active" : "")}>
+            {icon}
+            <span>{value}</span>
+          </NavLink>
+        </li>
       ))}
     </StyledNavigationBar>
   );
@@ -57,13 +53,44 @@ const NAVIGATION = [
   },
 ];
 
-const StyledNavigationBar = styled.div`
+const StyledNavigationBar = styled.ul`
   width: 100%;
-  height: 64px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 8px 16px;
-  border-top: 0.8px solid ${({ theme }) => theme.color.neutralBorder};
-  background-color: ${({ theme }) => theme.color.neutralBackground};
+  border-top: 0.8px solid ${({ theme: { color } }) => color.neutralBorder};
+  background-color: ${({ theme: { color } }) => color.neutralBackground};
+
+  .navigation-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    color: ${({ theme: { color } }) => color.neutralTextWeak};
+    font: ${({ theme: { font } }) => font.availableStrong10};
+
+    svg {
+      filter: ${({ theme: { filter } }) => filter.neutralTextWeak};
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .active {
+    color: ${({ theme: { color } }) => color.neutralTextStrong};
+    font: ${({ theme: { font } }) => font.availableStrong10};
+
+    svg {
+      filter: none;
+    }
+  }
 `;

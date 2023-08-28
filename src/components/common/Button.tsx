@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: { width: number; height: number };
-  direction?: "row" | "column";
   radius?: Radius;
   fontName?: FontName;
   color?: ColorName;
@@ -25,7 +24,6 @@ export default function Button({
   backgroundColor,
   borderColor,
   radius,
-  direction,
   fontName,
   leftIcon,
   rightIcon,
@@ -41,7 +39,6 @@ export default function Button({
       $color={color}
       $backgroundColor={backgroundColor}
       $borderColor={borderColor}
-      $direction={direction}
       $fontName={fontName}
       $radius={radius}
       {...props}>
@@ -68,7 +65,6 @@ const ButtonContent = ({
 
 const StyledButton = styled.button<{
   $size?: { width: number; height: number };
-  $direction?: "row" | "column";
   $color?: ColorName;
   $backgroundColor?: ColorName;
   $borderColor?: ColorName;
@@ -84,7 +80,6 @@ const StyledButton = styled.button<{
   width: ${({ $size }) => $size?.width + "px"};
   height: ${({ $size }) => $size?.height + "px"};
   color: ${({ $color, theme: { color } }) => $color && color[$color]};
-  flex-direction: ${({ $direction }) => $direction};
   font: ${({ $fontName, theme: { font } }) => $fontName && font[$fontName]};
 
   border-radius: ${({ $radius, theme: { radius } }) => {
