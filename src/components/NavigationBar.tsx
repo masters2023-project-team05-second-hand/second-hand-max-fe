@@ -54,6 +54,8 @@ const NAVIGATION = [
 ];
 
 const StyledNavigationBar = styled.ul`
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
