@@ -11,7 +11,7 @@ export default function NavigationBar() {
   return (
     <StyledNavigationBar>
       {NAVIGATION.map(({ icon, value, path }) => (
-        <li className="navigation-item">
+        <NavigationItem>
           <NavLink
             key={path}
             to={path}
@@ -19,7 +19,7 @@ export default function NavigationBar() {
             {icon}
             <span>{value}</span>
           </NavLink>
-        </li>
+        </NavigationItem>
       ))}
     </StyledNavigationBar>
   );
@@ -54,36 +54,12 @@ const NAVIGATION = [
 ];
 
 const StyledNavigationBar = styled.ul`
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 8px 16px;
   border-top: 0.8px solid ${({ theme: { color } }) => color.neutralBorder};
   background-color: ${({ theme: { color } }) => color.neutralBackground};
-
-  .navigation-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 48px;
-    height: 48px;
-    color: ${({ theme: { color } }) => color.neutralTextWeak};
-    font: ${({ theme: { font } }) => font.availableStrong10};
-
-    svg {
-      filter: ${({ theme: { filter } }) => filter.neutralTextWeak};
-    }
-
-    a {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-    }
-  }
 
   .active {
     color: ${({ theme: { color } }) => color.neutralTextStrong};
@@ -92,5 +68,29 @@ const StyledNavigationBar = styled.ul`
     svg {
       filter: none;
     }
+  }
+`;
+
+const NavigationItem = styled.li`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  color: ${({ theme: { color } }) => color.neutralTextWeak};
+  font: ${({ theme: { font } }) => font.availableStrong10};
+
+  svg {
+    filter: ${({ theme: { filter } }) => filter.neutralTextWeak};
+  }
+
+  a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
   }
 `;

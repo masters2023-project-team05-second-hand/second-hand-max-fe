@@ -35,8 +35,7 @@ export default function App() {
 }
 
 const StyledApp = styled.div`
-  width: 100%;
   margin: 0 auto;
-  max-width: 500px;
+  max-width: 393px;
   min-height: 100vh;
 `;
