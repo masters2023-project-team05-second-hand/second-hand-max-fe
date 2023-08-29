@@ -1,37 +1,39 @@
-import useDropdown from "@hooks/useDropdown";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { styled } from "styled-components";
 import Menu from "./Menu";
-import { MenuItemProps } from "./MenuItem";
+import { MenuItemInfo } from "@customTypes/index";
 
 type MenuIndicatorProps = {
-  children: ReactNode;
-  itemList: MenuItemProps[];
+  button: ReactNode;
+  itemList: MenuItemInfo[];
   withShadow?: boolean;
   position?: "left" | "right";
 };
 
 export default function MenuIndicator({
-  children,
+  button,
   itemList,
   withShadow,
   position,
 }: MenuIndicatorProps) {
-  const { isOpen, ref, toggleOpenState } = useDropdown();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
 
   return (
-    <>
-      <StyledMenuIndicator ref={ref} onClick={toggleOpenState}>
-        {children}
-        {isOpen && (
-          <Menu
-            itemList={itemList}
-            withShadow={withShadow}
-            position={position}
-          />
-        )}
-      </StyledMenuIndicator>
-    </>
+    <StyledMenuIndicator onClick={toggleModal}>
+      {button}
+      {isMenuOpen && (
+        <Menu
+          itemList={itemList}
+          withShadow={withShadow}
+          position={position}
+          closeMenuHandler={toggleModal}
+        />
+      )}
+    </StyledMenuIndicator>
   );
 }
 
