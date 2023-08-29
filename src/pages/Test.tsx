@@ -1,5 +1,5 @@
 import AlertIndicator from "@components/common/Alert/AlertIndicator";
-import Button from "@components/common/Button";
+import Button from "@components/common/Buttons/Button";
 import MenuIndicator from "@components/common/Menu/MenuIndicator";
 import { styled } from "styled-components";
 

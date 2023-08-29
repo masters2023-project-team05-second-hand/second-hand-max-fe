@@ -1,6 +1,6 @@
 import { ReactComponent as CircleXIcon } from "@assets/icon/circle-x-filled.svg";
 import { ReactComponent as PlusIcon } from "@assets/icon/plus.svg";
-import Button from "@components/common/Button";
+import Button from "@components/common/Buttons/Button";
 import { AddressInfo } from "@customTypes/index";
 import styled from "styled-components";
 

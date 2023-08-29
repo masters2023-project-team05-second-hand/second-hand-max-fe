@@ -1,6 +1,6 @@
 import { ReactComponent as ChevronLeftIcon } from "@assets/icon/chevron-left.svg";
 import TopBar from "@components/TopBar";
-import Button from "@components/common/Button";
+import Button from "@components/common/Buttons/Button";
 
 export default function Category() {
   return (

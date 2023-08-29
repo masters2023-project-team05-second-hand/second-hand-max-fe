@@ -1,7 +1,7 @@
 import { ReactComponent as ChevronLeftIcon } from "@assets/icon/chevron-left.svg";
 import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
 import TopBar from "@components/TopBar";
-import Button from "@components/common/Button";
+import Button from "@components/common/Buttons/Button";
 import useScroll from "@hooks/useScroll";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";

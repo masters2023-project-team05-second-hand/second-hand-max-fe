@@ -3,6 +3,7 @@ import { ReactComponent as HomeIcon } from "@assets/icon/home.svg";
 import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import { ReactComponent as NewsIcon } from "@assets/icon/news.svg";
 import { ReactComponent as UserIcon } from "@assets/icon/user-circle.svg";
+import { HEIGHT } from "@styles/constants";
 import { PATH } from "constants/path";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
@@ -56,9 +57,9 @@ const StyledNavigationBar = styled.ul`
   position: sticky;
   bottom: 0;
   display: flex;
-  justify-content: space-between;
+  height: ${HEIGHT.navigationBar}px;
+  justify-content: space-around;
   align-items: center;
-  padding: 8px 16px;
   border-top: 0.8px solid ${({ theme: { color } }) => color.neutralBorder};
   background-color: ${({ theme: { color } }) => color.neutralBackground};
 

@@ -1,6 +1,6 @@
-import { styled } from "styled-components";
-import Button from "../Button";
+import Button from "@components/common/Buttons/Button";
 import useOutsideClick from "@hooks/useOutsideClick";
+import { styled } from "styled-components";
 
 type AlertType = {
   message: string;

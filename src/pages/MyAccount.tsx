@@ -1,16 +1,19 @@
+import Login from "@components/Login";
 import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
 
+import { Page } from "@styles/common";
+
 export default function MyAccount() {
   return (
-    <div>
+    <Page>
       <TopBar
         title="내 계정"
         backgroundColor="neutralBackgroundBlur"
         isWithBorder={true}
       />
-      MyAccount
+      <Login />
       <NavigationBar />
-    </div>
+    </Page>
   );
 }
