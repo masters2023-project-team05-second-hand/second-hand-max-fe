@@ -17,12 +17,13 @@ const colors = {
   grey800: "#3C3C4399",
   grey900: "#3C3C43",
   black: "#000",
-  purple: "#5856D6",
+  purple: "#BA86DA",
   yellow: "#FFCC00",
   red: "#FF3B30",
 };
 
 const radius = {
+  6: "6px",
   8: "8px",
   12: "12px",
   16: "16px",
@@ -30,6 +31,7 @@ const radius = {
 };
 
 const font = {
+  displayStrong32: "700 32px Noto Sans KR, sans-serif",
   displayStrong20: "700 20px Noto Sans KR, sans-serif",
   displayStrong16: "700 16px Noto Sans KR, sans-serif",
   displayDefault16: "400 16px Noto Sans KR, sans-serif",

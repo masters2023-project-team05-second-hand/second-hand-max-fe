@@ -38,4 +38,5 @@ const StyledApp = styled.div`
   margin: 0 auto;
   max-width: 393px;
   min-height: 100vh;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 `;

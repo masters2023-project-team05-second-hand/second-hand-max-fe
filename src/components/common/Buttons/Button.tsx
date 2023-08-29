@@ -1,22 +1,6 @@
 import { ColorName, FontName, Radius } from "@styles/designSystem";
-import React from "react";
 import styled from "styled-components";
-
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  size?: { width: number; height: number };
-  radius?: Radius;
-  fontName?: FontName;
-  color?: ColorName;
-  backgroundColor?: ColorName;
-  borderColor?: ColorName;
-  leftIcon?: React.ReactElement;
-  rightIcon?: React.ReactElement;
-};
-
-type ButtonContentProps = Pick<
-  ButtonProps,
-  "leftIcon" | "rightIcon" | "children" | "value"
->;
+import { ButtonContentProps, ButtonProps } from "./type";
 
 export default function Button({
   size,
