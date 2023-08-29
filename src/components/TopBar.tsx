@@ -1,5 +1,6 @@
-import { styled } from "styled-components";
+import { HEIGHT } from "@styles/constants";
 import { ColorName, designSystem } from "@styles/designSystem";
+import { styled } from "styled-components";
 
 type TopBarProps = {
   title?: string;
@@ -34,15 +35,15 @@ export default function TopBar({
   );
 }
 
-const StyledTopBar = styled.div<{
+const StyledTopBar = styled.header<{
   $backgroundColor?: ColorName;
   $isWithBorder?: boolean;
   $isScrolled?: boolean;
 }>`
   width: 100%;
-  height: 56px;
-  top: 0;
+  height: ${HEIGHT.topBar}px;
   position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;

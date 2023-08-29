@@ -1,7 +1,7 @@
 import { ReactComponent as ChevronDownIcon } from "@assets/icon/chevron-down.svg";
 import { ReactComponent as LayoutGridIcon } from "@assets/icon/layout-grid.svg";
 import { ReactComponent as PlusIcon } from "@assets/icon/plus.svg";
-import Button from "@components/common/Button";
+import Button from "@components/common/Buttons/Button";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Button> = {

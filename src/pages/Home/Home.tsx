@@ -1,13 +1,14 @@
-import { styled } from "styled-components";
 import { ReactComponent as ChevronDownIcon } from "@assets/icon/chevron-down.svg";
 import { ReactComponent as LayoutGridIcon } from "@assets/icon/layout-grid.svg";
 import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
-import Button from "../../components/common/Button";
+import Button from "@components/common/Buttons/Button";
+import { Page } from "@styles/common";
+import { styled } from "styled-components";
 
 export default function Home() {
   return (
-    <StyledHome>
+    <Page>
       <TopBar
         backgroundColor="neutralBackgroundBlur"
         isWithBorder={true}
@@ -23,15 +24,9 @@ export default function Home() {
       />
       <Test>상품 목록 리스트</Test>
       <NavigationBar />
-    </StyledHome>
+    </Page>
   );
 }
-
-const StyledHome = styled.div`
-  position: relative;
-  height: 100vh;
-  overflow: scroll;
-`;
 
 const Test = styled.div`
   height: 2000px;

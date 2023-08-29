@@ -1,5 +1,5 @@
 import TopBar from "@components/TopBar";
-import Button from "@components/common/Button";
+import Button from "@components/common/Buttons/Button";
 
 export default function NewProduct() {
   return (
