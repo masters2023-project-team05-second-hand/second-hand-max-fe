@@ -29,7 +29,8 @@
       "@styles/*": ["styles/*"],
       "@utils/*": ["utils/*"],
       "@hooks/*": ["hooks/*"],
-      "@customTypes/*": ["customTypes/*"]
+      "@customTypes/*": ["customTypes/*"],
+      "@router/*": ["router/*"]
     },
 
     "esModuleInterop": true
