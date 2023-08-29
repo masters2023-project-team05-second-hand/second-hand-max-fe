@@ -3,6 +3,7 @@ import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
 import useScroll from "@hooks/useScroll";
+import { Page } from "@styles/common";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
@@ -13,7 +14,7 @@ export default function Product() {
   const isScroll = !!scrollY && scrollY > 0;
 
   return (
-    <StyledProduct ref={ref}>
+    <Page ref={ref}>
       {/* Todo: 사진 position absolute로 해야함 */}
       <Test>{`상품 ${id} 상세 페이지`}</Test>
       <TopBar
@@ -34,15 +35,9 @@ export default function Product() {
           />
         }
       />
-    </StyledProduct>
+    </Page>
   );
 }
-
-const StyledProduct = styled.div`
-  position: relative;
-  height: 100vh;
-  overflow: scroll;
-`;
 
 const Test = styled.div`
   position: absolute;

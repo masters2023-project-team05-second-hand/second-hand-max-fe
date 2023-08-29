@@ -1,10 +1,11 @@
 import { ReactComponent as ChevronLeftIcon } from "@assets/icon/chevron-left.svg";
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
+import { Page } from "@styles/common";
 
 export default function Category() {
   return (
-    <div>
+    <Page>
       <TopBar
         title="카테고리"
         backgroundColor="neutralBackgroundBlur"
@@ -19,6 +20,6 @@ export default function Category() {
         isWithBorder={true}
       />
       Category
-    </div>
+    </Page>
   );
 }

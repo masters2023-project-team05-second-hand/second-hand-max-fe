@@ -1,9 +1,10 @@
 import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
+import { Page } from "@styles/common";
 
 export default function Chat() {
   return (
-    <div>
+    <Page>
       <TopBar
         title="채팅"
         backgroundColor="neutralBackgroundBlur"
@@ -11,6 +12,6 @@ export default function Chat() {
       />
       Chat
       <NavigationBar />
-    </div>
+    </Page>
   );
 }

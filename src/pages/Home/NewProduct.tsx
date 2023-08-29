@@ -1,9 +1,10 @@
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
+import { Page } from "@styles/common";
 
 export default function NewProduct() {
   return (
-    <div>
+    <Page>
       <TopBar
         title="내 물건 팔기"
         backgroundColor="neutralBackgroundBlur"
@@ -25,6 +26,6 @@ export default function NewProduct() {
         }
       />
       NewProduct
-    </div>
+    </Page>
   );
 }
