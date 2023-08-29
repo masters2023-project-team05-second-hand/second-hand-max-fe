@@ -2,11 +2,11 @@ import useDropdown from "@hooks/useDropdown";
 import { ReactNode } from "react";
 import { styled } from "styled-components";
 import Menu from "./Menu";
-import { ItemProps } from "./MenuItem";
+import { MenuItemProps } from "./MenuItem";
 
-type MenuIndicatorProps = React.HTMLAttributes<HTMLDivElement> & {
+type MenuIndicatorProps = {
   children: ReactNode;
-  itemList: ItemProps[];
+  itemList: MenuItemProps[];
   withShadow?: boolean;
   position?: "left" | "right";
 };

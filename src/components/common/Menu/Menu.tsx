@@ -1,18 +1,18 @@
 import { styled } from "styled-components";
 import { designSystem } from "@styles/designSystem";
-import MenuItem, { ItemProps } from "./MenuItem";
+import MenuItem, { MenuItemProps } from "./MenuItem";
 
-interface MenuProps extends React.ComponentPropsWithoutRef<"ul"> {
-  itemList: ItemProps[];
+type MenuProps = {
+  itemList: MenuItemProps[];
   withShadow?: boolean;
   position?: "left" | "right";
-}
+};
 
 export default function Menu({ itemList, withShadow, position }: MenuProps) {
   return (
     <StyledMenu $withShadow={withShadow} $position={position}>
       {itemList.map((item) => (
-        <MenuItem key={item.itemId} item={item} />
+        <MenuItem key={item.itemId} {...item} />
       ))}
     </StyledMenu>
   );
