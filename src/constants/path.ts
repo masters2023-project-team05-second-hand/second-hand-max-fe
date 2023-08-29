@@ -4,4 +4,7 @@ export const PATH = {
   wish: "/wish",
   chat: "/chat",
   account: "/account",
+  new: "/new",
+  category: "/category",
+  product: "/product/:id",
 };
