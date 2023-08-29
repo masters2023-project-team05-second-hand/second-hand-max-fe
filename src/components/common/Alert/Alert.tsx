@@ -1,7 +1,6 @@
-import { designSystem } from "@styles/designSystem";
-import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import Button from "../Button";
+import useOutsideClick from "@hooks/useOutsideClick";
 
 type AlertType = {
   message: string;
@@ -14,26 +13,8 @@ export default function Alert({
   closeAlertHandler,
   onDeleteClick,
 }: AlertType) {
-  const modalRef = useRef<HTMLDialogElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsOpen(true);
-
-    const onOutsideClick = (e: MouseEvent) => {
-      if (!modalRef.current?.contains(e.target as Node)) {
-        closeAlertHandler();
-      }
-    };
-
-    if (isOpen) {
-      window.addEventListener("click", onOutsideClick);
-    }
-
-    return () => {
-      window.removeEventListener("click", onOutsideClick);
-    };
-  }, [isOpen, closeAlertHandler]);
+  const { ref: modalRef } =
+    useOutsideClick<HTMLDialogElement>(closeAlertHandler);
 
   const deleteHandler = () => {
     onDeleteClick();
@@ -62,6 +43,9 @@ export default function Alert({
 }
 
 const StyledAlert = styled.dialog`
+  position: fixed;
+  top: 50%;
+  transform: translateY(-100%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -70,12 +54,12 @@ const StyledAlert = styled.dialog`
   height: 144px;
   box-sizing: border-box;
   border: none;
-  border-radius: ${designSystem.radius[16]};
   box-shadow: 0px 4px 4px 0px #00000040;
   z-index: 1;
-  font: ${designSystem.font.displayStrong16};
-  color: ${designSystem.color.neutralTextStrong};
-  background-color: ${designSystem.color.neutralBackground};
+  border-radius: ${({ theme: { radius } }) => radius[16]};
+  font: ${({ theme: { font } }) => font.displayStrong16};
+  color: ${({ theme: { color } }) => color.neutralTextStrong};
+  background-color: ${({ theme: { color } }) => color.neutralBackground};
 `;
 
 const ButtonWrapper = styled.div`
