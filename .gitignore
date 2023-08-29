@@ -37,6 +37,7 @@ replay_pid*
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -44,3 +45,5 @@ replay_pid*
 *.njsproj
 *.sln
 *.sw?
+
+.env

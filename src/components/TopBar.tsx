@@ -1,6 +1,6 @@
 import { HEIGHT } from "@styles/constants";
-import { styled } from "styled-components";
 import { ColorName } from "@styles/designSystem";
+import { styled } from "styled-components";
 
 type TopBarProps = {
   title?: string;
