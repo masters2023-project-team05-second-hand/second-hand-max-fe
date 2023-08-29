@@ -1,36 +1,47 @@
 import { styled } from "styled-components";
-import { designSystem } from "@styles/designSystem";
-import MenuItem, { MenuItemProps } from "./MenuItem";
+import MenuItem from "./MenuItem";
+import useOutsideClick from "@hooks/useOutsideClick";
+import { MenuItemInfo } from "@customTypes/index";
 
 type MenuProps = {
-  itemList: MenuItemProps[];
+  itemList: MenuItemInfo[];
   withShadow?: boolean;
   position?: "left" | "right";
+  closeMenuHandler: () => void;
 };
 
-export default function Menu({ itemList, withShadow, position }: MenuProps) {
+export default function Menu({
+  itemList,
+  withShadow,
+  position,
+  closeMenuHandler,
+}: MenuProps) {
+  const { ref: menuRef } = useOutsideClick<HTMLDivElement>(closeMenuHandler);
+
   return (
-    <StyledMenu $withShadow={withShadow} $position={position}>
-      {itemList.map((item) => (
-        <MenuItem key={item.itemId} {...item} />
-      ))}
+    <StyledMenu $withShadow={withShadow} $position={position} ref={menuRef}>
+      <ul>
+        {itemList.map((item) => (
+          <MenuItem key={item.itemId} {...item} />
+        ))}
+      </ul>
     </StyledMenu>
   );
 }
 
-const StyledMenu = styled.ul<{
+const StyledMenu = styled.div<{
   $withShadow?: boolean;
   $position?: "left" | "right";
 }>`
-  width: 240px;
   position: absolute;
+  width: 240px;
   top: 56px;
-  ${(props) => (props.$position === "left" ? `left: 16px` : "right: 256px")};
-  background-color: ${designSystem.color.neutralBackground};
-  border: 0.8px solid ${designSystem.color.neutralBorder};
-  border-radius: 12px;
-  box-shadow: ${(props) =>
-    props.$withShadow ? "0px 4px 4px 0px #00000040" : "none"};
   overflow: hidden;
-  z-index: 1;
+  z-index: 2;
+  ${({ $position }) => ($position === "left" ? `left: 16px` : "right: 16px")};
+  background-color: ${({ theme: { color } }) => color.neutralBackground};
+  border: ${({ theme: { color } }) => `0.8px solid ${color.neutralBorder}`};
+  border-radius: 12px;
+  box-shadow: ${({ $withShadow }) =>
+    $withShadow ? "0px 4px 4px 0px #00000040" : "none"};
 `;

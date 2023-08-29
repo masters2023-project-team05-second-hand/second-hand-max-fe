@@ -1,6 +1,6 @@
 import { HEIGHT } from "@styles/constants";
-import { ColorName, designSystem } from "@styles/designSystem";
 import { styled } from "styled-components";
+import { ColorName } from "@styles/designSystem";
 
 type TopBarProps = {
   title?: string;
@@ -56,8 +56,8 @@ const StyledTopBar = styled.header<{
       $backgroundColor === "neutralBackgroundBlur";
     return isNeutralBackgroundBlur && backdropFilter.blur;
   }};
-  border-bottom: ${({ $isWithBorder }) =>
-    $isWithBorder ? `0.8px solid ${designSystem.color.neutralBorder}` : "none"};
+  border-bottom: ${({ $isWithBorder, theme: { color } }) =>
+    $isWithBorder ? `0.8px solid ${color.neutralBorder}` : "none"};
   transition: background-color 0.5s linear;
 `;
 
