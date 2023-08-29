@@ -1,6 +1,7 @@
 import AlertIndicator from "@components/common/Alert/AlertIndicator";
 import Button from "@components/common/Buttons/Button";
 import MenuIndicator from "@components/common/Menu/MenuIndicator";
+import { Page } from "@styles/common";
 import { styled } from "styled-components";
 
 export default function Test() {
@@ -9,18 +10,20 @@ export default function Test() {
   };
 
   return (
-    <TestWrapper>
-      <MenuIndicator
-        button={<Button value="동네설정" />}
-        itemList={test1}
-        position="left"
-      />
-      <AlertIndicator
-        button={<Button value="알러트" />}
-        message="'역삼 1동'을 삭제하시겠어요?"
-        onDeleteClick={onDeleteClick}
-      />
-    </TestWrapper>
+    <Page>
+      <TestWrapper>
+        <MenuIndicator
+          button={<Button value="동네설정" />}
+          itemList={test1}
+          position="left"
+        />
+        <AlertIndicator
+          button={<Button value="알러트" />}
+          message="'역삼 1동'을 삭제하시겠어요?"
+          onDeleteClick={onDeleteClick}
+        />
+      </TestWrapper>
+    </Page>
   );
 }
 

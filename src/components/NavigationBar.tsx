@@ -54,7 +54,8 @@ const NAVIGATION = [
 ];
 
 const StyledNavigationBar = styled.ul`
-  position: sticky;
+  width: 393px;
+  position: fixed;
   bottom: 0;
   display: flex;
   height: ${HEIGHT.navigationBar}px;
