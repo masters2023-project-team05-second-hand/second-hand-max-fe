@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import { styled } from "styled-components";
 import Menu from "./Menu";
-import { MenuItemInfo } from "@customTypes/index";
+import { MenuItemInfo } from "./type";
 
 type MenuIndicatorProps = {
   button: ReactNode;

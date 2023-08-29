@@ -26,7 +26,7 @@ export default function useOutsideClick<T extends HTMLElement>(
     return () => {
       window.removeEventListener("click", handleOutsideClick);
     };
-  }, [isOpen]);
+  }, [isOpen, closeHandler]);
 
   return { ref };
 }

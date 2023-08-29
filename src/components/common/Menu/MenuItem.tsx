@@ -1,5 +1,5 @@
-import { MenuItemInfo } from "@customTypes/index";
 import { styled } from "styled-components";
+import { MenuItemInfo } from "./type";
 
 export default function MenuItem({
   value,

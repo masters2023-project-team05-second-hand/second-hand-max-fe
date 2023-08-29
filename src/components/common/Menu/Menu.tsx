@@ -1,7 +1,7 @@
+import useOutsideClick from "@hooks/useOutsideClick";
 import { styled } from "styled-components";
 import MenuItem from "./MenuItem";
-import useOutsideClick from "@hooks/useOutsideClick";
-import { MenuItemInfo } from "@customTypes/index";
+import { MenuItemInfo } from "./type";
 
 type MenuProps = {
   itemList: MenuItemInfo[];
