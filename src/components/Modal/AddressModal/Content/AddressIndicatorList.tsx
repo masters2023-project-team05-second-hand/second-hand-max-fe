@@ -1,7 +1,7 @@
 import { ReactComponent as CircleXIcon } from "@assets/icon/circle-x-filled.svg";
 import { ReactComponent as PlusIcon } from "@assets/icon/plus.svg";
 import Button from "@components/common/Buttons/Button";
-import { AddressInfo } from "@customTypes/index";
+import { AddressInfo } from "api/type";
 import styled from "styled-components";
 
 export default function AddressIndicatorList({
