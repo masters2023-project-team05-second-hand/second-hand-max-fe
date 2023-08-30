@@ -4,9 +4,10 @@ import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useTokens } from "store";
 
 export default function MyAccount() {
-  const accessToken = localStorage.getItem("accessToken");
+  const { accessToken } = useTokens();
   const navigate = useNavigate();
 
   useEffect(() => {

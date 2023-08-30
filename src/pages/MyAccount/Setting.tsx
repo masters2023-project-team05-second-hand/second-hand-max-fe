@@ -3,19 +3,32 @@ import Button from "@components/common/Buttons/Button";
 import { ROUTE_PATH } from "@router/constants";
 import { Main } from "@styles/common";
 import { postLogout } from "api";
+import { useSetAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
+import { addressListAtom, memberAtom, tokensAtom, useTokens } from "store";
 
 export default function Setting() {
   const navigate = useNavigate();
+  const { refreshToken } = useTokens();
 
-  // TODO: 상태관리 라이브러리 사용
+  const setMember = useSetAtom(memberAtom);
+  const setTokens = useSetAtom(tokensAtom);
+  const setAddresses = useSetAtom(addressListAtom);
+
   const onLogout = () => {
-    const refreshToken = localStorage.getItem("refreshToken");
     refreshToken && postLogout({ refreshToken });
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("member");
+    localStorage.removeItem("addresses");
+
+    setMember(null);
+    setTokens({
+      accessToken: "",
+      refreshToken: "",
+    });
+    setAddresses([]);
 
     navigate(ROUTE_PATH.account.index);
   };

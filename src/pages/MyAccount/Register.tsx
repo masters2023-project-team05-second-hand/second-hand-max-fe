@@ -7,8 +7,11 @@ import { ROUTE_PATH } from "@router/constants";
 import { Main, Page } from "@styles/common";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAddressList } from "store";
 
 export default function Register() {
+  const addresses = useAddressList();
+
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -34,6 +37,7 @@ export default function Register() {
             color="neutralText"
             fontName="availableStrong16"
             onClick={() => navigate(ROUTE_PATH.home)}
+            disabled={addresses.length === 0}
           />
         }
       />

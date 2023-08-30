@@ -4,10 +4,12 @@ export type AuthInfo = {
     refreshToken: string;
   };
   addresses: UserAddressInfo[];
-  member: {
-    nickname: string;
-    profileImgUrl: string;
-  };
+  member: Member;
+};
+
+export type Member = {
+  nickname: string;
+  profileImgUrl: string;
 };
 
 export type UserAddressInfo = AddressInfo & {

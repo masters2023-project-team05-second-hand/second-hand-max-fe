@@ -2,27 +2,39 @@ import LoadingIndicator from "@assets/image/loading.gif";
 import { ROUTE_PATH } from "@router/constants";
 import { SubTitle } from "@styles/common";
 import { postSocialLogin } from "api";
+import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { addressListAtom, memberAtom, tokensAtom } from "store";
 import styled from "styled-components";
 
 export function Auth() {
   const { provider } = useParams<{ provider: "kakao" | "github" }>();
   const accessCode = new URL(window.location.href).searchParams.get("code");
+
   const navigate = useNavigate();
 
+  const setMember = useSetAtom(memberAtom);
+  const setTokens = useSetAtom(tokensAtom);
+  const setAddresses = useSetAtom(addressListAtom);
+
+  // TODO: tanstack-query 사용해서 로그인 처리
   useEffect(() => {
-    const getTokens = async () => {
+    const getMember = async () => {
       if (accessCode && provider) {
         const {
           data: { tokens, addresses, member },
         } = await postSocialLogin(provider, { accessCode });
         const isFirstLogin = addresses?.length === 0;
 
-        // TODO: 상태관리 라이브러리 사용
         localStorage.setItem("accessToken", tokens.accessToken);
         localStorage.setItem("refreshToken", tokens.refreshToken);
+        localStorage.setItem("addresses", JSON.stringify(addresses));
         localStorage.setItem("member", JSON.stringify(member));
+
+        setMember(member);
+        setTokens(tokens);
+        setAddresses(addresses);
 
         isFirstLogin
           ? navigate(ROUTE_PATH.register)
@@ -30,8 +42,8 @@ export function Auth() {
       }
     };
 
-    getTokens();
-  }, [accessCode, navigate, provider]);
+    getMember();
+  }, [accessCode, navigate, provider, setAddresses, setMember, setTokens]);
 
   return (
     <Loading>
