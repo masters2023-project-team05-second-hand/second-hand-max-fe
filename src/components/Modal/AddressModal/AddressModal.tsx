@@ -1,6 +1,5 @@
-import { AddressInfo } from "api/type";
-import { currentUserAddressId, userAddressList } from "mocks/data/address";
 import { useState } from "react";
+import { useAddressList } from "store";
 import Modal from "../Modal";
 import AddressIndicatorList from "./Content/AddressIndicatorList";
 import AddressSearch from "./Content/AddressSearch";
@@ -10,7 +9,7 @@ export default function AddressModal({
 }: {
   closeHandler: () => void;
 }) {
-  const [newAddressList] = useState<AddressInfo[]>(userAddressList);
+  const addresses = useAddressList();
   const [isSearchingAddress, setIsSearchingAddress] = useState<boolean>(false);
 
   const openAddressSearch = () => setIsSearchingAddress(true);
@@ -18,7 +17,7 @@ export default function AddressModal({
 
   const addressSearchHeaderProps = {
     backHandler: closeAddressSearch,
-    closeHandler: () => console.log("Close AddressModal"),
+    closeHandler,
   };
 
   const addressIndicatorListHeaderProps = {
@@ -29,7 +28,7 @@ export default function AddressModal({
     },
   };
 
-  const userAddressIDs = newAddressList.map(({ id }) => id);
+  const userAddressIDs = addresses.map(({ id }) => id);
 
   const currentHeaderProps = isSearchingAddress
     ? addressSearchHeaderProps
@@ -38,11 +37,7 @@ export default function AddressModal({
   const currentContent = isSearchingAddress ? (
     <AddressSearch {...{ closeAddressSearch, userAddressIDs }} />
   ) : (
-    <AddressIndicatorList
-      userAddressList={newAddressList}
-      onClickAddressAddButton={openAddressSearch}
-      currentUserAddressId={currentUserAddressId}
-    />
+    <AddressIndicatorList openAddressSearch={openAddressSearch} />
   );
 
   return (

@@ -1,6 +1,9 @@
 import { ListItem, ListPanel } from "@components/Modal/Modal.style";
+import { AddressInfo } from "api/type";
+import { useSetAtom } from "jotai";
 import { addresses1 } from "mocks/data/address";
 import { useState } from "react";
+import { addressListAtom, currentAddressIdAtom } from "store";
 import styled from "styled-components";
 
 export default function AddressSearch({
@@ -10,7 +13,22 @@ export default function AddressSearch({
   userAddressIDs: number[];
   closeAddressSearch: () => void;
 }) {
-  // TODO: 동네 검색/전체 동네 조회 요청으로 받아온 데이터를 allAddressList로 상태 관리해야 함
+  const setAddresses = useSetAtom(addressListAtom);
+  const setCurrentAddressId = useSetAtom(currentAddressIdAtom);
+
+  const onAddAddress = (item: AddressInfo) => {
+    setAddresses((prev) => {
+      const isMaxAddressCount = prev.length === 2;
+      const isAlreadyAdded = prev.some(({ id }) => id === item.id);
+      if (isMaxAddressCount || isAlreadyAdded) {
+        return prev;
+      }
+
+      setCurrentAddressId(item.id);
+      return [...prev, item];
+    });
+  };
+  // TODO: 동네 검색/전체 동네 조회 요청
   const [allAddressList] = useState(addresses1.addresses);
   // const [searchKeyword, setSearchKeyword] = useState<string>("");
 
@@ -23,9 +41,7 @@ export default function AddressSearch({
             key={id}
             $active={userAddressIDs.includes(id)}
             onClick={() => {
-              console.log(
-                `${id} 선택한 동네 변경, context로 선택한 item 정보 AddressIndicator와 공유`
-              );
+              onAddAddress({ id, name });
               closeAddressSearch();
             }}>
             <span>{name}</span>
