@@ -1,23 +1,12 @@
 import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
-import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useTokens } from "store";
+import { useMember } from "store";
+import Login from "./Login";
+import Setting from "./Setting";
 
 export default function MyAccount() {
-  const { accessToken } = useTokens();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!accessToken) {
-      navigate(ROUTE_PATH.account.login);
-      return;
-    }
-
-    navigate(ROUTE_PATH.account.setting);
-  }, [accessToken, navigate]);
+  const member = useMember();
 
   return (
     <Page>
@@ -26,7 +15,8 @@ export default function MyAccount() {
         backgroundColor="neutralBackgroundBlur"
         isWithBorder={true}
       />
-      <Outlet />
+      {member && <Setting />}
+      {!member && <Login />}
       <NavigationBar />
     </Page>
   );

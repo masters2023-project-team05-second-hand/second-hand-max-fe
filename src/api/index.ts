@@ -12,3 +12,9 @@ export const postSocialLogin = async (
 export const postLogout = async (body: { refreshToken: string }) => {
   return await fetcher.post(API_PATH.logout, body);
 };
+
+export const postRefreshToken = async (refreshToken: string) => {
+  return await fetcher.post<{ accessToken: string }>(API_PATH.refresh, {
+    refreshToken,
+  });
+};

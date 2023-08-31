@@ -1,57 +1,75 @@
 import LoadingIndicator from "@assets/image/loading.gif";
+import TopBar from "@components/TopBar";
 import { ROUTE_PATH } from "@router/constants";
-import { SubTitle } from "@styles/common";
+import { Page, SubTitle } from "@styles/common";
+import { useQuery } from "@tanstack/react-query";
 import { postSocialLogin } from "api";
 import { useSetAtom } from "jotai";
-import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { addressListAtom, memberAtom, tokensAtom } from "store";
+import { addressListAtom, memberAtom } from "store";
 import styled from "styled-components";
 
 export function Auth() {
   const { provider } = useParams<{ provider: "kakao" | "github" }>();
   const accessCode = new URL(window.location.href).searchParams.get("code");
-
   const navigate = useNavigate();
 
   const setMember = useSetAtom(memberAtom);
-  const setTokens = useSetAtom(tokensAtom);
   const setAddresses = useSetAtom(addressListAtom);
 
-  // TODO: tanstack-query 사용해서 로그인 처리
-  useEffect(() => {
-    const getMember = async () => {
-      if (accessCode && provider) {
-        const {
-          data: { tokens, addresses, member },
-        } = await postSocialLogin(provider, { accessCode });
-        const isFirstLogin = addresses?.length === 0;
+  const getUser = async () => {
+    if (!accessCode || !provider) {
+      return;
+    }
 
-        localStorage.setItem("accessToken", tokens.accessToken);
-        localStorage.setItem("refreshToken", tokens.refreshToken);
-        localStorage.setItem("addresses", JSON.stringify(addresses));
-        localStorage.setItem("member", JSON.stringify(member));
+    const {
+      data: { tokens, addresses, member },
+    } = await postSocialLogin(provider, { accessCode });
+    const isFirstLogin = addresses?.length === 0;
 
-        setMember(member);
-        setTokens(tokens);
-        setAddresses(addresses);
+    localStorage.setItem("accessToken", tokens.accessToken);
+    localStorage.setItem("refreshToken", tokens.refreshToken);
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        addresses,
+        member,
+      })
+    );
 
-        isFirstLogin
-          ? navigate(ROUTE_PATH.register)
-          : navigate(ROUTE_PATH.home);
-      }
-    };
+    setMember(member);
+    setAddresses(addresses);
 
-    getMember();
-  }, [accessCode, navigate, provider, setAddresses, setMember, setTokens]);
+    return isFirstLogin;
+  };
 
-  return (
-    <Loading>
-      <img src={LoadingIndicator} alt="loading-indicator" />
-      <SubTitle>로그인중입니다...</SubTitle>
-      <SubTitle>새로고침을 하지 마세요!</SubTitle>
-    </Loading>
-  );
+  const queryKey = ["socialLogin", provider, accessCode];
+
+  const { isLoading } = useQuery(queryKey, getUser, {
+    enabled: !!accessCode && !!provider,
+    onSuccess: (isFirstLogin) => {
+      isFirstLogin ? navigate(ROUTE_PATH.register) : navigate(ROUTE_PATH.home);
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <Page>
+        <TopBar
+          title="내 계정"
+          backgroundColor="neutralBackgroundBlur"
+          isWithBorder={true}
+        />
+        <Loading>
+          <img src={LoadingIndicator} alt="loading-indicator" />
+          <SubTitle>로그인중입니다...</SubTitle>
+          <SubTitle>새로고침을 하지 마세요!</SubTitle>
+        </Loading>
+      </Page>
+    );
+  }
+
+  return null;
 }
 
 const Loading = styled.div`
