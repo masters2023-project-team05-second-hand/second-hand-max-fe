@@ -1,5 +1,6 @@
 import { ReactComponent as CameraIcon } from "@assets/icon/camera.svg";
-import Button from "@components/common/Buttons/Button";
+import { useMutation } from "@tanstack/react-query";
+import { postUserProfile } from "api";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -9,42 +10,39 @@ export default function ProfileUploadButton({
   profileUrl?: string;
 }) {
   const [profileImage, setProfileImage] = useState(profileUrl);
-  // const [profileFile, setProfileFile] = useState<File | null>(null);
 
-  // TODO: 프로필 수정 요청 바로 보내기
+  const userProfileMutation = useMutation(
+    (file: File) => postUserProfile(file),
+    {
+      onSuccess: (res) => {
+        const newProfileImageUrl = res.data.profileImgUrl;
+        setProfileImage(newProfileImageUrl);
+      },
+      onError: (error) => {
+        console.error("Error uploading profile image:", error);
+      },
+    }
+  );
+
   const onChangeProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setProfileImage(reader.result as string);
-      // setProfileFile(file);
-    };
-  };
-
-  const onClickProfileImage = () => {
-    document.getElementById("profile-upload-input")?.click();
+    if (file) {
+      userProfileMutation.mutate(file);
+    }
   };
 
   return (
     <StyledProfile>
-      <Button
-        size={{ width: 100, height: 100 }}
-        backgroundColor="neutralOverlay"
-        borderColor="neutralBorder"
-        color="accentText"
-        radius="half"
-        onClick={onClickProfileImage}>
+      <ProfileUpload htmlFor="profile-upload-input">
         {profileImage && <ProfileImage src={profileImage} />}
         <CameraIcon className="camera-icon" />
-      </Button>
-      <input
-        type="file"
-        id="profile-upload-input"
-        onChange={onChangeProfileImage}
-      />
+        <input
+          type="file"
+          id="profile-upload-input"
+          onChange={onChangeProfileImage}
+        />
+      </ProfileUpload>
     </StyledProfile>
   );
 }
@@ -54,6 +52,22 @@ const StyledProfile = styled.div`
   position: relative;
   width: 100px;
   height: 100px;
+`;
+
+const ProfileUpload = styled.label`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: ${({ theme: { radius } }) => radius.half};
+  background-color: ${({ theme: { color } }) => color.neutralOverlay};
+  border: 1px solid ${({ theme: { color } }) => color.neutralBorder};
+
+  .camera-icon {
+    filter: ${({ theme: { filter } }) => filter.accentText};
+  }
 
   #profile-upload-input {
     display: none;

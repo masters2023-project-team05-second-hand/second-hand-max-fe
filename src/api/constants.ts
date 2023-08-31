@@ -12,6 +12,7 @@ export const API_PATH = {
   logout: "/api/sign-out",
   refresh: "/api/reissue-access-token",
   userAddress: "/api/members/address",
+  userProfile: "/api/members/profile-image",
 };
 
 export const BASE_API_URL =

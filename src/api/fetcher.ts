@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import { API_PATH, BASE_API_URL } from "./constants";
 
 export const fetcher = axios.create({
-  baseURL: `${BASE_API_URL}`,
+  baseURL: BASE_API_URL,
   headers: { "Content-Type": "application/json" },
 });
 
