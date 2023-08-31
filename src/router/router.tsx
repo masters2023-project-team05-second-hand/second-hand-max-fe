@@ -1,11 +1,11 @@
+import { Auth } from "@pages/Auth";
 import Chat from "@pages/Chat";
 import Category from "@pages/Home/Category";
 import Home from "@pages/Home/Home";
 import NewProduct from "@pages/Home/NewProduct";
-import { Auth } from "@pages/MyAccount/Auth";
 import MyAccount from "@pages/MyAccount/MyAccount";
-import Register from "@pages/MyAccount/Register";
 import Product from "@pages/Product";
+import Register from "@pages/Register";
 import SalesList from "@pages/SalesList";
 import WishList from "@pages/WishList";
 import {
