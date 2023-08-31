@@ -1,22 +1,23 @@
 import { ReactComponent as CameraIcon } from "@assets/icon/camera.svg";
 import { useMutation } from "@tanstack/react-query";
 import { postUserProfile } from "api";
-import { useState } from "react";
+import { useSetAtom } from "jotai";
+import { memberAtom, useMember } from "store";
 import styled from "styled-components";
 
-export default function ProfileUploadButton({
-  profileUrl,
-}: {
-  profileUrl?: string;
-}) {
-  const [profileImage, setProfileImage] = useState(profileUrl);
+export default function ProfileUploadButton() {
+  const member = useMember();
+  const setMember = useSetAtom(memberAtom);
 
   const userProfileMutation = useMutation(
     (file: File) => postUserProfile(file),
     {
       onSuccess: (res) => {
         const newProfileImageUrl = res.data.profileImgUrl;
-        setProfileImage(newProfileImageUrl);
+        setMember((prev) => ({
+          ...prev,
+          profileImgUrl: newProfileImageUrl,
+        }));
       },
       onError: (error) => {
         console.error("Error uploading profile image:", error);
@@ -35,7 +36,7 @@ export default function ProfileUploadButton({
   return (
     <StyledProfile>
       <ProfileUpload htmlFor="profile-upload-input">
-        {profileImage && <ProfileImage src={profileImage} />}
+        {member?.profileImgUrl && <ProfileImage src={member?.profileImgUrl} />}
         <CameraIcon className="camera-icon" />
         <input
           type="file"

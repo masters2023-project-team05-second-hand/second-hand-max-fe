@@ -7,7 +7,7 @@ const currentAddressId =
   addresses &&
   addresses.find((address: UserAddressInfo) => address.isLastVisited)?.id;
 
-export const memberAtom = atomWithDefault<Member | null>(() => member);
+export const memberAtom = atomWithDefault<Member>(() => member);
 export const addressListAtom = atomWithDefault<AddressInfo[]>(() => addresses);
 export const currentAddressIdAtom = atomWithDefault<number | null>(
   () => currentAddressId

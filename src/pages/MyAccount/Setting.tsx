@@ -21,7 +21,10 @@ export default function Setting() {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
 
-    setMember(null);
+    setMember({
+      nickname: "",
+      profileImgUrl: "",
+    });
     setAddresses([]);
 
     navigate(ROUTE_PATH.account);
