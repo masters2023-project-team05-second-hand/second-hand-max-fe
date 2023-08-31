@@ -11,6 +11,7 @@ export const API_PATH = {
   login: (provider: "kakao" | "github") => `/api/members/sign-in/${provider}`,
   logout: "/api/sign-out",
   refresh: "/api/reissue-access-token",
+  userAddress: "/api/members/address",
 };
 
 export const BASE_API_URL =

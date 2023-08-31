@@ -28,8 +28,8 @@ export default function TopBar({
         <span>{title}</span>
       </Title>
       <Buttons>
-        {leftBtn}
-        {rightBtn}
+        <div>{leftBtn}</div>
+        <div>{rightBtn}</div>
       </Buttons>
     </StyledTopBar>
   );

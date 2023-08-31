@@ -18,3 +18,7 @@ export const postRefreshToken = async (refreshToken: string) => {
     refreshToken,
   });
 };
+
+export const postUserAddress = async (body: { addressIds: number[] }) => {
+  return await fetcher.post(API_PATH.userAddress, body);
+};

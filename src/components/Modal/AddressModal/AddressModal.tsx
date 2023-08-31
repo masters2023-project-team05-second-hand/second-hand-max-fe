@@ -1,3 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
+import { isSameItems } from "@utils/index";
+import { postUserAddress } from "api";
 import { useState } from "react";
 import { useAddressList } from "store";
 import Modal from "../Modal";
@@ -10,10 +13,22 @@ export default function AddressModal({
   closeHandler: () => void;
 }) {
   const addresses = useAddressList();
+  const userAddressIDs = addresses.map(({ id }) => id);
+
+  const [prevAddressIDs] = useState(userAddressIDs);
   const [isSearchingAddress, setIsSearchingAddress] = useState<boolean>(false);
 
   const openAddressSearch = () => setIsSearchingAddress(true);
   const closeAddressSearch = () => setIsSearchingAddress(false);
+
+  const userAddressMutation = useMutation(
+    () => postUserAddress({ addressIds: userAddressIDs }),
+    {
+      onMutate: () => console.log("onMutate"),
+      onSuccess: () => console.log("onSuccess"),
+      onError: () => console.log("onError"),
+    }
+  );
 
   const addressSearchHeaderProps = {
     backHandler: closeAddressSearch,
@@ -23,12 +38,11 @@ export default function AddressModal({
   const addressIndicatorListHeaderProps = {
     title: "동네 설정",
     closeHandler: () => {
-      console.log("동네 수정 요청 보내기 / 변경 사항 없으면 모달 닫기");
+      !isSameItems(userAddressIDs, prevAddressIDs) &&
+        userAddressMutation.mutate();
       closeHandler();
     },
   };
-
-  const userAddressIDs = addresses.map(({ id }) => id);
 
   const currentHeaderProps = isSearchingAddress
     ? addressSearchHeaderProps
