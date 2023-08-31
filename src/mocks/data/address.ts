@@ -1,4 +1,4 @@
-import { AddressInfo } from "@customTypes/index";
+import { AddressInfo } from "api/type";
 
 // TODO: API 결정되면 수정 필요
 export const currentUserAddressId = 1;

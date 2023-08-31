@@ -1,3 +1,4 @@
+import { SubTitle } from "@styles/common";
 import styled from "styled-components";
 
 export default function Intro() {
@@ -39,11 +40,6 @@ const StyledIntro = styled.div`
 const Title = styled.h1`
   font: ${({ theme: { font } }) => font.displayStrong32};
   color: ${({ theme: { color } }) => color.accentPrimary};
-`;
-
-const SubTitle = styled.h2`
-  font: ${({ theme: { font } }) => font.availableStrong16};
-  color: ${({ theme: { color } }) => color.neutralText};
 `;
 
 const Text = styled.p`

@@ -17,3 +17,18 @@ export const Page = styled.div`
     display: none;
   }
 `;
+
+export const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - ${HEIGHT.topBar + HEIGHT.navigationBar}px);
+  padding: 0 16px;
+  gap: 28px;
+`;
+
+export const SubTitle = styled.h2`
+  font: ${({ theme: { font } }) => font.availableStrong16};
+  color: ${({ theme: { color } }) => color.neutralText};
+`;

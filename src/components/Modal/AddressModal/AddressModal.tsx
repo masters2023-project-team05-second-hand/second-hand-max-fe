@@ -1,11 +1,15 @@
-import { AddressInfo } from "@customTypes/index";
+import { AddressInfo } from "api/type";
 import { currentUserAddressId, userAddressList } from "mocks/data/address";
 import { useState } from "react";
 import Modal from "../Modal";
 import AddressIndicatorList from "./Content/AddressIndicatorList";
 import AddressSearch from "./Content/AddressSearch";
 
-export default function AddressModal() {
+export default function AddressModal({
+  closeHandler,
+}: {
+  closeHandler: () => void;
+}) {
   const [newAddressList] = useState<AddressInfo[]>(userAddressList);
   const [isSearchingAddress, setIsSearchingAddress] = useState<boolean>(false);
 
@@ -19,8 +23,10 @@ export default function AddressModal() {
 
   const addressIndicatorListHeaderProps = {
     title: "동네 설정",
-    closeHandler: () =>
-      console.log("동네 수정 요청 보내기 / 변경 사항 없으면 모달 닫기"),
+    closeHandler: () => {
+      console.log("동네 수정 요청 보내기 / 변경 사항 없으면 모달 닫기");
+      closeHandler();
+    },
   };
 
   const userAddressIDs = newAddressList.map(({ id }) => id);
@@ -39,5 +45,11 @@ export default function AddressModal() {
     />
   );
 
-  return <Modal headerProps={currentHeaderProps} content={currentContent} />;
+  return (
+    <Modal
+      headerProps={currentHeaderProps}
+      content={currentContent}
+      closeHandler={closeHandler}
+    />
+  );
 }

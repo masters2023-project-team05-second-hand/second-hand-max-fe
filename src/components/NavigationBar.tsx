@@ -3,7 +3,7 @@ import { ReactComponent as HomeIcon } from "@assets/icon/home.svg";
 import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import { ReactComponent as NewsIcon } from "@assets/icon/news.svg";
 import { ReactComponent as UserIcon } from "@assets/icon/user-circle.svg";
-import { PATH } from "@router/constant";
+import { ROUTE_PATH } from "@router/constants";
 import { HEIGHT } from "@styles/constants";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
@@ -29,27 +29,27 @@ const NAVIGATION = [
   {
     icon: <HomeIcon />,
     value: "홈화면",
-    path: PATH.home,
+    path: ROUTE_PATH.home,
   },
   {
     icon: <NewsIcon />,
     value: "판매내역",
-    path: PATH.sales,
+    path: ROUTE_PATH.sales,
   },
   {
     icon: <HeartIcon />,
     value: "관심상품",
-    path: PATH.wish,
+    path: ROUTE_PATH.wish,
   },
   {
     icon: <MessageIcon />,
     value: "채팅",
-    path: PATH.chat,
+    path: ROUTE_PATH.chat,
   },
   {
     icon: <UserIcon />,
     value: "내 계정",
-    path: PATH.account,
+    path: ROUTE_PATH.account.index,
   },
 ];
 
