@@ -1,6 +1,7 @@
-import { API_PATH } from "api/constants";
+import { API_PATH } from "@api/constants";
 import { AuthInfo } from "api/type";
 import { rest } from "msw";
+import { categories } from "./data/categories";
 
 export const handlers = [
   rest.post(API_PATH.login("kakao"), async (req, res, ctx) => {
@@ -78,5 +79,9 @@ export const handlers = [
     }
 
     return res(ctx.status(200));
+  }),
+
+  rest.get(API_PATH.categories, async (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(categories));
   }),
 ];

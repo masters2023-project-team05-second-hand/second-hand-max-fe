@@ -10,6 +10,7 @@ const {
 export const API_PATH = {
   login: (provider: "kakao" | "github") => `/api/members/sign-in/${provider}`,
   logout: "/api/sign-out",
+  categories: "/api/categories",
 };
 
 export const BASE_API_URL =
