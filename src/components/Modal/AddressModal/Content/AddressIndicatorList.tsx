@@ -1,18 +1,55 @@
 import { ReactComponent as CircleXIcon } from "@assets/icon/circle-x-filled.svg";
 import { ReactComponent as PlusIcon } from "@assets/icon/plus.svg";
+import Alert from "@components/common/Alert/Alert";
 import Button from "@components/common/Buttons/Button";
 import { AddressInfo } from "api/type";
+import { useSetAtom } from "jotai";
+import { useState } from "react";
+import {
+  addressListAtom,
+  currentAddressIdAtom,
+  useAddressList,
+  useCurrentAddressId,
+} from "store";
 import styled from "styled-components";
 
 export default function AddressIndicatorList({
-  userAddressList,
-  currentUserAddressId,
-  onClickAddressAddButton,
+  openAddressSearch,
 }: {
-  userAddressList: AddressInfo[];
-  currentUserAddressId: number;
-  onClickAddressAddButton: () => void;
+  openAddressSearch: () => void;
 }) {
+  const currentUserAddressId = useCurrentAddressId();
+  const addresses = useAddressList();
+
+  const setCurrentAddressId = useSetAtom(currentAddressIdAtom);
+  const setAddresses = useSetAtom(addressListAtom);
+
+  const [isRemoveAlertOpen, setIsRemoveAlertOpen] = useState(false);
+  const [removeTargetAddress, setRemoveTargetAddress] =
+    useState<AddressInfo | null>(null);
+
+  const openRemoveAlert = () => setIsRemoveAlertOpen(true);
+  const closeRemoveAlert = () => setIsRemoveAlertOpen(false);
+
+  const isOnlyOneAddress = addresses.length === 1;
+  const alertMessage = isOnlyOneAddress
+    ? "동네는 최소 1개 이상 선택해야 해요. 동네를 다시 선택하시겠어요?"
+    : `${removeTargetAddress?.name}을 삭제하시겠어요?`;
+
+  const onRemoveClick = (address: AddressInfo) => {
+    setRemoveTargetAddress(address);
+    openRemoveAlert();
+  };
+
+  const onRemoveAddress = () => {
+    setAddresses((prev) => {
+      const filtered = prev.filter(({ id }) => id !== removeTargetAddress?.id);
+      const newCurrentAddressId = filtered[0].id;
+      setCurrentAddressId(newCurrentAddressId);
+      return filtered;
+    });
+  };
+
   return (
     <StyledAddressIndicatorList>
       <NoticeText>
@@ -20,20 +57,18 @@ export default function AddressIndicatorList({
         <span>최대 2개까지 설정 가능해요.</span>
       </NoticeText>
       <div className="button-wrapper">
-        {userAddressList.map(({ id, name }) => (
+        {addresses.map(({ id, name }) => (
           <AddressIndicator
             key={id}
             $active={id === currentUserAddressId}
-            onClick={() => console.log(`${id} 선택한 동네 변경`)}>
+            onClick={() => setCurrentAddressId(id)}>
             <span>{name}</span>
             <Button
               leftIcon={<CircleXIcon />}
               color="accentText"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log(
-                  `${name}: userAddressList 개수에 따라 동적으로 결정`
-                );
+                onRemoveClick({ id, name });
               }}
             />
           </AddressIndicator>
@@ -46,9 +81,23 @@ export default function AddressIndicatorList({
           borderColor="neutralBorder"
           radius={8}
           value="추가"
-          onClick={onClickAddressAddButton}
+          onClick={openAddressSearch}
         />
       </div>
+      {isRemoveAlertOpen && !isOnlyOneAddress && (
+        <Alert
+          message={alertMessage}
+          onDeleteClick={onRemoveAddress}
+          closeAlertHandler={closeRemoveAlert}
+        />
+      )}
+      {isRemoveAlertOpen && isOnlyOneAddress && (
+        <Alert
+          message={alertMessage}
+          onConfirmClick={openAddressSearch}
+          closeAlertHandler={closeRemoveAlert}
+        />
+      )}
     </StyledAddressIndicatorList>
   );
 }

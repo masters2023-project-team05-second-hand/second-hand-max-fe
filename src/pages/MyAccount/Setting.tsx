@@ -5,14 +5,13 @@ import { Main } from "@styles/common";
 import { postLogout } from "api";
 import { useSetAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
-import { addressListAtom, memberAtom, tokensAtom, useTokens } from "store";
+import { addressListAtom, memberAtom } from "store";
 
 export default function Setting() {
   const navigate = useNavigate();
-  const { refreshToken } = useTokens();
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const setMember = useSetAtom(memberAtom);
-  const setTokens = useSetAtom(tokensAtom);
   const setAddresses = useSetAtom(addressListAtom);
 
   const onLogout = () => {
@@ -20,17 +19,15 @@ export default function Setting() {
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    localStorage.removeItem("member");
-    localStorage.removeItem("addresses");
+    localStorage.removeItem("user");
 
-    setMember(null);
-    setTokens({
-      accessToken: "",
-      refreshToken: "",
+    setMember({
+      nickname: "",
+      profileImgUrl: "",
     });
     setAddresses([]);
 
-    navigate(ROUTE_PATH.account.index);
+    navigate(ROUTE_PATH.account);
   };
 
   return (

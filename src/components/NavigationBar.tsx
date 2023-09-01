@@ -49,7 +49,7 @@ const NAVIGATION = [
   {
     icon: <UserIcon />,
     value: "내 계정",
-    path: ROUTE_PATH.account.index,
+    path: ROUTE_PATH.account,
   },
 ];
 

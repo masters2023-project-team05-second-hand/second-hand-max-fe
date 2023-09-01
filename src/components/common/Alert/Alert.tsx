@@ -1,44 +1,62 @@
 import Button from "@components/common/Buttons/Button";
 import useOutsideClick from "@hooks/useOutsideClick";
+import { Dim } from "@styles/common";
+import { createPortal } from "react-dom";
 import { styled } from "styled-components";
 
 type AlertType = {
   message: string;
   closeAlertHandler: () => void;
-  onDeleteClick: () => void;
+  onDeleteClick?: () => void;
+  onConfirmClick?: () => void;
 };
 
 export default function Alert({
   message,
   closeAlertHandler,
   onDeleteClick,
+  onConfirmClick,
 }: AlertType) {
   const { ref: modalRef } =
     useOutsideClick<HTMLDialogElement>(closeAlertHandler);
 
-  const deleteHandler = () => {
-    onDeleteClick();
-    closeAlertHandler();
-  };
-
-  return (
-    <StyledAlert ref={modalRef}>
-      <span>{message}</span>
-      <ButtonWrapper>
-        <Button
-          color="accentTextWeak"
-          fontName="displayDefault16"
-          value="취소"
-          onClick={closeAlertHandler}
-        />
-        <Button
-          color="systemWarning"
-          fontName="displayStrong16"
-          value="삭제"
-          onClick={deleteHandler}
-        />
-      </ButtonWrapper>
-    </StyledAlert>
+  return createPortal(
+    <Dim>
+      <StyledAlert ref={modalRef}>
+        <span>{message}</span>
+        <ButtonWrapper>
+          <Button
+            color="accentTextWeak"
+            fontName="displayDefault16"
+            value="취소"
+            onClick={closeAlertHandler}
+          />
+          {onDeleteClick && (
+            <Button
+              color="systemWarning"
+              fontName="displayStrong16"
+              value="삭제"
+              onClick={() => {
+                onDeleteClick();
+                closeAlertHandler();
+              }}
+            />
+          )}
+          {onConfirmClick && (
+            <Button
+              color="accentPrimary"
+              fontName="displayStrong16"
+              value="확인"
+              onClick={() => {
+                onConfirmClick();
+                closeAlertHandler();
+              }}
+            />
+          )}
+        </ButtonWrapper>
+      </StyledAlert>
+    </Dim>,
+    document.getElementById("modal-root")!
   );
 }
 

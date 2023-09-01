@@ -3,15 +3,11 @@ export const ROUTE_PATH = {
   sales: "/sales",
   wish: "/wish",
   chat: "/chat",
-  account: {
-    index: "/account",
-    login: "/account/login",
-    setting: "/account/setting",
-    auth: {
-      index: "/account/auth/:provider",
-      kakao: "/account/auth/kakao",
-      github: "/account/auth/github",
-    },
+  account: "/account",
+  auth: {
+    index: "/auth/:provider",
+    kakao: "/auth/kakao",
+    github: "/auth/github",
   },
   register: "/register",
   new: "/new",
