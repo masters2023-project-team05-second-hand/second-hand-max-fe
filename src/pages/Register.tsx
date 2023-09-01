@@ -24,13 +24,6 @@ export default function Register() {
         title="회원가입"
         backgroundColor="neutralBackgroundBlur"
         isWithBorder={true}
-        leftBtn={
-          <Button
-            value="닫기"
-            color="neutralText"
-            fontName="availableStrong16"
-          />
-        }
         rightBtn={
           <Button
             value="완료"
