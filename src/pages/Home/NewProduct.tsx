@@ -1,31 +1,46 @@
-import TopBar from "@components/TopBar";
-import Button from "@components/common/Buttons/Button";
+import NewProductAddress from "@components/NewProduct/NewProductAddress";
+import NewProductCategory from "@components/NewProduct/NewProductCategory";
+import NewProductContent from "@components/NewProduct/NewProductContent";
+import NewProductHeader from "@components/NewProduct/NewProductHeader";
+import NewProductImage from "@components/NewProduct/NewProductImage";
+import NewProductPrice from "@components/NewProduct/NewProductPrice";
+import NewProductTitle from "@components/NewProduct/NewProductTitle";
+import { useTitle } from "@components/NewProduct/store";
 import { Page } from "@styles/common";
+import { styled } from "styled-components";
 
 export default function NewProduct() {
+  const title = useTitle();
+
   return (
     <Page>
-      <TopBar
-        title="내 물건 팔기"
-        backgroundColor="neutralBackgroundBlur"
-        isWithBorder={true}
-        leftBtn={
-          <Button
-            value="닫기" // Todo: 선택된 동네 상태로 변경
-            color="neutralText"
-            fontName="availableStrong16"
-          />
-        }
-        rightBtn={
-          <Button
-            value="완료"
-            fontName="availableStrong16"
-            color="neutralText"
-            disabled // Todo: 버튼 활성화 로직 필요
-          />
-        }
-      />
-      NewProduct
+      <NewProductHeader />
+      <Main>
+        <NewProductImage />
+        <div className="product-info">
+          <NewProductTitle />
+          {title && <NewProductCategory />}
+        </div>
+        <NewProductPrice />
+        <NewProductContent />
+      </Main>
+      <NewProductAddress />
     </Page>
   );
 }
+
+const Main = styled.main`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 16px;
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 16px;
+    border-bottom: ${({ theme: { color } }) =>
+      `1px solid ${color.neutralBorder}`};
+  }
+`;
