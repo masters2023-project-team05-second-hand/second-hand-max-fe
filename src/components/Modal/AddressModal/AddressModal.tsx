@@ -1,9 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { isSameItems } from "@utils/index";
 import { postUserAddress } from "api";
-import { useSetAtom } from "jotai";
 import { useState } from "react";
-import { addressListAtom, useAddressList } from "store";
+import { useAddressList } from "store";
 import Modal from "../Modal";
 import AddressIndicatorList from "./Content/AddressIndicatorList";
 import AddressSearch from "./Content/AddressSearch";
@@ -15,7 +14,6 @@ export default function AddressModal({
 }) {
   const addresses = useAddressList();
   const userAddressIDs = addresses.map(({ id }) => id);
-  const setAddresses = useSetAtom(addressListAtom);
 
   const [prevAddressIDs] = useState(userAddressIDs);
   const [isSearchingAddress, setIsSearchingAddress] = useState<boolean>(false);
@@ -27,7 +25,7 @@ export default function AddressModal({
     () => postUserAddress({ addressIds: userAddressIDs }),
     {
       onMutate: () => console.log("onMutate"),
-      onSuccess: (res) => setAddresses(res.data),
+      onSuccess: () => console.log("onSuccess"),
       onError: () => console.log("onError"),
     }
   );
