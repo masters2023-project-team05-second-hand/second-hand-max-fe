@@ -1,67 +1,69 @@
-import { designSystem } from "@styles/designSystem";
-import { useEffect, useRef, useState } from "react";
+import Button from "@components/common/Buttons/Button";
+import useOutsideClick from "@hooks/useOutsideClick";
+import { Dim } from "@styles/common";
+import { createPortal } from "react-dom";
 import { styled } from "styled-components";
-import Button from "../Button";
 
 type AlertType = {
   message: string;
   closeAlertHandler: () => void;
-  onDeleteClick: () => void;
+  onDeleteClick?: () => void;
+  onConfirmClick?: () => void;
 };
 
 export default function Alert({
   message,
   closeAlertHandler,
   onDeleteClick,
+  onConfirmClick,
 }: AlertType) {
-  const modalRef = useRef<HTMLDialogElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const { ref: modalRef } =
+    useOutsideClick<HTMLDialogElement>(closeAlertHandler);
 
-  useEffect(() => {
-    setIsOpen(true);
-
-    const onOutsideClick = (e: MouseEvent) => {
-      if (!modalRef.current?.contains(e.target as Node)) {
-        closeAlertHandler();
-      }
-    };
-
-    if (isOpen) {
-      window.addEventListener("click", onOutsideClick);
-    }
-
-    return () => {
-      window.removeEventListener("click", onOutsideClick);
-    };
-  }, [isOpen, closeAlertHandler]);
-
-  const deleteHandler = () => {
-    onDeleteClick();
-    closeAlertHandler();
-  };
-
-  return (
-    <StyledAlert ref={modalRef}>
-      <span>{message}</span>
-      <ButtonWrapper>
-        <Button
-          color="accentTextWeak"
-          fontName="displayDefault16"
-          value="취소"
-          onClick={closeAlertHandler}
-        />
-        <Button
-          color="systemWarning"
-          fontName="displayStrong16"
-          value="삭제"
-          onClick={deleteHandler}
-        />
-      </ButtonWrapper>
-    </StyledAlert>
+  return createPortal(
+    <Dim>
+      <StyledAlert ref={modalRef}>
+        <span>{message}</span>
+        <ButtonWrapper>
+          <Button
+            color="accentTextWeak"
+            fontName="displayDefault16"
+            value="취소"
+            onClick={closeAlertHandler}
+          />
+          {onDeleteClick && (
+            <Button
+              color="systemWarning"
+              fontName="displayStrong16"
+              value="삭제"
+              onClick={() => {
+                onDeleteClick();
+                closeAlertHandler();
+              }}
+            />
+          )}
+          {onConfirmClick && (
+            <Button
+              color="accentPrimary"
+              fontName="displayStrong16"
+              value="확인"
+              onClick={() => {
+                onConfirmClick();
+                closeAlertHandler();
+              }}
+            />
+          )}
+        </ButtonWrapper>
+      </StyledAlert>
+    </Dim>,
+    document.getElementById("modal-root")!
   );
 }
 
 const StyledAlert = styled.dialog`
+  position: fixed;
+  top: 50%;
+  transform: translateY(-100%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -70,12 +72,12 @@ const StyledAlert = styled.dialog`
   height: 144px;
   box-sizing: border-box;
   border: none;
-  border-radius: ${designSystem.radius[16]};
   box-shadow: 0px 4px 4px 0px #00000040;
   z-index: 1;
-  font: ${designSystem.font.displayStrong16};
-  color: ${designSystem.color.neutralTextStrong};
-  background-color: ${designSystem.color.neutralBackground};
+  border-radius: ${({ theme: { radius } }) => radius[16]};
+  font: ${({ theme: { font } }) => font.displayStrong16};
+  color: ${({ theme: { color } }) => color.neutralTextStrong};
+  background-color: ${({ theme: { color } }) => color.neutralBackground};
 `;
 
 const ButtonWrapper = styled.div`

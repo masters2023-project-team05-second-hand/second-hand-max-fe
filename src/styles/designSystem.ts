@@ -17,12 +17,13 @@ const colors = {
   grey800: "#3C3C4399",
   grey900: "#3C3C43",
   black: "#000",
-  purple: "#5856D6",
+  purple: "#BA86DA",
   yellow: "#FFCC00",
   red: "#FF3B30",
 };
 
 const radius = {
+  6: "6px",
   8: "8px",
   12: "12px",
   16: "16px",
@@ -30,6 +31,7 @@ const radius = {
 };
 
 const font = {
+  displayStrong32: "700 32px Noto Sans KR, sans-serif",
   displayStrong20: "700 20px Noto Sans KR, sans-serif",
   displayStrong16: "700 16px Noto Sans KR, sans-serif",
   displayDefault16: "400 16px Noto Sans KR, sans-serif",
@@ -77,11 +79,16 @@ export const designSystem = {
   filter: {
     neutralTextWeak:
       "opacity(60%) brightness(0) saturate(100%) invert(20%) sepia(2%) saturate(3198%) hue-rotate(202deg) brightness(93%) contrast(83%)",
-    neutralText: "",
-    neutralTextStrong: "",
-    neutralBackground: "",
-    neutralBackgroundWeak: "",
-    neutralBackgroundBold: "",
+    neutralText:
+      "invert(21%) sepia(2%) saturate(2651%) hue-rotate(202deg) brightness(95%) contrast(87%)",
+    neutralTextStrong:
+      "invert(0%) sepia(100%) saturate(3089%) hue-rotate(210deg) brightness(99%) contrast(109%)",
+    neutralBackground:
+      "invert(100%) sepia(0%) saturate(0%) hue-rotate(299deg) brightness(105%) contrast(101%)",
+    neutralBackgroundWeak:
+      "invert(100%) sepia(100%) saturate(0%) hue-rotate(115deg) brightness(107%) contrast(96%)",
+    neutralBackgroundBold:
+      "invert(100%) sepia(13%) saturate(400%) hue-rotate(180deg) brightness(99%) contrast(89%)",
     neutralBackgroundBlur: "",
     neutralBorder: "",
     neutralBorderStrong: "",
@@ -89,12 +96,17 @@ export const designSystem = {
 
     accentText:
       "invert(100%) sepia(97%) saturate(15%) hue-rotate(110deg) brightness(103%) contrast(102%)",
-    accentTextWeak: "",
-    accentPrimary: "",
-    accentSecondary: "",
+    accentTextWeak:
+      "invert(0%) sepia(90%) saturate(7500%) hue-rotate(167deg) brightness(83%) contrast(109%)",
+    accentPrimary:
+      "invert(38%) sepia(22%) saturate(3963%) hue-rotate(220deg) brightness(85%) contrast(97%)",
+    accentSecondary:
+      "invert(87%) sepia(23%) saturate(4965%) hue-rotate(359deg) brightness(101%) contrast(104%)",
 
-    systemWarning: "",
-    systemBackground: "",
+    systemWarning:
+      "invert(36%) sepia(25%) saturate(6170%) hue-rotate(341deg) brightness(98%) contrast(105%)",
+    systemBackground:
+      "invert(100%) sepia(99%) saturate(23%) hue-rotate(3deg) brightness(104%) contrast(100%)",
     systemBackgroundWeak: "",
   },
   backdropFilter: {

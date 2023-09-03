@@ -73,6 +73,8 @@ export default createGlobalStyle`
 
   html {
     box-sizing: border-box;
+    background: url("../../src/assets/image/gaji.png") repeat center;
+    background-size: 200px;
   }
 
   * {

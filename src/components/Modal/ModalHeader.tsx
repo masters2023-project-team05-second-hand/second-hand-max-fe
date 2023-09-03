@@ -1,6 +1,6 @@
 import { ReactComponent as LeftIcon } from "@assets/icon/chevron-left.svg";
 import { ReactComponent as XIcon } from "@assets/icon/x.svg";
-import Button from "@components/common/Button";
+import Button from "@components/common/Buttons/Button";
 import styled from "styled-components";
 
 export type ModalHeaderProps = {

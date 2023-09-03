@@ -1,25 +1,26 @@
-import AddressModal from "@components/Modal/AddressModal/AddressModal";
-import CategoryModal from "@components/Modal/CategoryModal/CategoryModal";
+import { router } from "@router/router";
 import GlobalStyle from "@styles/GlobalStyle";
 import { theme } from "@styles/designSystem";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RouterProvider } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Dim>
-        <CategoryModal />
-        <AddressModal />
-      </Dim>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+      <ModalRoot id="modal-root" />
     </ThemeProvider>
   );
 }
 
-const Dim = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  gap: 16px;
-  background-color: ${({ theme: { color } }) => color.neutralOverlay};
+const ModalRoot = styled.div`
+  position: fixed;
+  top: 0;
+  z-index: 100;
 `;
