@@ -9,6 +9,7 @@ const {
 export const API_PATH = {
   login: (provider: "kakao" | "github") => `/api/members/sign-in/${provider}`,
   logout: "/api/sign-out",
+  categories: "/api/categories",
   refresh: "/api/reissue-access-token",
   userAddress: "/api/members/address",
   userProfile: "/api/members/profile-image",
