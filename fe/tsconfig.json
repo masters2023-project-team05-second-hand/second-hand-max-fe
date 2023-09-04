@@ -30,7 +30,9 @@
       "@utils/*": ["utils/*"],
       "@hooks/*": ["hooks/*"],
       "@customTypes/*": ["customTypes/*"],
-      "@router/*": ["router/*"]
+      "@router/*": ["router/*"],
+      "@api/*": ["api/*"],
+      "@mocks/*": ["mocks/*"]
     },
 
     "esModuleInterop": true
