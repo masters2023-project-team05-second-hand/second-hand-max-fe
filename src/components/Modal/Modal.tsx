@@ -1,5 +1,6 @@
-import useOutsideClick from "@hooks/useOutsideClick";
+import { Dim } from "@styles/common";
 import React from "react";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
 import ModalHeader, { ModalHeaderProps } from "./ModalHeader";
 
@@ -9,27 +10,27 @@ type ModalProps = {
   closeHandler: () => void;
 };
 
-export default function Modal({
-  headerProps,
-  content,
-  closeHandler,
-}: ModalProps) {
-  const { ref } = useOutsideClick<HTMLDivElement>(closeHandler);
-
-  return (
-    <StyledModal ref={ref}>
-      <ModalHeader {...headerProps} />
-      <ModalContent>{content}</ModalContent>
-    </StyledModal>
+export default function Modal({ headerProps, content }: ModalProps) {
+  return createPortal(
+    <Dim>
+      <StyledModal>
+        <ModalHeader {...headerProps} />
+        <ModalContent>{content}</ModalContent>
+      </StyledModal>
+    </Dim>,
+    document.getElementById("modal-root")!
   );
 }
 
 const StyledModal = styled.div`
   position: fixed;
+  top: calc(50% - 350px);
+  left: calc(50% - 160px);
   width: 320px;
   height: 700px;
   background-color: ${({ theme: { color } }) => color.neutralBackground};
   border-radius: ${({ theme: { radius } }) => radius[16]};
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const ModalContent = styled.main`

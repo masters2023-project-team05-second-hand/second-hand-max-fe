@@ -32,3 +32,12 @@ export const SubTitle = styled.h2`
   font: ${({ theme: { font } }) => font.availableStrong16};
   color: ${({ theme: { color } }) => color.neutralText};
 `;
+
+export const Dim = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: ${({ theme: { color } }) => color.neutralOverlay};
+  z-index: -1;
+`;

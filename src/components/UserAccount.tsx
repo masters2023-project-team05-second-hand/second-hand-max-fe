@@ -6,7 +6,7 @@ export default function UserAccount() {
 
   return (
     <>
-      <ProfileUploadButton profileUrl={member?.profileImgUrl} />
+      <ProfileUploadButton />
       <span>{member?.nickname}</span>
     </>
   );
