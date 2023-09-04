@@ -1,5 +1,6 @@
 import { API_PATH } from "api/constants";
 import { AuthInfo } from "api/type";
+import { categories } from "./data/categories";
 import { rest } from "msw";
 
 export const handlers = [
@@ -78,6 +79,10 @@ export const handlers = [
     }
 
     return res(ctx.status(200));
+  }),
+
+  rest.get(API_PATH.categories, async (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(categories));
   }),
 
   rest.post(API_PATH.userAddress, async (req, res, ctx) => {
