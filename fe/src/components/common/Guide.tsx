@@ -8,7 +8,7 @@ export const Loading = ({ messages }: { messages: string[] }) => {
     <Container>
       <img src={LoadingIndicator} alt="loading-indicator" />
       {messages.map((message) => (
-        <SubTitle>{message}</SubTitle>
+        <SubTitle key={message}>{message}</SubTitle>
       ))}
     </Container>
   );
@@ -19,7 +19,7 @@ export const Error = ({ messages }: { messages: string[] }) => {
     <Container>
       <img src={ErrorIcon} alt="error-icon" />
       {messages.map((message) => (
-        <SubTitle>{message}</SubTitle>
+        <SubTitle key={message}>{message}</SubTitle>
       ))}
     </Container>
   );
