@@ -106,3 +106,7 @@ export const getAddresses = async (page: number = 0, size: number = 10) => {
   );
   return data;
 };
+
+export const patchNickname = async (nickname: string) => {
+  return await fetcher.patch(API_PATH.nickname, { nickname });
+};

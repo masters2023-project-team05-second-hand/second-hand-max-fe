@@ -102,7 +102,7 @@ export const handlers = [
   }),
 
   rest.post(API_PATH.userProfile, async (req, res, ctx) => {
-    const { image } = (await req.body) as { image: File };
+    const { image } = await req.json<{ image: File }>();
 
     if (!image) {
       return res(
@@ -153,7 +153,7 @@ export const handlers = [
     );
   }),
 
-  rest.get("/api/addresses", async (req, res, ctx) => {
+  rest.get("/api/addresses", (req, res, ctx) => {
     const page = req.url.searchParams.get("page");
     const size = req.url.searchParams.get("size");
 
@@ -166,7 +166,31 @@ export const handlers = [
       );
     }
 
-    const currentAddresses = await getMockAddresses(parseInt(page));
+    const currentAddresses = getMockAddresses(parseInt(page));
     return res(ctx.status(200), ctx.json(currentAddresses));
+  }),
+
+  rest.patch(API_PATH.nickname, async (req, res, ctx) => {
+    const { nickname } = await req.json<{ nickname: string }>();
+
+    if (!nickname) {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "잘못된 요청입니다.",
+        })
+      );
+    }
+
+    if (nickname === "error") {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "이미 사용중인 닉네임입니다.",
+        })
+      );
+    }
+
+    return res(ctx.status(200));
   }),
 ];
