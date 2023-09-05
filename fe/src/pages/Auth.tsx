@@ -1,13 +1,12 @@
-import LoadingIndicator from "@assets/image/loading.gif";
 import TopBar from "@components/TopBar";
+import { Error, Loading } from "@components/common/Guide";
 import { ROUTE_PATH } from "@router/constants";
-import { Page, SubTitle } from "@styles/common";
+import { Page } from "@styles/common";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo, postSocialLogin } from "api";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAddressList, useCurrentAddressId, useMember } from "store";
-import styled from "styled-components";
 
 export function Auth() {
   const { provider } = useParams<{ provider: "kakao" | "github" }>();
@@ -66,17 +65,14 @@ export function Auth() {
           isWithBorder={true}
         />
         {isLoading && (
-          <Container>
-            <img src={LoadingIndicator} alt="loading-indicator" />
-            <SubTitle>로그인중입니다...</SubTitle>
-            <SubTitle>새로고침을 하지 마세요!</SubTitle>
-          </Container>
+          <Loading
+            messages={["로그인중입니다...", "새로고침을 하지 마세요!"]}
+          />
         )}
         {isError && (
-          <Container>
-            <SubTitle>로그인에 실패했습니다.</SubTitle>
-            <SubTitle>잠시 후 다시 시도해주세요.</SubTitle>
-          </Container>
+          <Error
+            messages={["로그인에 실패했습니다.", "잠시 후 다시 시도해주세요."]}
+          />
         )}
       </Page>
     );
@@ -84,15 +80,3 @@ export function Auth() {
 
   return null;
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 100px;
-
-  img {
-    margin: 30px;
-  }
-`;

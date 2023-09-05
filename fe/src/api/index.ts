@@ -2,6 +2,7 @@ import { API_PATH } from "./constants";
 import { fetcher } from "./fetcher";
 import {
   AddressInfo,
+  AddressList,
   CategoryInfo,
   Member,
   Tokens,
@@ -97,4 +98,11 @@ export const getUserInfo = async (): Promise<{
       addresses: [],
     };
   }
+};
+
+export const getAddresses = async (page: number = 0, size: number = 10) => {
+  const { data } = await fetcher.get<AddressList>(
+    API_PATH.addresses(page, size)
+  );
+  return data;
 };

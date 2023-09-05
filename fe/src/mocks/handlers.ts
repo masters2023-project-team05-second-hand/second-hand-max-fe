@@ -1,6 +1,7 @@
 import { API_PATH } from "api/constants";
 import { Member, Tokens, UserAddressInfo } from "api/type";
 import { rest } from "msw";
+import { getMockAddresses } from "./data/address";
 import { categories } from "./data/categories";
 
 export const handlers = [
@@ -147,19 +148,25 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json<{ addresses: UserAddressInfo[] }>({
-        addresses: [
-          {
-            id: 1,
-            name: "역삼1동",
-            isLastVisited: true,
-          },
-          {
-            id: 2,
-            name: "역삼2동",
-            isLastVisited: false,
-          },
-        ],
+        addresses: [],
       })
     );
+  }),
+
+  rest.get("/api/addresses", async (req, res, ctx) => {
+    const page = req.url.searchParams.get("page");
+    const size = req.url.searchParams.get("size");
+
+    if (!page || !size) {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "잘못된 요청입니다.",
+        })
+      );
+    }
+
+    const currentAddresses = await getMockAddresses(parseInt(page));
+    return res(ctx.status(200), ctx.json(currentAddresses));
   }),
 ];

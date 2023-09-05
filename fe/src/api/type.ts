@@ -22,3 +22,8 @@ export type CategoryInfo = {
   name: string;
   imageUrl: string;
 };
+
+export type AddressList = {
+  addresses: AddressInfo[];
+  hasNext: boolean;
+};

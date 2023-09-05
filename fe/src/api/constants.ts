@@ -15,6 +15,8 @@ export const API_PATH = {
   userProfile: "/api/members/profile-image",
   member: "/api/members",
   memberAddress: "/api/members/addresses",
+  addresses: (page: number, size: number) =>
+    `/api/addresses?page=${page}&size=${size}`,
 };
 
 export const BASE_API_URL = VITE_APP_API_URL;
