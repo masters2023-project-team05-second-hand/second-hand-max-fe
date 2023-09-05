@@ -1,9 +1,8 @@
 import { ListItem, ListPanel } from "@components/Modal/Modal.style";
 import { AddressInfo } from "api/type";
-import { useSetAtom } from "jotai";
 import { addresses1 } from "mocks/data/address";
 import { useState } from "react";
-import { addressListAtom, currentAddressIdAtom } from "store";
+import { useAddressList, useCurrentAddressId } from "store";
 import styled from "styled-components";
 
 export default function AddressSearch({
@@ -13,21 +12,19 @@ export default function AddressSearch({
   userAddressIDs: number[];
   closeAddressSearch: () => void;
 }) {
-  const setAddresses = useSetAtom(addressListAtom);
-  const setCurrentAddressId = useSetAtom(currentAddressIdAtom);
+  const [addresses, setAddresses] = useAddressList();
+  const [, setCurrentUserAddressId] = useCurrentAddressId();
 
   const onAddAddress = (item: AddressInfo) => {
-    setAddresses((prev) => {
-      const isMaxAddressCount = prev.length === 2;
-      const isAlreadyAdded = prev.some(({ id }) => id === item.id);
-      if (isMaxAddressCount || isAlreadyAdded) {
-        return prev;
-      }
+    const isMaxAddressCount = addresses.length === 2;
+    const isAlreadyAdded = addresses.some(({ id }) => id === item.id);
 
-      setCurrentAddressId(item.id);
-      return [...prev, item];
-    });
+    if (isAlreadyAdded || isMaxAddressCount) return;
+
+    setAddresses([...addresses, item]);
+    setCurrentUserAddressId(item.id);
   };
+
   // TODO: 동네 검색/전체 동네 조회 요청
   const [allAddressList] = useState(addresses1.addresses);
   // const [searchKeyword, setSearchKeyword] = useState<string>("");

@@ -3,23 +3,21 @@ import Button from "@components/common/Buttons/Button";
 import { ROUTE_PATH } from "@router/constants";
 import { Main } from "@styles/common";
 import { postLogout } from "api";
-import { useSetAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
-import { addressListAtom, memberAtom } from "store";
+import { useAddressList, useMember } from "store";
 
 export default function Setting() {
   const navigate = useNavigate();
   const refreshToken = localStorage.getItem("refreshToken");
 
-  const setMember = useSetAtom(memberAtom);
-  const setAddresses = useSetAtom(addressListAtom);
+  const [, setMember] = useMember();
+  const [, setAddresses] = useAddressList();
 
   const onLogout = () => {
     refreshToken && postLogout({ refreshToken });
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    localStorage.removeItem("user");
 
     setMember({
       nickname: "",

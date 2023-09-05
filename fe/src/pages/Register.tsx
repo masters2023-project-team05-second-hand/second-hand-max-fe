@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useAddressList } from "store";
 
 export default function Register() {
-  const addresses = useAddressList();
+  const [addresses] = useAddressList();
 
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const navigate = useNavigate();

@@ -47,8 +47,6 @@ const refreshAccessToken = async () => {
   try {
     const { data } = await postRefreshToken(refreshToken);
     localStorage.setItem("accessToken", data.accessToken);
-
-    return data.accessToken;
   } catch {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");

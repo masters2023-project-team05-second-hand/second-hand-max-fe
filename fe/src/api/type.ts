@@ -1,8 +1,3 @@
-export type AuthInfo = {
-  tokens: Tokens;
-  addresses: UserAddressInfo[];
-  member: Member;
-};
 export type Tokens = {
   accessToken: string;
   refreshToken: string;

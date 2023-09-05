@@ -2,7 +2,7 @@ import { useMember } from "store";
 import ProfileUploadButton from "./ProfileUploadButton";
 
 export default function UserAccount() {
-  const member = useMember();
+  const [member] = useMember();
 
   return (
     <>
