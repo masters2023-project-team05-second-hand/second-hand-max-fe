@@ -13,7 +13,7 @@ export default function AddressIndicatorList({
   openAddressSearch: () => void;
 }) {
   const [addresses, setAddresses] = useAddressList();
-  const [currentUserAddressId, setCurrentUserAddressId] = useCurrentAddressId();
+  const [currentAddressId, setCurrentAddressId] = useCurrentAddressId();
 
   const [isRemoveAlertOpen, setIsRemoveAlertOpen] = useState(false);
   const [removeTargetAddress, setRemoveTargetAddress] =
@@ -37,7 +37,7 @@ export default function AddressIndicatorList({
       ({ id }) => id !== removeTargetAddress?.id
     );
     setAddresses(newAddresses);
-    setCurrentUserAddressId(newAddresses[0].id);
+    setCurrentAddressId(newAddresses[0].id);
   };
 
   return (
@@ -50,8 +50,8 @@ export default function AddressIndicatorList({
         {addresses.map(({ id, name }) => (
           <AddressIndicator
             key={id}
-            $active={id === currentUserAddressId}
-            onClick={() => setCurrentUserAddressId(id)}>
+            $active={id === currentAddressId}
+            onClick={() => setCurrentAddressId(id)}>
             <span>{name}</span>
             <Button
               leftIcon={<CircleXIcon />}

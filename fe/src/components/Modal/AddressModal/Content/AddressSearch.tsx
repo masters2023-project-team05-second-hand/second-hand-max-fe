@@ -14,7 +14,7 @@ export default function AddressSearch({
   closeAddressSearch: () => void;
 }) {
   const [addresses, setAddresses] = useAddressList();
-  const [, setCurrentUserAddressId] = useCurrentAddressId();
+  const [, setCurrentAddressId] = useCurrentAddressId();
 
   const onAddAddress = (item: AddressInfo) => {
     const isMaxAddressCount = addresses.length === 2;
@@ -23,7 +23,7 @@ export default function AddressSearch({
     if (isAlreadyAdded || isMaxAddressCount) return;
 
     setAddresses([...addresses, item]);
-    setCurrentUserAddressId(item.id);
+    setCurrentAddressId(item.id);
   };
 
   const { data, status, isFetching, hasNextPage, fetchNextPage } =
