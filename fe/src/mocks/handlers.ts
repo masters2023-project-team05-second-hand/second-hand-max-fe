@@ -193,4 +193,24 @@ export const handlers = [
 
     return res(ctx.status(200));
   }),
+
+  rest.post(API_PATH.refresh, async (req, res, ctx) => {
+    const { refreshToken } = await req.json<{ refreshToken: string }>();
+
+    if (!refreshToken) {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: "잘못된 요청입니다.",
+        })
+      );
+    }
+
+    return res(
+      ctx.status(200),
+      ctx.json<{ accessToken: string }>({
+        accessToken: "newAccessToken",
+      })
+    );
+  }),
 ];
