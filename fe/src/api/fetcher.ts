@@ -24,6 +24,9 @@ fetcher.interceptors.request.use(
 fetcher.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
+    if (error.response?.status !== 401) {
+      return Promise.reject(error);
+    }
     try {
       const originalRequest = error.config;
 
