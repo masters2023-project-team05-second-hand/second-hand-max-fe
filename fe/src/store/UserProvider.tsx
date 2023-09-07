@@ -21,7 +21,7 @@ export default function UserProvider({
 
   useEffect(() => {
     if (memberResult.isSuccess) {
-      setMember(memberResult.data.member);
+      setMember(memberResult.data);
     }
     if (memberResult.isError) {
       toast({
@@ -34,7 +34,7 @@ export default function UserProvider({
 
   useEffect(() => {
     if (memberAddressResult.isSuccess) {
-      const userAddressesInfo = memberAddressResult.data.addresses;
+      const userAddressesInfo = memberAddressResult.data;
       setAddresses(
         userAddressesInfo.map((address) => ({
           id: address.id,

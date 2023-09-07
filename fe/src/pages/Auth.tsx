@@ -31,20 +31,20 @@ export function Auth() {
 
   useEffect(() => {
     if (isSuccess) {
-      localStorage.setItem("accessToken", data.tokens.accessToken);
-      localStorage.setItem("refreshToken", data.tokens.refreshToken);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
     }
   }, [isSuccess, data]);
 
   useEffect(() => {
     if (memberResult.isSuccess) {
-      setMember(memberResult.data.member);
+      setMember(memberResult.data);
     }
   }, [memberResult, setMember]);
 
   useEffect(() => {
     if (memberAddressResult.isSuccess) {
-      const userAddressesInfo = memberAddressResult.data.addresses;
+      const userAddressesInfo = memberAddressResult.data;
       setAddresses(
         userAddressesInfo.map((address) => ({
           id: address.id,
@@ -59,7 +59,7 @@ export function Auth() {
 
   useEffect(() => {
     if (memberAddressResult.isSuccess && memberResult.isSuccess) {
-      memberAddressResult.data.addresses.length
+      memberAddressResult.data.length
         ? navigate(ROUTE_PATH.home)
         : navigate(ROUTE_PATH.register);
     }

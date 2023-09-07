@@ -31,7 +31,7 @@ export default function Category() {
       />
       {isSuccess && (
         <Main>
-          <CategoryList categories={data.categories} />
+          <CategoryList categories={data} />
         </Main>
       )}
       {isLoading && (

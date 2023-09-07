@@ -13,10 +13,9 @@ export const postSocialLogin = async (
   provider: "kakao" | "github",
   accessCode: string
 ) => {
-  const { data } = await fetcher.post<{ tokens: Tokens }>(
-    API_PATH.login(provider),
-    { accessCode }
-  );
+  const { data } = await fetcher.post<Tokens>(API_PATH.login(provider), {
+    accessCode,
+  });
   return data;
 };
 
@@ -25,9 +24,7 @@ export const postLogout = async (body: { refreshToken: string }) => {
 };
 
 export const getCategories = async () => {
-  const { data } = await fetcher.get<{ categories: CategoryInfo[] }>(
-    API_PATH.categories
-  );
+  const { data } = await fetcher.get<CategoryInfo[]>(API_PATH.categories);
   return data;
 };
 
@@ -60,14 +57,12 @@ export const postUserProfile = async (file: File) => {
 };
 
 export const getMember = async () => {
-  const { data } = await fetcher.get<{ member: Member }>(API_PATH.member);
+  const { data } = await fetcher.get<Member>(API_PATH.member);
   return data;
 };
 
 export const getMemberAddress = async () => {
-  const { data } = await fetcher.get<{ addresses: UserAddressInfo[] }>(
-    API_PATH.memberAddress
-  );
+  const { data } = await fetcher.get<UserAddressInfo[]>(API_PATH.memberAddress);
   return data;
 };
 
