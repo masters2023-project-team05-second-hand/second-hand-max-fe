@@ -1,3 +1,4 @@
+import { useToast } from "@hooks/useToast";
 import { useMutation } from "@tanstack/react-query";
 import { isSameItems } from "@utils/index";
 import { postUserAddress } from "api";
@@ -12,23 +13,34 @@ export default function AddressModal({
 }: {
   closeHandler: () => void;
 }) {
-  const [addresses] = useAddressList();
+  const { toast } = useToast();
+
+  const [addresses, setAddresses] = useAddressList();
   const userAddressIDs = addresses.map(({ id }) => id);
 
-  const [prevAddressIDs] = useState(userAddressIDs);
-  const [isSearchingAddress, setIsSearchingAddress] = useState<boolean>(false);
+  const [prevAddresses] = useState(addresses);
+  const prevAddressIDs = prevAddresses.map(({ id }) => id);
 
+  const [isSearchingAddress, setIsSearchingAddress] = useState<boolean>(false);
   const openAddressSearch = () => setIsSearchingAddress(true);
   const closeAddressSearch = () => setIsSearchingAddress(false);
 
-  const userAddressMutation = useMutation(
-    () => postUserAddress({ addressIds: userAddressIDs }),
-    {
-      onMutate: () => console.log("onMutate"),
-      onSuccess: () => console.log("onSuccess"),
-      onError: () => console.log("onError"),
-    }
-  );
+  const userAddressMutation = useMutation(postUserAddress, {
+    onSuccess: () =>
+      toast({
+        type: "success",
+        title: "동네 설정 완료",
+        message: "동네 설정이 완료되었습니다.",
+      }),
+    onError: () => {
+      toast({
+        type: "error",
+        title: "동네 설정 실패",
+        message: "동네 설정에 실패했습니다. 잠시 후 다시 시도해주세요.",
+      }),
+        setAddresses(prevAddresses);
+    },
+  });
 
   const addressSearchHeaderProps = {
     backHandler: closeAddressSearch,
@@ -39,7 +51,7 @@ export default function AddressModal({
     title: "동네 설정",
     closeHandler: () => {
       !isSameItems(userAddressIDs, prevAddressIDs) &&
-        userAddressMutation.mutate();
+        userAddressMutation.mutate(userAddressIDs);
       closeHandler();
     },
   };

@@ -1,14 +1,13 @@
 import { ReactComponent as CameraIcon } from "@assets/icon/camera.svg";
-import { ErrorMessage } from "@styles/common";
+import { useToast } from "@hooks/useToast";
 import { useMutation } from "@tanstack/react-query";
 import { postUserProfile } from "api";
-import { useState } from "react";
 import { useMember } from "store";
 import styled from "styled-components";
 
 export default function ProfileUploadButton() {
   const [member, setMember] = useMember();
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const { toast } = useToast();
 
   const userProfileMutation = useMutation(postUserProfile);
 
@@ -17,17 +16,20 @@ export default function ProfileUploadButton() {
 
     if (file) {
       userProfileMutation.mutate(file, {
-        onSuccess: (res) => {
-          const newProfileImageUrl = res.data.profileImgUrl;
+        onSuccess: ({ data }) => {
+          const newProfileImageUrl = data.profileImgUrl;
           setMember({
             ...member,
             profileImgUrl: newProfileImageUrl,
           });
         },
         onError: () =>
-          setErrorMessage(
-            "프로필 이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요."
-          ),
+          toast({
+            type: "error",
+            title: "프로필 이미지 업로드 실패",
+            message:
+              "프로필 이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.",
+          }),
       });
     }
   };
@@ -43,26 +45,15 @@ export default function ProfileUploadButton() {
           onChange={onChangeProfileImage}
         />
       </ProfileUpload>
-      {errorMessage && (
-        <ErrorMessage className="error-message">{errorMessage}</ErrorMessage>
-      )}
     </StyledProfile>
   );
 }
 
-// TODO: Toast 메시지로 변경
 const StyledProfile = styled.div`
   display: flex;
   position: relative;
   width: 100px;
   height: 100px;
-
-  .error-message {
-    position: absolute;
-    width: 300px;
-    bottom: -50vh;
-    left: -100px;
-  }
 `;
 
 const ProfileUpload = styled.label`

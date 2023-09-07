@@ -1,6 +1,6 @@
 import { patchNickname } from "@api/index";
 import useOutsideClick from "@hooks/useOutsideClick";
-import { ErrorMessage } from "@styles/common";
+import { useToast } from "@hooks/useToast";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useMember } from "store";
@@ -13,9 +13,9 @@ export const NameEditor = ({
 }) => {
   const [member, setMember] = useMember();
   const [newNickname, setNewNickname] = useState(member?.nickname);
-  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const userNicknameMutation = useMutation(patchNickname);
+  const { toast } = useToast();
 
   const editNickname = () => {
     const isEditedNickname = newNickname !== member?.nickname;
@@ -28,14 +28,14 @@ export const NameEditor = ({
             ...member,
             nickname: newNickname,
           });
-          setErrorMessage("");
           onOutsideClick();
         },
-        onError: () => {
-          setErrorMessage(
-            "닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요."
-          );
-        },
+        onError: () =>
+          toast({
+            type: "error",
+            title: "닉네임 변경 실패",
+            message: "닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.",
+          }),
       });
       return;
     }
@@ -60,7 +60,6 @@ export const NameEditor = ({
         onChange={onChangeName}
         placeholder="내용을 입력하세요"
       />
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </InputField>
   );
 };

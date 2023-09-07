@@ -30,8 +30,10 @@ export const postRefreshToken = async (refreshToken: string) => {
   });
 };
 
-export const postUserAddress = async (body: { addressIds: number[] }) => {
-  return await fetcher.post<UserAddressInfo[]>(API_PATH.userAddress, body);
+export const postUserAddress = async (addressIds: number[]) => {
+  return await fetcher.post<UserAddressInfo[]>(API_PATH.userAddress, {
+    addressIds,
+  });
 };
 
 export const postUserProfile = async (file: File) => {
