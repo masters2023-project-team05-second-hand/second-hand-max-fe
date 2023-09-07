@@ -4,25 +4,33 @@ import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 const memberAtom = atom<Member>({ nickname: "", profileImgUrl: "" });
 const addressListAtom = atom<AddressInfo[]>([]);
 const currentAddressIdAtom = atom<number | undefined>(undefined);
+const currentCategoryIdAtom = atom<number | undefined>(undefined);
 
-export const useMemberAtom = atom(
+const useMemberAtom = atom(
   (get) => get(memberAtom),
   (_, set, payload: Member) => {
     set(memberAtom, payload);
   }
 );
 
-export const useAddressListAtom = atom(
+const useAddressListAtom = atom(
   (get) => get(addressListAtom),
   (_, set, payload: AddressInfo[]) => {
     set(addressListAtom, payload);
   }
 );
 
-export const useCurrentAddressIdAtom = atom(
+const useCurrentAddressIdAtom = atom(
   (get) => get(currentAddressIdAtom),
   (_, set, payload?: number) => {
     set(currentAddressIdAtom, payload);
+  }
+);
+
+const useCurrentCategoryIdAtom = atom(
+  (get) => get(currentCategoryIdAtom),
+  (_, set, payload: number) => {
+    set(currentCategoryIdAtom, payload);
   }
 );
 
@@ -33,12 +41,17 @@ export const useCurrentAddressIdAtom = atom(
 export const useMember = () => useAtom(useMemberAtom);
 export const useAddressList = () => useAtom(useAddressListAtom);
 export const useCurrentAddressId = () => useAtom(useCurrentAddressIdAtom);
+export const useCurrentCategoryId = () => useAtom(useCurrentCategoryIdAtom);
 
 export const useMemberValue = () => useAtomValue(memberAtom);
 export const useAddressListValue = () => useAtomValue(addressListAtom);
 export const useCurrentAddressIdValue = () =>
   useAtomValue(currentAddressIdAtom);
+export const useCurrentCategoryIdValue = () =>
+  useAtomValue(currentCategoryIdAtom);
 
 export const useSetMember = () => useSetAtom(useMemberAtom);
 export const useSetAddresses = () => useSetAtom(useAddressListAtom);
 export const useSetCurrentAddressId = () => useSetAtom(useCurrentAddressIdAtom);
+export const useSetCurrentCategoryId = () =>
+  useSetAtom(useCurrentCategoryIdAtom);

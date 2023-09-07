@@ -1,7 +1,7 @@
 import { useToast } from "@hooks/useToast";
 import { useMutation } from "@tanstack/react-query";
 import { isSameItems } from "@utils/index";
-import { postUserAddress } from "api";
+import { putUserAddress } from "api";
 import { useState } from "react";
 import { useAddressList } from "store";
 import Modal from "../Modal";
@@ -25,7 +25,7 @@ export default function AddressModal({
   const openAddressSearch = () => setIsSearchingAddress(true);
   const closeAddressSearch = () => setIsSearchingAddress(false);
 
-  const userAddressMutation = useMutation(postUserAddress, {
+  const userAddressMutation = useMutation(putUserAddress, {
     onSuccess: () =>
       toast({
         type: "success",

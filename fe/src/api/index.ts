@@ -33,8 +33,8 @@ export const postRefreshToken = async (refreshToken: string) => {
   });
 };
 
-export const postUserAddress = async (addressIds: number[]) => {
-  return await fetcher.post<UserAddressInfo[]>(API_PATH.userAddress, {
+export const putUserAddress = async (addressIds: number[]) => {
+  return await fetcher.put<UserAddressInfo[]>(API_PATH.memberAddress, {
     addressIds,
   });
 };
