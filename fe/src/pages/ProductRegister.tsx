@@ -12,6 +12,7 @@ import {
   DEFAULT_SELECTED_ADDRESS_INDEX,
 } from "@components/ProductRegister/constants";
 import { ProductInfo } from "@components/ProductRegister/type";
+import { Error } from "@components/common/Guide";
 import { Page } from "@styles/common";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -56,9 +57,15 @@ export default function ProductRegister() {
           };
         });
       },
-      // Todo: error 처리
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
+        return (
+          <Error
+            messages={[
+              "상세 물품을 불러오는데 실패했어요.",
+              "잠시 후 다시 시도해주세요.",
+            ]}
+          />
+        );
       },
     }
   );
@@ -88,11 +95,18 @@ export default function ProductRegister() {
     formData.append("price", price);
 
     newProductMutation.mutate(formData, {
-      onSuccess: () => {
-        navigate(`/product-detail/${productId}`);
+      onSuccess: (res) => {
+        navigate(`/product-detail/${res.data.productId}`);
       },
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
+        return (
+          <Error
+            messages={[
+              "새로운 상품 등록에 실패했어요.",
+              "잠시 후 다시 시도해주세요.",
+            ]}
+          />
+        );
       },
     });
   };
@@ -122,8 +136,15 @@ export default function ProductRegister() {
         onSuccess: () => {
           navigate(`/product-detail/${productId}`);
         },
-        onError: (error) => {
-          console.error(error);
+        onError: () => {
+          return (
+            <Error
+              messages={[
+                "상품 수정에 실패했어요.",
+                "잠시 후 다시 시도해주세요.",
+              ]}
+            />
+          );
         },
       }
     );
