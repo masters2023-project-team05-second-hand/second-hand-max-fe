@@ -1,7 +1,6 @@
 import { API_PATH } from "./constants";
 import { fetcher } from "./fetcher";
 import {
-  AddressInfo,
   AddressList,
   CategoryInfo,
   Member,
@@ -11,9 +10,13 @@ import {
 
 export const postSocialLogin = async (
   provider: "kakao" | "github",
-  body: { accessCode: string }
+  accessCode: string
 ) => {
-  return await fetcher.post<{ tokens: Tokens }>(API_PATH.login(provider), body);
+  const { data } = await fetcher.post<{ tokens: Tokens }>(
+    API_PATH.login(provider),
+    { accessCode }
+  );
+  return data;
 };
 
 export const postLogout = async (body: { refreshToken: string }) => {
@@ -30,8 +33,10 @@ export const postRefreshToken = async (refreshToken: string) => {
   });
 };
 
-export const postUserAddress = async (body: { addressIds: number[] }) => {
-  return await fetcher.post<UserAddressInfo[]>(API_PATH.userAddress, body);
+export const putUserAddress = async (addressIds: number[]) => {
+  return await fetcher.put<UserAddressInfo[]>(API_PATH.memberAddress, {
+    addressIds,
+  });
 };
 
 export const postUserProfile = async (file: File) => {
@@ -51,53 +56,15 @@ export const postUserProfile = async (file: File) => {
 };
 
 export const getMember = async () => {
-  return await fetcher.get<{ member: Member }>(API_PATH.member);
+  const { data } = await fetcher.get<{ member: Member }>(API_PATH.member);
+  return data;
 };
 
 export const getMemberAddress = async () => {
-  return await fetcher.get<{ addresses: UserAddressInfo[] }>(
+  const { data } = await fetcher.get<{ addresses: UserAddressInfo[] }>(
     API_PATH.memberAddress
   );
-};
-
-export const getUserInfo = async (): Promise<{
-  member: Member;
-  addresses: AddressInfo[];
-  currentAddressId?: number;
-}> => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
-    return {
-      member: { nickname: "", profileImgUrl: "" },
-      addresses: [],
-    };
-  }
-
-  try {
-    const [member, addresses] = await Promise.all([
-      getMember(),
-      getMemberAddress(),
-    ]);
-    const currentAddressId = addresses.data.addresses.find(
-      (address: UserAddressInfo) => address.isLastVisited
-    )?.id;
-
-    return {
-      member: member.data.member,
-      addresses: addresses.data.addresses.map((address) => ({
-        id: address.id,
-        name: address.name,
-      })),
-      currentAddressId,
-    };
-  } catch (error) {
-    // TODO: 토스트 메시지로 보여주기
-    console.error("error", "네트워크 오류가 발생했습니다.");
-    return {
-      member: { nickname: "", profileImgUrl: "" },
-      addresses: [],
-    };
-  }
+  return data;
 };
 
 export const getAddresses = async (page: number = 0, size: number = 10) => {

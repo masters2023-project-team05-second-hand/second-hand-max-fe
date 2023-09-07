@@ -1,81 +1,93 @@
+import { useUserInfoQuery } from "@api/queries";
+import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
 import { Error, Loading } from "@components/common/Guide";
 import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
 import { useQuery } from "@tanstack/react-query";
-import { getUserInfo, postSocialLogin } from "api";
+import { postSocialLogin } from "api";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddressList, useCurrentAddressId, useMember } from "store";
+import { useSetAddresses, useSetCurrentAddressId, useSetMember } from "store";
 
 export function Auth() {
   const { provider } = useParams<{ provider: "kakao" | "github" }>();
   const accessCode = new URL(window.location.href).searchParams.get("code");
   const navigate = useNavigate();
 
-  const [, setMember] = useMember();
-  const [, setAddresses] = useAddressList();
-  const [, setCurrentAddressId] = useCurrentAddressId();
+  const setMember = useSetMember();
+  const setAddresses = useSetAddresses();
+  const setCurrentAddressId = useSetCurrentAddressId();
 
-  const getAuth = async () => {
-    if (!accessCode || !provider) {
-      return;
-    }
-
-    const {
-      data: { tokens },
-    } = await postSocialLogin(provider, { accessCode });
-
-    localStorage.setItem("accessToken", tokens.accessToken);
-    localStorage.setItem("refreshToken", tokens.refreshToken);
-
-    const { member, addresses, currentAddressId } = await getUserInfo();
-    setMember(member);
-    setAddresses(addresses);
-    setCurrentAddressId(currentAddressId);
-
-    const isFirstUser = addresses.length === 0;
-    return isFirstUser;
-  };
-
-  const {
-    data: isFirstUser,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: ["socialLogin"],
-    queryFn: getAuth,
     enabled: !!accessCode && !!provider,
+    queryFn: () => postSocialLogin(provider!, accessCode!), // enabled 조건으로 보장 가능
+  });
+
+  const [memberResult, memberAddressResult] = useUserInfoQuery({
+    enabled: isSuccess,
   });
 
   useEffect(() => {
     if (isSuccess) {
-      isFirstUser ? navigate(ROUTE_PATH.register) : navigate(ROUTE_PATH.home);
+      localStorage.setItem("accessToken", data.tokens.accessToken);
+      localStorage.setItem("refreshToken", data.tokens.refreshToken);
     }
-  }, [isSuccess, isFirstUser, navigate]);
+  }, [isSuccess, data]);
 
-  if (isLoading || isError) {
-    return (
-      <Page>
-        <TopBar
-          title="내 계정"
-          backgroundColor="neutralBackgroundBlur"
-          isWithBorder={true}
-        />
-        {isLoading && (
-          <Loading
-            messages={["로그인중입니다...", "새로고침을 하지 마세요!"]}
-          />
-        )}
-        {isError && (
+  useEffect(() => {
+    if (memberResult.isSuccess) {
+      setMember(memberResult.data.member);
+    }
+  }, [memberResult, setMember]);
+
+  useEffect(() => {
+    if (memberAddressResult.isSuccess) {
+      const userAddressesInfo = memberAddressResult.data.addresses;
+      setAddresses(
+        userAddressesInfo.map((address) => ({
+          id: address.id,
+          name: address.name,
+        }))
+      );
+      setCurrentAddressId(
+        userAddressesInfo.find((address) => address.isLastVisited)?.id
+      );
+    }
+  }, [memberAddressResult, setAddresses, setCurrentAddressId]);
+
+  useEffect(() => {
+    if (memberAddressResult.isSuccess && memberResult.isSuccess) {
+      memberAddressResult.data.addresses.length
+        ? navigate(ROUTE_PATH.home)
+        : navigate(ROUTE_PATH.register);
+    }
+  }, [memberAddressResult, memberResult, navigate]);
+
+  return (
+    <Page>
+      <TopBar
+        title="내 계정"
+        backgroundColor="neutralBackgroundBlur"
+        isWithBorder={true}
+      />
+      {(isLoading ||
+        memberAddressResult.isLoading ||
+        memberResult.isLoading) && (
+        <Loading messages={["로그인중입니다...", "새로고침을 하지 마세요!"]} />
+      )}
+      {(isError || memberAddressResult.isError || memberResult.isError) && (
+        <>
           <Error
-            messages={["로그인에 실패했습니다.", "잠시 후 다시 시도해주세요."]}
+            messages={[
+              "로그인에 실패했습니다.",
+              "새로고침을 하거나 다시 시도해주세요.",
+            ]}
           />
-        )}
-      </Page>
-    );
-  }
-
-  return null;
+          <NavigationBar />
+        </>
+      )}
+    </Page>
+  );
 }

@@ -41,8 +41,3 @@ export const Dim = styled.div`
   background-color: ${({ theme: { color } }) => color.neutralOverlay};
   z-index: -1;
 `;
-
-export const ErrorMessage = styled.span`
-  width: 100%;
-  color: ${({ theme: { color } }) => color.systemWarning};
-`;

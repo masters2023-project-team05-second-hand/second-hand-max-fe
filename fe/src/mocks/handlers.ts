@@ -71,10 +71,11 @@ export const handlers = [
   }),
 
   rest.get(API_PATH.categories, async (_req, res, ctx) => {
+    // return res(ctx.status(400), ctx.json({ message: "잘못된 요청입니다." }));
     return res(ctx.status(200), ctx.json(categories));
   }),
 
-  rest.post(API_PATH.userAddress, async (req, res, ctx) => {
+  rest.post(API_PATH.memberAddress, async (req, res, ctx) => {
     const { addressIds } = await req.json<{ addressIds: number[] }>();
 
     if (!addressIds) {

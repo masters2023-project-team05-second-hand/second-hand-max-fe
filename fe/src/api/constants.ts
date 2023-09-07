@@ -11,9 +11,8 @@ export const API_PATH = {
   logout: "/api/sign-out",
   categories: "/api/categories",
   refresh: "/api/reissue-access-token",
-  userAddress: "/api/members/address",
-  userProfile: "/api/members/profile-image",
   member: "/api/members",
+  userProfile: "/api/members/profile-image",
   memberAddress: "/api/members/addresses",
   addresses: (page: number, size: number) =>
     `/api/addresses?page=${page}&size=${size}`,
