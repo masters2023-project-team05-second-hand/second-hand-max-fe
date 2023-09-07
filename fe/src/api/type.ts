@@ -20,7 +20,7 @@ export type AddressInfo = {
 export type CategoryInfo = {
   id: number;
   name: string;
-  imageUrl: string;
+  imgUrl: string;
 };
 
 export type AddressList = {

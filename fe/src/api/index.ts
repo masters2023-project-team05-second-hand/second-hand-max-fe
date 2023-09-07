@@ -24,7 +24,10 @@ export const postLogout = async (body: { refreshToken: string }) => {
 };
 
 export const getCategories = async () => {
-  return await fetcher.get<CategoryInfo[]>(API_PATH.categories);
+  const { data } = await fetcher.get<{ categories: CategoryInfo[] }>(
+    API_PATH.categories
+  );
+  return data;
 };
 
 export const postRefreshToken = async (refreshToken: string) => {

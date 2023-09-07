@@ -1,5 +1,5 @@
-import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
-import { getAddresses, getMember, getMemberAddress } from ".";
+import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
+import { getAddresses, getCategories, getMember, getMemberAddress } from ".";
 
 type Props = {
   size: number;
@@ -30,5 +30,13 @@ export const useUserInfoQuery = (
         enabled,
       },
     ],
+  });
+};
+
+export const useCategoryQuery = () => {
+  return useQuery({
+    queryKey: ["getCategories"],
+    queryFn: getCategories,
+    staleTime: Infinity,
   });
 };
