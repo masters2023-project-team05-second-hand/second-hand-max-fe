@@ -3,10 +3,15 @@ import { ReactComponent as LayoutGridIcon } from "@assets/icon/layout-grid.svg";
 import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
+import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 export default function Home() {
+  const navigate = useNavigate();
+  const moveToCategoryPage = () => navigate(ROUTE_PATH.category);
+
   return (
     <Page>
       <TopBar
@@ -20,7 +25,13 @@ export default function Home() {
             leftIcon={<ChevronDownIcon />}
           />
         }
-        rightBtn={<Button color="neutralText" leftIcon={<LayoutGridIcon />} />}
+        rightBtn={
+          <Button
+            color="neutralText"
+            leftIcon={<LayoutGridIcon />}
+            onClick={moveToCategoryPage}
+          />
+        }
       />
       <Test>상품 목록 리스트</Test>
       <NavigationBar />
