@@ -1,5 +1,5 @@
-import { getProductDetail, postProduct } from "@api/index";
-import { AddressInfo, CategoryInfo, PostNewProduct } from "@api/type";
+import { getProductDetail, patchProduct, postProduct } from "@api/index";
+import { AddressInfo, CategoryInfo } from "@api/type";
 import ProductRegisterAddress from "@components/ProductRegister/ProductRegisterAddress";
 import ProductRegisterCategory from "@components/ProductRegister/ProductRegisterCategory";
 import ProductRegisterContent from "@components/ProductRegister/ProductRegisterContent";
@@ -11,7 +11,7 @@ import {
   DEFAULT_CATEGORY,
   DEFAULT_SELECTED_ADDRESS_INDEX,
 } from "@components/ProductRegister/constants";
-import { ProductInfo, ProductNewImage } from "@components/ProductRegister/type";
+import { ProductInfo } from "@components/ProductRegister/type";
 import { Page } from "@styles/common";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -24,15 +24,13 @@ export default function ProductRegister() {
   const { productId } = useParams();
   const [addressList] = useAddressList();
   const [currentAddressId] = useCurrentAddressId();
-  const [newImages, setNewImages] = useState<ProductNewImage[]>([]);
-  const [deletedImageIds, setDeletedImageIds] = useState<number[]>([]);
   const [selectedAddressId, setSelectedAddressId] = useState<
     number | undefined
   >(productId ? undefined : currentAddressId);
   const [productInfo, setProductInfo] = useState<ProductInfo>({
     images: [],
-    newImages: newImages,
-    deletedImageIds: deletedImageIds,
+    newImages: [],
+    deletedImageIds: [],
     title: "",
     category: DEFAULT_CATEGORY,
     price: "",
@@ -42,25 +40,28 @@ export default function ProductRegister() {
       addressList[DEFAULT_SELECTED_ADDRESS_INDEX],
   });
 
-  const { mutateAsync: getProduct } = useMutation(() => getProductDetail(1), {
-    onSuccess: (res) => {
-      setProductInfo((prev) => {
-        return {
-          ...prev,
-          images: res.data.images,
-          title: res.data.product.title,
-          category: res.data.product.category,
-          price: res.data.product.price.toString(),
-          content: res.data.product.contents,
-          address: res.data.product.address,
-        };
-      });
-    },
-    // Todo: error 처리
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+  const { mutate: getProduct } = useMutation(
+    () => getProductDetail(Number(productId)),
+    {
+      onSuccess: (res) => {
+        setProductInfo((prev) => {
+          return {
+            ...prev,
+            images: res.data.images,
+            title: res.data.product.title,
+            category: res.data.product.category,
+            price: res.data.product.price.toString(),
+            content: res.data.product.contents,
+            address: res.data.product.address,
+          };
+        });
+      },
+      // Todo: error 처리
+      onError: (error) => {
+        console.error(error);
+      },
+    }
+  );
 
   useEffect(() => {
     if (productId) {
@@ -68,37 +69,71 @@ export default function ProductRegister() {
     }
   }, [productId, getProduct]);
 
-  const { mutateAsync: newProductMutation } = useMutation(
-    (productInfo: PostNewProduct) => postProduct(productInfo),
-    {
+  const newProductMutation = useMutation(postProduct);
+  const editProductMutation = useMutation(patchProduct);
+
+  const onPostNewProduct = () => {
+    const price = productInfo.price.replace(/,/g, "");
+
+    const formData = new FormData();
+
+    productInfo.newImages?.forEach((image) => {
+      formData.append("images", image.image);
+    });
+    formData.append("title", productInfo.title);
+    formData.append("content", productInfo.content);
+    formData.append("categoryId", productInfo.category.id.toString());
+    formData.append("addressId", productInfo.address.id.toString());
+    formData.append("price", price);
+
+    newProductMutation.mutate(formData, {
       onSuccess: () => {
-        navigate(-1);
+        navigate(`/product-detail/${productId}`);
       },
       onError: (error) => {
         console.error(error);
       },
-    }
-  );
+    });
+  };
 
-  const onSubmitProduct = (
-    id: number | undefined,
-    productInfo: ProductInfo
-  ) => {
-    // Todo: 이미지 파일 담은 배열? 보내는 법??
-    // Todo: patch도 추가해야함
-    const postInfo = {
-      images: productInfo.newImages!.map((image) => image.image),
-      product: {
-        addressId: productInfo.address.id,
-        categoryId: productInfo.category.id,
-        title: productInfo.title,
-        content: productInfo.content,
-        price: parseInt(productInfo.price),
-      },
-    };
+  const onPatchProduct = () => {
+    const price = productInfo.price.replace(/,/g, "");
 
-    if (!id) {
-      newProductMutation(postInfo);
+    const formData = new FormData();
+
+    productInfo.newImages?.forEach((image) => {
+      formData.append("newImages", image.image);
+    });
+    formData.append(
+      "deletedImageIds",
+      productInfo.deletedImageIds?.toString() ?? ""
+    );
+    formData.append("title", productInfo.title);
+    formData.append("content", productInfo.content);
+    formData.append("categoryId", productInfo.category.id.toString());
+    formData.append("addressId", productInfo.address.id.toString());
+    formData.append("price", price);
+
+    editProductMutation.mutate(
+      { productId: Number(productId), productInfo: formData },
+      {
+        onSuccess: () => {
+          navigate(`/product-detail/${productId}`);
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      }
+    );
+  };
+
+  const onSubmitProduct = () => {
+    const isNewProduct = !productId;
+
+    if (isNewProduct) {
+      onPostNewProduct();
+    } else {
+      onPatchProduct();
     }
   };
 
@@ -108,7 +143,12 @@ export default function ProductRegister() {
 
     const now = new Date().getTime();
 
-    setNewImages((prev) => [...prev, { id: now, image: file }]);
+    setProductInfo((prev) => ({
+      ...prev,
+      newImages: prev.newImages
+        ? [...prev.newImages, { id: now, image: file }]
+        : [{ id: now, image: file }],
+    }));
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -121,10 +161,17 @@ export default function ProductRegister() {
   };
 
   const onRemoveImage = (id: number) => {
-    const isNewImage = newImages.find((image) => image.id === id);
+    const isNewImage = productInfo.newImages?.find((image) => image.id === id);
 
     if (!isNewImage) {
-      setDeletedImageIds((prev) => [...prev, id]);
+      setProductInfo((prev) => {
+        return {
+          ...prev,
+          deletedImageIds: prev.deletedImageIds
+            ? [...prev.deletedImageIds, id]
+            : [id],
+        };
+      });
     }
 
     setProductInfo((prev) => {

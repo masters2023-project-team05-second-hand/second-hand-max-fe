@@ -57,17 +57,16 @@ export type ProductDetailInfo = {
 
 export type PostNewProduct = {
   images: File[];
-  product: {
-    title: string;
-    content: string;
-    categoryId: number;
-    addressId: number;
-    price: number;
-  };
+  title: string;
+  content: string;
+  categoryId: number;
+  addressId: number;
+  price: number;
 };
 
 export type PatchProduct = {
   deletedImageIds: number[];
+  newImages: File[];
   title: string;
   content: string;
   price: number;
