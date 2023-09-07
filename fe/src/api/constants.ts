@@ -13,6 +13,7 @@ export const API_PATH = {
   refresh: "/api/reissue-access-token",
   userAddress: "/api/members/address",
   userProfile: "/api/members/profile-image",
+  productDetail: (productId: number) => `/api/products/${productId}`,
   member: "/api/members",
   memberAddress: "/api/members/addresses",
   addresses: (page: number, size: number) =>
