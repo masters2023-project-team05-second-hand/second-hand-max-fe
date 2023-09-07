@@ -27,7 +27,7 @@ export default function ProductRegisterCategory({
 
   const { mutate: getCategoryList } = useMutation(() => getCategories(), {
     onSuccess: (res) => {
-      setCategoryList(res.data);
+      setCategoryList(res.categories);
     },
     // Todo: error 처리
     onError: (error) => {

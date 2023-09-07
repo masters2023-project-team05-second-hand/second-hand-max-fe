@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { HTMLAttributes, ReactNode, useState } from "react";
 import { styled } from "styled-components";
 import Menu from "./Menu";
 import { MenuItemInfo } from "./type";
@@ -7,14 +7,17 @@ type MenuIndicatorProps = {
   button: ReactNode;
   itemList: MenuItemInfo[];
   withShadow?: boolean;
-  position?: "left" | "right";
-};
+  positionX?: "left" | "right";
+  positionY?: "top" | "bottom";
+} & HTMLAttributes<HTMLDivElement>;
 
 export default function MenuIndicator({
   button,
   itemList,
   withShadow,
-  position,
+  positionX,
+  positionY,
+  ...props
 }: MenuIndicatorProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -23,13 +26,14 @@ export default function MenuIndicator({
   };
 
   return (
-    <StyledMenuIndicator onClick={toggleModal}>
+    <StyledMenuIndicator id={props.id} onClick={toggleModal}>
       {button}
       {isMenuOpen && (
         <Menu
           itemList={itemList}
           withShadow={withShadow}
-          position={position}
+          positionX={positionX}
+          positionY={positionY}
           closeMenuHandler={toggleModal}
         />
       )}

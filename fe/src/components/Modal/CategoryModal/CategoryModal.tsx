@@ -19,7 +19,6 @@ export default function CategoryModal({
   closeHandler,
 }: CategoryModalProps) {
   const { ref: categoryRef } = useOutsideClick<HTMLDivElement>(closeHandler);
-  // Todo: categories 조회 api 적용시키기(tanstack query 이용하기)
 
   const onClickCategory = (
     id: number,
