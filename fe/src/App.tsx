@@ -1,3 +1,4 @@
+import Toaster from "@components/common/Toaster";
 import { router } from "@router/router";
 import GlobalStyle from "@styles/GlobalStyle";
 import { theme } from "@styles/designSystem";
@@ -15,6 +16,7 @@ export default function App() {
         <RouterProvider router={router} />
       </QueryClientProvider>
       <ModalRoot id="modal-root" />
+      <Toaster />
     </ThemeProvider>
   );
 }
