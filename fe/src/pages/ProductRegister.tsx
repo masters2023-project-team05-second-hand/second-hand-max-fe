@@ -45,7 +45,6 @@ export default function ProductRegister() {
   const { mutateAsync: getProduct } = useMutation(() => getProductDetail(1), {
     onSuccess: (res) => {
       setProductInfo((prev) => {
-        console.log(res);
         return {
           ...prev,
           images: res.data.images,
@@ -65,7 +64,6 @@ export default function ProductRegister() {
 
   useEffect(() => {
     if (productId) {
-      console.log(productId);
       getProduct();
     }
   }, [productId, getProduct]);
