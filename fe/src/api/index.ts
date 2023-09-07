@@ -4,6 +4,7 @@ import {
   AddressList,
   CategoryInfo,
   Member,
+  ProductDetailInfo,
   Tokens,
   UserAddressInfo,
 } from "./type";
@@ -55,6 +56,12 @@ export const postUserProfile = async (file: File) => {
     API_PATH.userProfile,
     formData,
     config
+  );
+};
+
+export const getProductDetail = async (productId: number) => {
+  return await fetcher.get<ProductDetailInfo>(
+    API_PATH.productDetail(productId)
   );
 };
 

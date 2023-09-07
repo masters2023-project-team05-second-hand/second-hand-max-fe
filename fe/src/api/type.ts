@@ -27,3 +27,30 @@ export type AddressList = {
   addresses: AddressInfo[];
   hasNext: boolean;
 };
+
+export type ProductDetailInfo = {
+  isSeller: boolean;
+  product: {
+    sellers: string;
+    category: CategoryInfo;
+    address: AddressInfo;
+    title: string;
+    contents: string;
+    price: number;
+    createdTime: string;
+    status: number;
+  };
+  images: {
+    id: number;
+    url: string;
+  }[];
+  stats: {
+    chatCount: number;
+    wishCount: number;
+    viewCount: number;
+  };
+  statuses: {
+    id: number;
+    type: string;
+  }[];
+};

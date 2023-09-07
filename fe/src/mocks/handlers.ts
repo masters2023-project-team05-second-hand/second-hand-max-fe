@@ -3,6 +3,7 @@ import { Member, Tokens, UserAddressInfo } from "api/type";
 import { rest } from "msw";
 import { getMockAddresses } from "./data/address";
 import { categories } from "./data/categories";
+import { productDetail } from "./data/productDetail";
 
 export const handlers = [
   rest.post(API_PATH.login("kakao"), async (req, res, ctx) => {
@@ -32,6 +33,7 @@ export const handlers = [
 
   rest.post(API_PATH.login("github"), async (req, res, ctx) => {
     const { accessCode } = await req.json<{ accessCode: string }>();
+    console.log(accessCode);
 
     if (!accessCode) {
       return res(
@@ -122,6 +124,10 @@ export const handlers = [
     );
   }),
 
+  rest.get(API_PATH.productDetail(1), async (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(productDetail));
+  }),
+
   rest.get(API_PATH.member, async (req, res, ctx) => {
     const Authorization = req.headers.get("Authorization");
 
@@ -149,7 +155,18 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json<{ addresses: UserAddressInfo[] }>({
-        addresses: [],
+        addresses: [
+          {
+            id: 1,
+            name: "역삼 1동",
+            isLastVisited: true,
+          },
+          {
+            id: 5,
+            name: "역삼 5동",
+            isLastVisited: false,
+          },
+        ],
       })
     );
   }),
