@@ -39,7 +39,6 @@ export const handlers = [
 
   rest.post(API_PATH.login("github"), async (req, res, ctx) => {
     const { accessCode } = await req.json<{ accessCode: string }>();
-    console.log(accessCode);
 
     if (!accessCode) {
       return res(
