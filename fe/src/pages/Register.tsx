@@ -45,7 +45,6 @@ export default function Register() {
           leftIcon={<PlusIcon />}
           onClick={openAddressModal}
         />
-
         {isAddressModalOpen && (
           <AddressModal closeHandler={closeAddressModal} />
         )}
