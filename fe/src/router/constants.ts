@@ -10,7 +10,8 @@ export const ROUTE_PATH = {
     github: "/auth/github",
   },
   register: "/register",
-  new: "/new",
+  new: "/product-new",
+  edit: "/product-edit/:id",
   category: "/category",
-  product: "/product/:id",
+  detail: "/product-detail/:id",
 };
