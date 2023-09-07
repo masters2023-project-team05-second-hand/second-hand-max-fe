@@ -17,7 +17,6 @@ export function Auth() {
   const [, setAddresses] = useAddressList();
   const [, setCurrentAddressId] = useCurrentAddressId();
 
-  // (조이) getAuth 함수에서 로그인 요청 후 유저 정보까지 모두 하나의 useQuery로 처리해도 괜찮은지, 다른 방법은?
   const getAuth = async () => {
     if (!accessCode || !provider) {
       return;

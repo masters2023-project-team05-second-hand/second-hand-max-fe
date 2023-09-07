@@ -91,7 +91,7 @@ export const getUserInfo = async (): Promise<{
       currentAddressId,
     };
   } catch (error) {
-    // TODO: 어떻게 처리할지 고민
+    // TODO: 토스트 메시지로 보여주기
     console.error("error", "네트워크 오류가 발생했습니다.");
     return {
       member: { nickname: "", profileImgUrl: "" },

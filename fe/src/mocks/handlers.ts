@@ -102,7 +102,7 @@ export const handlers = [
   }),
 
   rest.post(API_PATH.userProfile, async (req, res, ctx) => {
-    const { image } = await req.json<{ image: File }>();
+    const { image } = req.body as { image: File };
 
     if (!image) {
       return res(

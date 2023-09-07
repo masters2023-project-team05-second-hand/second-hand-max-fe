@@ -3,7 +3,7 @@ import LoadingIndicator from "@assets/image/loading.gif";
 import { SubTitle } from "@styles/common";
 import styled from "styled-components";
 
-export const Loading = ({ messages }: { messages: string[] }) => {
+export function Loading({ messages }: { messages: string[] }) {
   return (
     <Container>
       <img src={LoadingIndicator} alt="loading-indicator" />
@@ -12,9 +12,9 @@ export const Loading = ({ messages }: { messages: string[] }) => {
       ))}
     </Container>
   );
-};
+}
 
-export const Error = ({ messages }: { messages: string[] }) => {
+export function Error({ messages }: { messages: string[] }) {
   return (
     <Container>
       <img src={ErrorIcon} alt="error-icon" />
@@ -23,7 +23,7 @@ export const Error = ({ messages }: { messages: string[] }) => {
       ))}
     </Container>
   );
-};
+}
 
 export const Container = styled.div`
   display: flex;
