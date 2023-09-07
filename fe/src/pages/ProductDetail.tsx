@@ -7,7 +7,7 @@ import { Page } from "@styles/common";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
-export default function Product() {
+export default function ProductDetail() {
   const { id } = useParams();
   const { scrollY, ref } = useScroll();
 
