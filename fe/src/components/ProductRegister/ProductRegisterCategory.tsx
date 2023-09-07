@@ -23,10 +23,7 @@ export default function ProductRegisterCategory({
 
   useEffect(() => {
     if (data && isSuccess) {
-      const randomCategories = getRandomCategories(
-        category.id,
-        data.categories
-      );
+      const randomCategories = getRandomCategories(category.id, data);
 
       setRandomCategories(randomCategories);
     }
@@ -71,13 +68,12 @@ export default function ProductRegisterCategory({
             leftIcon={<ChevronRightIcon />}
             onClick={toggleCategoryModal}
           />
-
           {isOpen && (
             <CategoryModal
               selectedId={category.id}
               onSelectCategory={onChange}
               closeHandler={toggleCategoryModal}
-              categories={data?.categories ?? []}
+              categories={data ?? []}
             />
           )}
         </>
