@@ -6,7 +6,7 @@ import Login from "./Login";
 import Setting from "./Setting";
 
 export default function MyAccount() {
-  const member = useMember();
+  const [member] = useMember();
 
   return (
     <Page>
@@ -15,8 +15,8 @@ export default function MyAccount() {
         backgroundColor="neutralBackgroundBlur"
         isWithBorder={true}
       />
-      {member && <Setting />}
-      {!member && <Login />}
+      {member.nickname && <Setting />}
+      {!member.nickname && <Login />}
       <NavigationBar />
     </Page>
   );

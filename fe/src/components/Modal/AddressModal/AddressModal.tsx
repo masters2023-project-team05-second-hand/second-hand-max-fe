@@ -12,7 +12,7 @@ export default function AddressModal({
 }: {
   closeHandler: () => void;
 }) {
-  const addresses = useAddressList();
+  const [addresses] = useAddressList();
   const userAddressIDs = addresses.map(({ id }) => id);
 
   const [prevAddressIDs] = useState(userAddressIDs);

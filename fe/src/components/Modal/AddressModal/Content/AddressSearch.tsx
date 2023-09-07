@@ -1,9 +1,9 @@
+import { useAddressesInfiniteQuery } from "@api/queries";
 import { ListItem, ListPanel } from "@components/Modal/Modal.style";
+import { Error, Loading } from "@components/common/Guide";
+import { useIntersect } from "@hooks/useIntersect";
 import { AddressInfo } from "api/type";
-import { useSetAtom } from "jotai";
-import { addresses1 } from "mocks/data/address";
-import { useState } from "react";
-import { addressListAtom, currentAddressIdAtom } from "store";
+import { useAddressList, useCurrentAddressId } from "store";
 import styled from "styled-components";
 
 export default function AddressSearch({
@@ -13,41 +13,56 @@ export default function AddressSearch({
   userAddressIDs: number[];
   closeAddressSearch: () => void;
 }) {
-  const setAddresses = useSetAtom(addressListAtom);
-  const setCurrentAddressId = useSetAtom(currentAddressIdAtom);
+  const [addresses, setAddresses] = useAddressList();
+  const [, setCurrentAddressId] = useCurrentAddressId();
 
   const onAddAddress = (item: AddressInfo) => {
-    setAddresses((prev) => {
-      const isMaxAddressCount = prev.length === 2;
-      const isAlreadyAdded = prev.some(({ id }) => id === item.id);
-      if (isMaxAddressCount || isAlreadyAdded) {
-        return prev;
-      }
+    const isMaxAddressCount = addresses.length === 2;
+    const isAlreadyAdded = addresses.some(({ id }) => id === item.id);
 
-      setCurrentAddressId(item.id);
-      return [...prev, item];
-    });
+    if (isAlreadyAdded || isMaxAddressCount) return;
+
+    setAddresses([...addresses, item]);
+    setCurrentAddressId(item.id);
   };
-  // TODO: 동네 검색/전체 동네 조회 요청
-  const [allAddressList] = useState(addresses1.addresses);
-  // const [searchKeyword, setSearchKeyword] = useState<string>("");
+
+  const { data, status, isFetching, hasNextPage, fetchNextPage } =
+    useAddressesInfiniteQuery();
+
+  const ref = useIntersect((entry, observer) => {
+    observer.unobserve(entry.target);
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  });
+
+  // TODO: 동네 검색
 
   return (
     <>
       <SearchBar placeholder="동명(읍, 면)으로 검색(ex. 서초동)" />
-      <ListPanel>
-        {allAddressList.map(({ id, name }) => (
-          <ListItem
-            key={id}
-            $active={userAddressIDs.includes(id)}
-            onClick={() => {
-              onAddAddress({ id, name });
-              closeAddressSearch();
-            }}>
-            <span>{name}</span>
-          </ListItem>
-        ))}
-      </ListPanel>
+      {status === "loading" && <Loading messages={["로딩중..."]} />}
+      {status === "error" && (
+        <Error messages={["잠시 후 다시 시도해주세요."]} />
+      )}
+      {status === "success" && (
+        <ListPanel>
+          {data.pages.map(({ addresses }) =>
+            addresses.map(({ id, name }) => (
+              <ListItem
+                key={id}
+                $active={userAddressIDs.includes(id)}
+                onClick={() => {
+                  onAddAddress({ id, name });
+                  closeAddressSearch();
+                }}>
+                <span>{name}</span>
+              </ListItem>
+            ))
+          )}
+          <Target ref={ref} />
+        </ListPanel>
+      )}
     </>
   );
 }
@@ -63,4 +78,8 @@ const SearchBar = styled.input`
     font: ${({ theme: { font } }) => font.availableDefault16};
     color: ${({ theme: { color } }) => color.neutralTextWeak};
   }
+`;
+
+const Target = styled.div`
+  height: 1px;
 `;

@@ -3,14 +3,8 @@ import { ReactComponent as PlusIcon } from "@assets/icon/plus.svg";
 import Alert from "@components/common/Alert/Alert";
 import Button from "@components/common/Buttons/Button";
 import { AddressInfo } from "api/type";
-import { useSetAtom } from "jotai";
 import { useState } from "react";
-import {
-  addressListAtom,
-  currentAddressIdAtom,
-  useAddressList,
-  useCurrentAddressId,
-} from "store";
+import { useAddressList, useCurrentAddressId } from "store";
 import styled from "styled-components";
 
 export default function AddressIndicatorList({
@@ -18,11 +12,8 @@ export default function AddressIndicatorList({
 }: {
   openAddressSearch: () => void;
 }) {
-  const currentUserAddressId = useCurrentAddressId();
-  const addresses = useAddressList();
-
-  const setCurrentAddressId = useSetAtom(currentAddressIdAtom);
-  const setAddresses = useSetAtom(addressListAtom);
+  const [addresses, setAddresses] = useAddressList();
+  const [currentAddressId, setCurrentAddressId] = useCurrentAddressId();
 
   const [isRemoveAlertOpen, setIsRemoveAlertOpen] = useState(false);
   const [removeTargetAddress, setRemoveTargetAddress] =
@@ -42,12 +33,11 @@ export default function AddressIndicatorList({
   };
 
   const onRemoveAddress = () => {
-    setAddresses((prev) => {
-      const filtered = prev.filter(({ id }) => id !== removeTargetAddress?.id);
-      const newCurrentAddressId = filtered[0].id;
-      setCurrentAddressId(newCurrentAddressId);
-      return filtered;
-    });
+    const newAddresses = addresses.filter(
+      ({ id }) => id !== removeTargetAddress?.id
+    );
+    setAddresses(newAddresses);
+    setCurrentAddressId(newAddresses[0].id);
   };
 
   return (
@@ -60,7 +50,7 @@ export default function AddressIndicatorList({
         {addresses.map(({ id, name }) => (
           <AddressIndicator
             key={id}
-            $active={id === currentUserAddressId}
+            $active={id === currentAddressId}
             onClick={() => setCurrentAddressId(id)}>
             <span>{name}</span>
             <Button

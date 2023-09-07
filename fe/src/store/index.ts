@@ -1,18 +1,24 @@
-import { AddressInfo, Member, UserAddressInfo } from "api/type";
-import { useAtomValue } from "jotai";
-import { atomWithDefault } from "jotai/utils";
+import { getUserInfo } from "@api/index";
+import { AddressInfo, Member } from "api/type";
+import { atom, useAtom } from "jotai";
 
-const { member, addresses } = JSON.parse(localStorage.getItem("user") || "{}");
-const currentAddressId =
-  addresses &&
-  addresses.find((address: UserAddressInfo) => address.isLastVisited)?.id;
+const { member, addresses, currentAddressId } = await getUserInfo();
 
-export const memberAtom = atomWithDefault<Member>(() => member);
-export const addressListAtom = atomWithDefault<AddressInfo[]>(() => addresses);
-export const currentAddressIdAtom = atomWithDefault<number | null>(
-  () => currentAddressId
+const memberAtom = atom(member, (_, set, payload: Member) => {
+  set(memberAtom, payload);
+});
+
+const addressListAtom = atom(addresses, (_, set, payload: AddressInfo[]) => {
+  set(addressListAtom, payload);
+});
+
+const currentAddressIdAtom = atom(
+  currentAddressId,
+  (_, set, payload?: number) => {
+    set(currentAddressIdAtom, payload);
+  }
 );
 
-export const useMember = () => useAtomValue(memberAtom);
-export const useAddressList = () => useAtomValue(addressListAtom);
-export const useCurrentAddressId = () => useAtomValue(currentAddressIdAtom);
+export const useMember = () => useAtom(memberAtom);
+export const useAddressList = () => useAtom(addressListAtom);
+export const useCurrentAddressId = () => useAtom(currentAddressIdAtom);

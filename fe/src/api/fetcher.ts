@@ -24,6 +24,9 @@ fetcher.interceptors.request.use(
 fetcher.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
+    if (error.response?.status !== 401) {
+      return Promise.reject(error);
+    }
     try {
       const originalRequest = error.config;
 
@@ -47,8 +50,6 @@ const refreshAccessToken = async () => {
   try {
     const { data } = await postRefreshToken(refreshToken);
     localStorage.setItem("accessToken", data.accessToken);
-
-    return data.accessToken;
   } catch {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");

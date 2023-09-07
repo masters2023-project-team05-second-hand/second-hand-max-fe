@@ -1,8 +1,3 @@
-export type AuthInfo = {
-  tokens: Tokens;
-  addresses: UserAddressInfo[];
-  member: Member;
-};
 export type Tokens = {
   accessToken: string;
   refreshToken: string;
@@ -26,4 +21,9 @@ export type CategoryInfo = {
   id: number;
   name: string;
   imageUrl: string;
+};
+
+export type AddressList = {
+  addresses: AddressInfo[];
+  hasNext: boolean;
 };
