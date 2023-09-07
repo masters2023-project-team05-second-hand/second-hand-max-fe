@@ -13,10 +13,13 @@ export const API_PATH = {
   refresh: "/api/reissue-access-token",
   member: "/api/members",
   userProfile: "/api/members/profile-image",
+  productDetail: (productId: number) => `/api/products/${productId}`,
   memberAddress: "/api/members/addresses",
   addresses: (page: number, size: number) =>
     `/api/addresses?page=${page}&size=${size}`,
   nickname: "/api/members/nickname",
+  newProduct: "/api/products",
+  editProduct: (productId: number) => `/api/products/${productId}`,
 };
 
 export const BASE_API_URL = VITE_APP_API_URL;

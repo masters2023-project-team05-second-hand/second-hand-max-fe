@@ -1,26 +1,28 @@
 import { Dim } from "@styles/common";
-import React from "react";
+import React, { LegacyRef } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import ModalHeader, { ModalHeaderProps } from "./ModalHeader";
 
 type ModalProps = {
+  ref: LegacyRef<HTMLDivElement>;
   headerProps: ModalHeaderProps;
   content: React.ReactNode;
-  closeHandler: () => void;
 };
 
-export default function Modal({ headerProps, content }: ModalProps) {
-  return createPortal(
-    <Dim>
-      <StyledModal>
-        <ModalHeader {...headerProps} />
-        <ModalContent>{content}</ModalContent>
-      </StyledModal>
-    </Dim>,
-    document.getElementById("modal-root")!
-  );
-}
+const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
+  ({ headerProps, content }, ref) => {
+    return createPortal(
+      <Dim>
+        <StyledModal ref={ref}>
+          <ModalHeader {...headerProps} />
+          <ModalContent>{content}</ModalContent>
+        </StyledModal>
+      </Dim>,
+      document.getElementById("modal-root")!
+    );
+  }
+);
 
 const StyledModal = styled.div`
   position: fixed;
@@ -42,3 +44,5 @@ const ModalContent = styled.main`
   align-items: center;
   padding: 0px 24px;
 `;
+
+export default Modal;

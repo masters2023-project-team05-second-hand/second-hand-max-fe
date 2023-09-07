@@ -27,3 +27,49 @@ export type AddressList = {
   addresses: AddressInfo[];
   hasNext: boolean;
 };
+
+export type ProductDetailInfo = {
+  isSeller: boolean;
+  product: {
+    sellers: string;
+    category: CategoryInfo;
+    address: AddressInfo;
+    title: string;
+    contents: string;
+    price: number;
+    createdTime: string;
+    status: number;
+  };
+  images: {
+    id: number;
+    url: string;
+  }[];
+  stats: {
+    chatCount: number;
+    wishCount: number;
+    viewCount: number;
+  };
+  statuses: {
+    id: number;
+    type: string;
+  }[];
+};
+
+export type PostNewProduct = {
+  images: File[];
+  title: string;
+  content: string;
+  categoryId: number;
+  addressId: number;
+  price: number;
+};
+
+export type PatchProduct = {
+  deletedImageIds: number[];
+  newImages: File[];
+  title: string;
+  content: string;
+  price: number;
+  addressId: number;
+  categoryId: number;
+};

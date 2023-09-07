@@ -6,23 +6,29 @@ import { MenuItemInfo } from "./type";
 type MenuProps = {
   itemList: MenuItemInfo[];
   withShadow?: boolean;
-  position?: "left" | "right";
+  positionX?: "left" | "right";
+  positionY?: "top" | "bottom";
   closeMenuHandler: () => void;
 };
 
 export default function Menu({
   itemList,
   withShadow,
-  position,
+  positionX,
+  positionY,
   closeMenuHandler,
 }: MenuProps) {
   const { ref: menuRef } = useOutsideClick<HTMLDivElement>(closeMenuHandler);
 
   return (
-    <StyledMenu $withShadow={withShadow} $position={position} ref={menuRef}>
+    <StyledMenu
+      $withShadow={withShadow}
+      $positionX={positionX}
+      $positionY={positionY}
+      ref={menuRef}>
       <ul>
         {itemList.map((item) => (
-          <MenuItem key={item.itemId} {...item} />
+          <MenuItem key={item.id} {...item} />
         ))}
       </ul>
     </StyledMenu>
@@ -31,14 +37,15 @@ export default function Menu({
 
 const StyledMenu = styled.div<{
   $withShadow?: boolean;
-  $position?: "left" | "right";
+  $positionX?: "left" | "right";
+  $positionY?: "top" | "bottom";
 }>`
   position: absolute;
   width: 240px;
-  top: 56px;
   overflow: hidden;
   z-index: 2;
-  ${({ $position }) => ($position === "left" ? `left: 16px` : "right: 16px")};
+  ${({ $positionX }) => ($positionX === "left" ? `left: 16px` : "right: 16px")};
+  ${({ $positionY }) => ($positionY === "top" ? `top: 56px` : "bottom: 56px")};
   background-color: ${({ theme: { color } }) => color.neutralBackground};
   border: ${({ theme: { color } }) => `0.8px solid ${color.neutralBorder}`};
   border-radius: 12px;

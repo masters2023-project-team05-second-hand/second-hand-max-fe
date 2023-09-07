@@ -1,7 +1,7 @@
 export type MenuItemInfo = {
-  value: string;
+  id?: number;
+  name: string;
   onClick: (id?: number) => void;
-  itemId?: number;
   isSelected?: boolean;
   isWarning?: boolean;
 };
