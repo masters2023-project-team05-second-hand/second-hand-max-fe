@@ -18,6 +18,8 @@ export const API_PATH = {
   addresses: (page: number, size: number) =>
     `/api/addresses?page=${page}&size=${size}`,
   nickname: "/api/members/nickname",
+  newProduct: "/api/products",
+  editProduct: (productId: number) => `/api/products/${productId}`,
 };
 
 export const BASE_API_URL = VITE_APP_API_URL;

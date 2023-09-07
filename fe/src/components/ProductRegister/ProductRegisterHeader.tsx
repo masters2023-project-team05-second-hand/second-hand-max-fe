@@ -1,33 +1,27 @@
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
-import { ROUTE_PATH } from "@router/constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ProductInfo } from "./type";
 
 type ProductRegisterHeaderProps = {
-  // images: string[];
-  title: string;
-  content: string;
+  productInfo: ProductInfo;
+  onSubmit: (id: number | undefined, productInfo: ProductInfo) => void;
 };
 
 export default function ProductRegisterHeader({
-  // images,
-  title,
-  content,
+  productInfo,
+  onSubmit,
 }: ProductRegisterHeaderProps) {
   const navigate = useNavigate();
+  const { productId } = useParams();
 
   const onClose = () => {
     navigate(-1);
   };
 
-  const onAddNewProduct = () => {
-    // Todo: 경로에 api response로 오는 상세 아이디 추가해야함
-    navigate(ROUTE_PATH.detail);
-  };
-
-  // Todo: !!images.length 추가해야함
   // Memo: 상품 수정일 때는 title or content or images가 변경되어야 활성화?? -> 캡쳐필요??
-  const isCoreFilled = title && content;
+  const isCoreFilled =
+    !!productInfo.images.length && productInfo.title && productInfo.content;
 
   return (
     <TopBar
@@ -48,7 +42,7 @@ export default function ProductRegisterHeader({
           fontName="availableStrong16"
           color="neutralText"
           disabled={!isCoreFilled}
-          onClick={onAddNewProduct}
+          onClick={() => onSubmit(Number(productId), productInfo)}
         />
       }
     />

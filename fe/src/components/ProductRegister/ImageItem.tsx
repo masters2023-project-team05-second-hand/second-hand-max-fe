@@ -1,20 +1,17 @@
 import { ReactComponent as XIcon } from "@assets/icon/x.svg";
 import Button from "@components/common/Buttons/Button";
 import { styled } from "styled-components";
+import { ProductImageType } from "./type";
 
 type ImageItemProps = {
-  src: string;
+  image: ProductImageType;
+  onRemoveImage: (id: number) => void;
 };
 
-export default function ImageItem({ src }: ImageItemProps) {
-  const onDeleteImage = () => {
-    // Todo: 이미지 삭제 기능
-    console.log("이미지 삭제");
-  };
-
+export default function ImageItem({ image, onRemoveImage }: ImageItemProps) {
   return (
     <StyledImageItem>
-      <Image src={src} />
+      <Image src={image.url} />
       <Button
         className="delete"
         size={{ width: 28, height: 28 }}
@@ -22,7 +19,7 @@ export default function ImageItem({ src }: ImageItemProps) {
         color="neutralBackground"
         backgroundColor="neutralTextStrong"
         radius="half"
-        onClick={onDeleteImage}
+        onClick={() => onRemoveImage(image.id)}
       />
     </StyledImageItem>
   );

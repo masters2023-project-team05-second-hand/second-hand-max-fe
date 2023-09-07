@@ -13,7 +13,7 @@ export default function Home() {
   const navigate = useNavigate();
   const moveToCategoryPage = () => navigate(ROUTE_PATH.category);
   const goToAddProduct = () => {
-    navigate("/product-edit/1");
+    navigate(ROUTE_PATH.new);
   };
 
   return (
