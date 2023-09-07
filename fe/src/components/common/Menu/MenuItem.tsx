@@ -2,9 +2,9 @@ import { styled } from "styled-components";
 import { MenuItemInfo } from "./type";
 
 export default function MenuItem({
-  value,
+  id,
+  name,
   onClick,
-  itemId,
   isSelected,
   isWarning,
 }: MenuItemInfo) {
@@ -12,8 +12,8 @@ export default function MenuItem({
     <StyledItem
       $isSelected={isSelected}
       $isWarning={isWarning}
-      onClick={() => onClick(itemId)}>
-      <span>{value}</span>
+      onClick={() => onClick(id)}>
+      <span>{name}</span>
     </StyledItem>
   );
 }
@@ -31,6 +31,7 @@ const StyledItem = styled.li<{
     $isSelected ? font.displayStrong16 : font.availableDefault16};
   border-bottom: ${({ theme: { color } }) =>
     `0.8px solid ${color.neutralBorder}`};
+  text-align: start;
 
   &:last-child {
     border-bottom: none;
@@ -38,5 +39,6 @@ const StyledItem = styled.li<{
 
   &:hover {
     opacity: ${({ theme: { opacity } }) => opacity.press};
+    cursor: pointer;
   }
 `;
