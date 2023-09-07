@@ -34,7 +34,7 @@ function CategoryItem({ category }: { category: CategoryInfo }) {
     <StyledCategoryItem
       $active={isActiveCategory}
       onClick={onCategoryItemClick}>
-      <CategoryIcon src={category.imageUrl} alt={category.name} />
+      <CategoryIcon src={category.imgUrl} alt={category.name} />
       <span>{category.name}</span>
     </StyledCategoryItem>
   );
