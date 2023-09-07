@@ -45,13 +45,11 @@ export const handlers = [
 
     return res(
       ctx.status(200),
-      ctx.json<{ tokens: Tokens }>({
-        tokens: {
-          accessToken:
-            "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiZXhwIjoxNjkxOTIyNjAzfQ.vCxUGMiv9bnb4JQGwk6NVx6kHi5hG80tDxafIvrfKbA",
-          refreshToken:
-            "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTcxMDMwMDN9.FgoFySrenum985OrDzwwtaEhu1Iz7IVJtz5M6H8lzX8",
-        },
+      ctx.json<Tokens>({
+        accessToken:
+          "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiZXhwIjoxNjkxOTIyNjAzfQ.vCxUGMiv9bnb4JQGwk6NVx6kHi5hG80tDxafIvrfKbA",
+        refreshToken:
+          "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTcxMDMwMDN9.FgoFySrenum985OrDzwwtaEhu1Iz7IVJtz5M6H8lzX8",
       })
     );
   }),
@@ -140,12 +138,10 @@ export const handlers = [
     }
     return res(
       ctx.status(200),
-      ctx.json<{ member: Member }>({
-        member: {
-          nickname: "jjinbbang",
-          profileImgUrl:
-            "https://github.com/masters2023-project-team05-second-hand/second-hand-max-fe/assets/111998760/4ce425f1-d40b-421f-a24f-3c5b73737120",
-        },
+      ctx.json<Member>({
+        nickname: "jjinbbang",
+        profileImgUrl:
+          "https://github.com/masters2023-project-team05-second-hand/second-hand-max-fe/assets/111998760/4ce425f1-d40b-421f-a24f-3c5b73737120",
       })
     );
   }),
@@ -153,20 +149,18 @@ export const handlers = [
   rest.get(API_PATH.memberAddress, async (_req, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.json<{ addresses: UserAddressInfo[] }>({
-        addresses: [
-          {
-            id: 1,
-            name: "역삼 1동",
-            isLastVisited: true,
-          },
-          {
-            id: 5,
-            name: "역삼 5동",
-            isLastVisited: false,
-          },
-        ],
-      })
+      ctx.json<UserAddressInfo[]>([
+        {
+          id: 1,
+          name: "역삼 1동",
+          isLastVisited: true,
+        },
+        {
+          id: 5,
+          name: "역삼 5동",
+          isLastVisited: false,
+        },
+      ])
     );
   }),
 
