@@ -29,14 +29,6 @@ type ProductInfo = {
   address: AddressInfo;
 };
 
-// Memo: 상세 페이지에서 content 줄바꿈은?
-// 새로운 파일은 파일 형태로 배열에 담아서 보내야함
-// 수정/삭제 할 경우 images(url리스트{id,name})만 보냄??
-// 수정/삭제를 안했으면 images가 있어도 안보내야 하는것??
-// length 비교해서 안바꼈으면 빈 배열로 보내야함...?
-// 기존 images 리스트를 보내줘야 하는지? - 보내는게 편하긴 함
-// new는 undefined, edit은 param값 있음(string)
-
 export default function ProductRegister() {
   const { id } = useParams();
   const [addressList] = useAddressList();
@@ -60,7 +52,6 @@ export default function ProductRegister() {
     () => getProductDetail(1),
     {
       onSuccess: (res) => {
-        console.log(res);
         setProductInfo((prev) => {
           return {
             ...prev,
@@ -73,14 +64,12 @@ export default function ProductRegister() {
         });
       },
       // Todo: error 처리
-      // Memo: loading은???
       onError: (error) => {
         console.error(error);
       },
     }
   );
 
-  // Todo: id가 있으면 fetch 한 값으로 set 해줘야함
   useEffect(() => {
     if (id) {
       productDetail();
