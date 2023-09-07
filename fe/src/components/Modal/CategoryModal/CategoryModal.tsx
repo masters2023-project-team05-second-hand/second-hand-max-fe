@@ -1,4 +1,3 @@
-import { categories } from "mocks/data/categories";
 import Modal from "../Modal";
 import CategoryModalContent from "./CategoryModalContent";
 import useOutsideClick from "@hooks/useOutsideClick";
@@ -11,12 +10,14 @@ type CategoryModalProps = {
     categories: Pick<CategoryInfo, "id" | "name">[]
   ) => void;
   closeHandler: () => void;
+  categories: CategoryInfo[];
 };
 
 export default function CategoryModal({
   selectedId,
   onSelectCategory,
   closeHandler,
+  categories,
 }: CategoryModalProps) {
   const { ref: categoryRef } = useOutsideClick<HTMLDivElement>(closeHandler);
 

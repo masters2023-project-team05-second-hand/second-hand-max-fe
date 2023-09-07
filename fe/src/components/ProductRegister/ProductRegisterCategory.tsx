@@ -1,11 +1,11 @@
-import { getCategories } from "@api/index";
 import { CategoryInfo } from "@api/type";
 import { ReactComponent as ChevronRightIcon } from "@assets/icon/chevron-right.svg";
 import Button from "@components/common/Buttons/Button";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import CategoryModal from "@components/Modal/CategoryModal/CategoryModal";
-import { useMutation } from "@tanstack/react-query";
+import { useCategoryQuery } from "@api/queries";
+import { Error, Loading } from "@components/common/Guide";
 
 export default function ProductRegisterCategory({
   category,
@@ -17,74 +17,79 @@ export default function ProductRegisterCategory({
     categories: Pick<CategoryInfo, "id" | "name">[]
   ) => void;
 }) {
-  const [categoryList, setCategoryList] = useState<
-    Pick<CategoryInfo, "id" | "name">[]
-  >([]);
-  const [randomCategories, setRandomCategories] = useState<
-    Pick<CategoryInfo, "id" | "name">[]
-  >([]);
+  const [randomCategories, setRandomCategories] = useState<CategoryInfo[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-
-  const { mutate: getCategoryList } = useMutation(() => getCategories(), {
-    onSuccess: (res) => {
-      setCategoryList(res.categories);
-    },
-    // Todo: error 처리
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+  const { data, isSuccess, isError, isLoading } = useCategoryQuery();
 
   useEffect(() => {
-    if (!categoryList.length) {
-      getCategoryList();
+    if (data && isSuccess) {
+      const randomCategories = getRandomCategories(
+        category.id,
+        data.categories
+      );
+
+      setRandomCategories(randomCategories);
     }
-
-    const randomCategories = getRandomCategories(category.id, categoryList);
-
-    setRandomCategories(randomCategories);
-  }, [category.id, categoryList, getCategoryList]);
+  }, [category.id, isSuccess, data]);
 
   const toggleCategoryModal = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <>
-      <Category>
-        <CategoryList>
-          <SelectedCategory>{category.name}</SelectedCategory>
-          <ul>
-            {randomCategories.map((category) => (
-              <RandomCategory
-                key={category.id}
-                onClick={() => onChange(category.id, randomCategories)}>
-                {category.name}
-              </RandomCategory>
-            ))}
-          </ul>
-        </CategoryList>
-        <Button
-          size={{ width: 24, height: 24 }}
-          leftIcon={<ChevronRightIcon />}
-          onClick={toggleCategoryModal}
+    <Category>
+      {isLoading ? (
+        <Loading
+          messages={[
+            "카테고리 목록을 불러오는 중입니다.",
+            "새로고침을 하지 마세요!",
+          ]}
         />
-      </Category>
-      {isOpen && (
-        <CategoryModal
-          selectedId={category.id}
-          onSelectCategory={onChange}
-          closeHandler={toggleCategoryModal}
+      ) : isError ? (
+        <Error
+          messages={[
+            "카테고리 목록을 불러오는데 실패했어요.",
+            "잠시 후 다시 시도해주세요.",
+          ]}
         />
+      ) : (
+        <>
+          <CategoryList>
+            <SelectedCategory>{category.name}</SelectedCategory>
+            <ul>
+              {randomCategories.map((category) => (
+                <RandomCategory
+                  key={category.id}
+                  onClick={() => onChange(category.id, randomCategories)}>
+                  {category.name}
+                </RandomCategory>
+              ))}
+            </ul>
+          </CategoryList>
+          <Button
+            size={{ width: 24, height: 24 }}
+            leftIcon={<ChevronRightIcon />}
+            onClick={toggleCategoryModal}
+          />
+
+          {isOpen && (
+            <CategoryModal
+              selectedId={category.id}
+              onSelectCategory={onChange}
+              closeHandler={toggleCategoryModal}
+              categories={data?.categories ?? []}
+            />
+          )}
+        </>
       )}
-    </>
+    </Category>
   );
 }
 
 function getRandomCategories(
   id: number,
-  categories: Pick<CategoryInfo, "id" | "name">[]
-): Pick<CategoryInfo, "id" | "name">[] {
+  categories: CategoryInfo[]
+): CategoryInfo[] {
   const shuffledCategories = categories.sort(() => Math.random() - 0.5);
   const slicedCategories = shuffledCategories.slice(0, 2);
 

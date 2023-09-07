@@ -9,7 +9,7 @@ export default function ProductRegisterContent({
   onChange,
 }: {
   content?: string;
-  address: AddressInfo;
+  address?: AddressInfo;
   onChange: (content: string) => void;
 }) {
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -25,7 +25,7 @@ export default function ProductRegisterContent({
 
   return (
     <Content
-      placeholder={PLACE_HOLDER.CONTENT(address.name)}
+      placeholder={PLACE_HOLDER.CONTENT(address?.name ?? "")}
       value={content}
       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
         onContentChange(e)

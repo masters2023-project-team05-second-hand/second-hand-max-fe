@@ -2,16 +2,13 @@ import { CategoryInfo } from "api/type";
 import { ListItem, ListPanel } from "../Modal.style";
 
 type CategoryModalContentProps = {
-  categories: Pick<CategoryInfo, "id" | "name">[];
+  categories: CategoryInfo[];
   selectedId: number;
-  onClickCategory: (
-    id: number,
-    categories: Pick<CategoryInfo, "id" | "name">[]
-  ) => void;
+  onClickCategory: (id: number, categories: CategoryInfo[]) => void;
 };
 
 type CategoryListItemProps = {
-  category: Pick<CategoryInfo, "id" | "name">;
+  category: CategoryInfo;
   isSelected: boolean;
   onClick: () => void;
 };

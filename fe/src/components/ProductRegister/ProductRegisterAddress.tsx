@@ -4,11 +4,11 @@ import { styled } from "styled-components";
 import { useState } from "react";
 import Menu from "@components/common/Menu/Menu";
 import { AddressInfo } from "@api/type";
-import { useAddressList } from "store";
+import { useAddressListValue } from "store";
 
 type ProductRegisterAddressProps = {
   selectedAddressId?: number;
-  address: AddressInfo;
+  address?: AddressInfo;
   onChange: (addressList: AddressInfo[], newAddressId: number) => void;
 };
 
@@ -17,7 +17,7 @@ export default function ProductRegisterAddress({
   address,
   onChange,
 }: ProductRegisterAddressProps) {
-  const [addressList] = useAddressList();
+  const addressList = useAddressListValue();
   const [isAddressMenuOpen, setIsAddressMenuOpen] = useState(false);
 
   const addressMenuList = addressList.map((address) => ({
@@ -38,7 +38,7 @@ export default function ProductRegisterAddress({
     <Address>
       <AddressButton onClick={toggleAddressMenu}>
         <MapIcon />
-        <span>{address.name}</span>
+        <span>{address?.name}</span>
       </AddressButton>
       {isAddressMenuOpen && (
         <Menu

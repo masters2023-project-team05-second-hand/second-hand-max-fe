@@ -28,5 +28,5 @@ export type ProductInfo = {
   category: Pick<CategoryInfo, "id" | "name">;
   price: string;
   content: string;
-  address: AddressInfo;
+  address?: AddressInfo;
 };
