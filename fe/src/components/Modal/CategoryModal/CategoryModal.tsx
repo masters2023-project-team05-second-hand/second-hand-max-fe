@@ -1,27 +1,46 @@
 import { categories } from "mocks/data/categories";
-import { useState } from "react";
 import Modal from "../Modal";
 import CategoryModalContent from "./CategoryModalContent";
+import useOutsideClick from "@hooks/useOutsideClick";
+import { CategoryInfo } from "@api/type";
 
-export default function CategoryModal() {
-  // TODO: 더 상위 부모로 상태 올려야 함 (새로운 상품 등록 Context API 적용할지 고민해보기)
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(1);
-  const onClickCategory = (id: number) => {
-    setSelectedCategoryId(id);
+type CategoryModalProps = {
+  selectedId: number;
+  onSelectCategory: (
+    id: number,
+    categories: Pick<CategoryInfo, "id" | "name">[]
+  ) => void;
+  closeHandler: () => void;
+};
+
+export default function CategoryModal({
+  selectedId,
+  onSelectCategory,
+  closeHandler,
+}: CategoryModalProps) {
+  const { ref: categoryRef } = useOutsideClick<HTMLDivElement>(closeHandler);
+  // Todo: categories 조회 api 적용시키기(tanstack query 이용하기)
+
+  const onClickCategory = (
+    id: number,
+    categories: Pick<CategoryInfo, "id" | "name">[]
+  ) => {
+    onSelectCategory(id, categories);
+    closeHandler();
   };
 
   return (
     <Modal
+      ref={categoryRef}
       headerProps={{
         title: "카테고리",
-        closeHandler: () => console.log("카테고리 모달 닫기"),
+        closeHandler,
       }}
       content={
         <CategoryModalContent
-          {...{ categories, selectedCategoryId, onClickCategory }}
+          {...{ categories, selectedId, onClickCategory }}
         />
       }
-      closeHandler={() => console.log("카테고리 모달 닫기")}
     />
   );
 }

@@ -20,4 +20,8 @@ export const ListItem = styled.li<{ $active: boolean }>`
   color: ${({ $active, theme: { color } }) =>
     $active ? color.neutralTextStrong : color.neutralText};
   padding: 16px 0px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
