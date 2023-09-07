@@ -5,6 +5,8 @@ import {
   AddressList,
   CategoryInfo,
   Member,
+  PatchProduct,
+  PostNewProduct,
   ProductDetailInfo,
   Tokens,
   UserAddressInfo,
@@ -48,12 +50,6 @@ export const postUserProfile = async (file: File) => {
     API_PATH.userProfile,
     formData,
     config
-  );
-};
-
-export const getProductDetail = async (productId: number) => {
-  return await fetcher.get<ProductDetailInfo>(
-    API_PATH.productDetail(productId)
   );
 };
 
@@ -116,4 +112,23 @@ export const getAddresses = async (page: number = 0, size: number = 10) => {
 
 export const patchNickname = async (nickname: string) => {
   return await fetcher.patch(API_PATH.nickname, { nickname });
+};
+
+export const getProductDetail = async (productId: number) => {
+  return await fetcher.get<ProductDetailInfo>(
+    API_PATH.productDetail(productId)
+  );
+};
+
+export const postProduct = async (productInfo: PostNewProduct) => {
+  return await fetcher.post<{ productId: number }>(API_PATH.newProduct, {
+    productInfo,
+  });
+};
+
+export const patchProduct = async (
+  productId: number,
+  productInfo: PatchProduct
+) => {
+  return await fetcher.patch(API_PATH.editProduct(productId), { productInfo });
 };

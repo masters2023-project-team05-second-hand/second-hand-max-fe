@@ -7,7 +7,7 @@ import { AddressInfo } from "@api/type";
 import { useAddressList } from "store";
 
 type ProductRegisterAddressProps = {
-  selectedAddressId: number;
+  selectedAddressId?: number;
   address: AddressInfo;
   onChange: (addressList: AddressInfo[], newAddressId: number) => void;
 };

@@ -25,7 +25,7 @@ export default function ProductRegisterCategory({
   >([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { mutateAsync: categories } = useMutation(() => getCategories(), {
+  const { mutateAsync: getCategoryList } = useMutation(() => getCategories(), {
     onSuccess: (res) => {
       setCategoryList(res.data);
     },
@@ -37,13 +37,13 @@ export default function ProductRegisterCategory({
 
   useEffect(() => {
     if (!categoryList.length) {
-      categories();
+      getCategoryList();
     }
 
     const randomCategories = getRandomCategories(category.id, categoryList);
 
     setRandomCategories(randomCategories);
-  }, [category.id, categoryList, categories]);
+  }, [category.id, categoryList, getCategoryList]);
 
   const toggleCategoryModal = () => {
     setIsOpen(!isOpen);

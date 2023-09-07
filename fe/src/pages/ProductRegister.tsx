@@ -1,5 +1,5 @@
-import { getProductDetail } from "@api/index";
-import { AddressInfo, CategoryInfo } from "@api/type";
+import { getProductDetail, postProduct } from "@api/index";
+import { AddressInfo, CategoryInfo, PostNewProduct } from "@api/type";
 import ProductRegisterAddress from "@components/ProductRegister/ProductRegisterAddress";
 import ProductRegisterCategory from "@components/ProductRegister/ProductRegisterCategory";
 import ProductRegisterContent from "@components/ProductRegister/ProductRegisterContent";
@@ -9,36 +9,30 @@ import ProductRegisterPrice from "@components/ProductRegister/ProductRegisterPri
 import ProductRegisterTitle from "@components/ProductRegister/ProductRegisterTitle";
 import {
   DEFAULT_CATEGORY,
-  DEFAULT_SELECTED_ADDRESS_ID,
   DEFAULT_SELECTED_ADDRESS_INDEX,
 } from "@components/ProductRegister/constants";
+import { ProductInfo, ProductNewImage } from "@components/ProductRegister/type";
 import { Page } from "@styles/common";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAddressList, useCurrentAddressId } from "store";
 import { styled } from "styled-components";
 
-type ProductInfo = {
-  newImages: File[];
-  deletedImageIds?: number[];
-  title: string;
-  category: Pick<CategoryInfo, "id" | "name">;
-  price: string;
-  content: string;
-  address: AddressInfo;
-};
-
 export default function ProductRegister() {
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const { productId } = useParams();
   const [addressList] = useAddressList();
   const [currentAddressId] = useCurrentAddressId();
-  const [selectedAddressId, setSelectedAddressId] = useState<number>(
-    currentAddressId ?? DEFAULT_SELECTED_ADDRESS_ID
-  );
+  const [newImages, setNewImages] = useState<ProductNewImage[]>([]);
+  const [deletedImageIds, setDeletedImageIds] = useState<number[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<
+    number | undefined
+  >(productId ? undefined : currentAddressId);
   const [productInfo, setProductInfo] = useState<ProductInfo>({
-    newImages: [],
-    deletedImageIds: [],
+    images: [],
+    newImages: newImages,
+    deletedImageIds: deletedImageIds,
     title: "",
     category: DEFAULT_CATEGORY,
     price: "",
@@ -48,56 +42,100 @@ export default function ProductRegister() {
       addressList[DEFAULT_SELECTED_ADDRESS_INDEX],
   });
 
-  const { mutateAsync: productDetail } = useMutation(
-    () => getProductDetail(1),
+  const { mutateAsync: getProduct } = useMutation(() => getProductDetail(1), {
+    onSuccess: (res) => {
+      setProductInfo((prev) => {
+        console.log(res);
+        return {
+          ...prev,
+          images: res.data.images,
+          title: res.data.product.title,
+          category: res.data.product.category,
+          price: res.data.product.price.toString(),
+          content: res.data.product.contents,
+          address: res.data.product.address,
+        };
+      });
+    },
+    // Todo: error 처리
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  useEffect(() => {
+    if (productId) {
+      console.log(productId);
+      getProduct();
+    }
+  }, [productId, getProduct]);
+
+  const { mutateAsync: newProductMutation } = useMutation(
+    (productInfo: PostNewProduct) => postProduct(productInfo),
     {
-      onSuccess: (res) => {
-        setProductInfo((prev) => {
-          return {
-            ...prev,
-            title: res.data.product.title,
-            category: res.data.product.category,
-            price: res.data.product.price.toString(),
-            content: res.data.product.contents,
-            address: res.data.product.address,
-          };
-        });
+      onSuccess: () => {
+        navigate(-1);
       },
-      // Todo: error 처리
       onError: (error) => {
         console.error(error);
       },
     }
   );
 
-  useEffect(() => {
-    if (id) {
-      productDetail();
+  const onSubmitProduct = (
+    id: number | undefined,
+    productInfo: ProductInfo
+  ) => {
+    // Todo: 이미지 파일 담은 배열? 보내는 법??
+    // Todo: patch도 추가해야함
+    const postInfo = {
+      images: productInfo.newImages!.map((image) => image.image),
+      product: {
+        addressId: productInfo.address.id,
+        categoryId: productInfo.category.id,
+        title: productInfo.title,
+        content: productInfo.content,
+        price: parseInt(productInfo.price),
+      },
+    };
+
+    if (!id) {
+      newProductMutation(postInfo);
     }
-  }, [id, productDetail]);
+  };
 
-  // const onAddNewImage = (newImage: File) => {
-  //   setProductInfo((prev) => ({
-  //     ...prev,
-  //     newImages: [...prev.newImages, newImage],
-  //   }));
-  // };
+  const onAddNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  // const onRemoveImage = (id: number) => {
-  //   setDeletedImageIds((prev) => [...prev, id]);
-  // };
+    const now = new Date().getTime();
 
-  // const onAddNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   // Memo: 미완성 기능
-  //   const file = e.target.files?.[0];
-  //   if (!file) return;
+    setNewImages((prev) => [...prev, { id: now, image: file }]);
 
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   reader.onload = () => {
-  //     setImages((prev) => [...prev, reader.result as string]);
-  //   };
-  // };
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setProductInfo((prev) => ({
+        ...prev,
+        images: [...prev.images, { id: now, url: reader.result as string }],
+      }));
+    };
+  };
+
+  const onRemoveImage = (id: number) => {
+    const isNewImage = newImages.find((image) => image.id === id);
+
+    if (!isNewImage) {
+      setDeletedImageIds((prev) => [...prev, id]);
+    }
+
+    setProductInfo((prev) => {
+      return {
+        ...prev,
+        images: prev.images.filter((image) => image.id !== id),
+      };
+    });
+  };
 
   const onChangeTitle = (newTitle: string) => {
     setProductInfo((prev) => ({
@@ -151,11 +189,15 @@ export default function ProductRegister() {
   return (
     <Page>
       <ProductRegisterHeader
-        title={productInfo.title}
-        content={productInfo.content}
+        productInfo={productInfo}
+        onSubmit={onSubmitProduct}
       />
       <Main>
-        <ProductRegisterImage />
+        <ProductRegisterImage
+          images={productInfo.images}
+          onAddNewImage={onAddNewImage}
+          onRemoveImage={onRemoveImage}
+        />
         <div className="product-info">
           <ProductRegisterTitle
             title={productInfo.title}

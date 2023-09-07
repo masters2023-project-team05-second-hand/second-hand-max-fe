@@ -19,11 +19,11 @@ export const productDetail = {
   images: [
     {
       id: 1,
-      url: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fblankspace-dev.tistory.com%2F200&psig=AOvVaw11S0kbgwUyxmgu26074qNh&ust=1694140198931000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCNCqxp-6l4EDFQAAAAAdAAAAABAI",
+      url: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
     },
     {
       id: 2,
-      url: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.aitimes.kr%2Fnews%2FarticleView.html%3Fidxno%3D27617&psig=AOvVaw11S0kbgwUyxmgu26074qNh&ust=1694140198931000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCNCqxp-6l4EDFQAAAAAdAAAAABAD",
+      url: "https://cdn.aitimes.kr/news/photo/202303/27617_41603_044.jpg",
     },
   ],
   stats: {

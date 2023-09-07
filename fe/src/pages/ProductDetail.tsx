@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
 export default function ProductDetail() {
-  const { id } = useParams();
+  const { productId } = useParams();
   const { scrollY, ref } = useScroll();
 
   const isScroll = !!scrollY && scrollY > 0;
@@ -16,7 +16,7 @@ export default function ProductDetail() {
   return (
     <Page ref={ref}>
       {/* Todo: 사진 position absolute로 해야함 */}
-      <Test>{`상품 ${id} 상세 페이지`}</Test>
+      <Test>{`상품 ${productId} 상세 페이지`}</Test>
       <TopBar
         backgroundColor="accentPrimary"
         isScrolled={isScroll}

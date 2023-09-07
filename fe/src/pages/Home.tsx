@@ -4,6 +4,7 @@ import { ReactComponent as PlusIcon } from "@assets/icon/plus.svg";
 import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
+import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
@@ -12,7 +13,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const goToAddProduct = () => {
-    navigate("/product-edit/1");
+    navigate(ROUTE_PATH.new);
   };
 
   return (

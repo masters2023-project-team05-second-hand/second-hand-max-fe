@@ -24,10 +24,11 @@ export default function ProfileUploadButton() {
             profileImgUrl: newProfileImageUrl,
           });
         },
-        onError: () =>
+        onError: () => {
           setErrorMessage(
             "프로필 이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요."
-          ),
+          );
+        },
       });
     }
   };
