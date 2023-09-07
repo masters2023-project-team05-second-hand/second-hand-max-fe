@@ -54,11 +54,5 @@ export default function AddressModal({
     <AddressIndicatorList openAddressSearch={openAddressSearch} />
   );
 
-  return (
-    <Modal
-      headerProps={currentHeaderProps}
-      content={currentContent}
-      closeHandler={closeHandler}
-    />
-  );
+  return <Modal headerProps={currentHeaderProps} content={currentContent} />;
 }

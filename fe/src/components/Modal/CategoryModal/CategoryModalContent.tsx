@@ -3,8 +3,11 @@ import { ListItem, ListPanel } from "../Modal.style";
 
 type CategoryModalContentProps = {
   categories: Pick<CategoryInfo, "id" | "name">[];
-  selectedCategoryId: number;
-  onClickCategory: (id: number) => void;
+  selectedId: number;
+  onClickCategory: (
+    id: number,
+    categories: Pick<CategoryInfo, "id" | "name">[]
+  ) => void;
 };
 
 type CategoryListItemProps = {
@@ -15,7 +18,7 @@ type CategoryListItemProps = {
 
 export default function CategoryModalContent({
   categories,
-  selectedCategoryId,
+  selectedId,
   onClickCategory,
 }: CategoryModalContentProps) {
   return (
@@ -24,10 +27,9 @@ export default function CategoryModalContent({
         <CategoryListItem
           key={category.id}
           category={category}
-          isSelected={category.id === selectedCategoryId}
+          isSelected={category.id === selectedId}
           onClick={() => {
-            // TODO: close modal handler 추가
-            onClickCategory(category.id);
+            onClickCategory(category.id, categories);
           }}
         />
       ))}
