@@ -1,11 +1,5 @@
 import { API_PATH } from "api/constants";
-import {
-  Member,
-  PatchProduct,
-  PostNewProduct,
-  Tokens,
-  UserAddressInfo,
-} from "api/type";
+import { Member, Tokens, UserAddressInfo } from "api/type";
 import { rest } from "msw";
 import { getMockAddresses } from "./data/address";
 import { categories } from "./data/categories";
@@ -234,40 +228,5 @@ export const handlers = [
         accessToken: "newAccessToken",
       })
     );
-  }),
-
-  rest.post(API_PATH.newProduct, async (req, res, ctx) => {
-    const { productInfo } = await req.json<{ productInfo: PostNewProduct }>();
-
-    if (!productInfo) {
-      return res(
-        ctx.status(400),
-        ctx.json({
-          message: "잘못된 요청입니다.",
-        })
-      );
-    }
-
-    return res(
-      ctx.status(200),
-      ctx.json<{ productId: number }>({
-        productId: 1,
-      })
-    );
-  }),
-
-  rest.patch(API_PATH.editProduct(1), async (req, res, ctx) => {
-    const { productInfo } = await req.json<{ productInfo: PatchProduct }>();
-
-    if (!productInfo) {
-      return res(
-        ctx.status(400),
-        ctx.json({
-          message: "잘못된 요청입니다.",
-        })
-      );
-    }
-
-    return res(ctx.status(200));
   }),
 ];

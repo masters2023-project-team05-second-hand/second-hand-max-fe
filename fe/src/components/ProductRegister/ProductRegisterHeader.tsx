@@ -1,11 +1,11 @@
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ProductInfo } from "./type";
 
 type ProductRegisterHeaderProps = {
   productInfo: ProductInfo;
-  onSubmit: (id: number | undefined, productInfo: ProductInfo) => void;
+  onSubmit: () => void;
 };
 
 export default function ProductRegisterHeader({
@@ -13,13 +13,11 @@ export default function ProductRegisterHeader({
   onSubmit,
 }: ProductRegisterHeaderProps) {
   const navigate = useNavigate();
-  const { productId } = useParams();
 
   const onClose = () => {
     navigate(-1);
   };
 
-  // Memo: 상품 수정일 때는 title or content or images가 변경되어야 활성화?? -> 캡쳐필요??
   const isCoreFilled =
     !!productInfo.images.length && productInfo.title && productInfo.content;
 
@@ -42,7 +40,7 @@ export default function ProductRegisterHeader({
           fontName="availableStrong16"
           color="neutralText"
           disabled={!isCoreFilled}
-          onClick={() => onSubmit(Number(productId), productInfo)}
+          onClick={onSubmit}
         />
       }
     />

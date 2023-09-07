@@ -5,8 +5,6 @@ import {
   AddressList,
   CategoryInfo,
   Member,
-  PatchProduct,
-  PostNewProduct,
   ProductDetailInfo,
   Tokens,
   UserAddressInfo,
@@ -120,15 +118,36 @@ export const getProductDetail = async (productId: number) => {
   );
 };
 
-export const postProduct = async (productInfo: PostNewProduct) => {
-  return await fetcher.post<{ productId: number }>(API_PATH.newProduct, {
+export const postProduct = async (productInfo: FormData) => {
+  const config = {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  };
+
+  return await fetcher.post<{ productId: number }>(
+    API_PATH.newProduct,
     productInfo,
-  });
+    config
+  );
 };
 
-export const patchProduct = async (
-  productId: number,
-  productInfo: PatchProduct
-) => {
-  return await fetcher.patch(API_PATH.editProduct(productId), { productInfo });
+export const patchProduct = async ({
+  productId,
+  productInfo,
+}: {
+  productId: number;
+  productInfo: FormData;
+}) => {
+  const config = {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  };
+
+  return await fetcher.patch(
+    API_PATH.editProduct(productId),
+    productInfo,
+    config
+  );
 };

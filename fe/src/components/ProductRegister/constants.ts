@@ -17,7 +17,7 @@ export const DEFAULT_CATEGORY = {
 export const TEMP_CATEGORY = {
   id: 2,
   name: "인기매물",
-  imageUrl: "https://i.ibb.co/LSkHKbL/star.png",
+  imgUrl: "https://i.ibb.co/LSkHKbL/star.png",
 };
 
 export const DEFAULT_SELECTED_ADDRESS_INDEX = 0;

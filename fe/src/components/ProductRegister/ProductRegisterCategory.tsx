@@ -25,7 +25,7 @@ export default function ProductRegisterCategory({
   >([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { mutateAsync: getCategoryList } = useMutation(() => getCategories(), {
+  const { mutate: getCategoryList } = useMutation(() => getCategories(), {
     onSuccess: (res) => {
       setCategoryList(res.data);
     },
