@@ -31,7 +31,7 @@ export type AddressList = {
 export type ProductDetailInfo = {
   isSeller: boolean;
   product: {
-    sellers: string;
+    seller: string;
     category: CategoryInfo;
     address: AddressInfo;
     title: string;

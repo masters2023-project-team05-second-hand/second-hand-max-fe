@@ -5,6 +5,7 @@ import { useState } from "react";
 import Menu from "@components/common/Menu/Menu";
 import { AddressInfo } from "@api/type";
 import { useAddressListValue } from "store";
+import { PLACE_HOLDER } from "./constants";
 
 type ProductRegisterAddressProps = {
   selectedAddressId?: number;
@@ -38,7 +39,7 @@ export default function ProductRegisterAddress({
     <Address>
       <AddressButton onClick={toggleAddressMenu}>
         <MapIcon />
-        <span>{address?.name}</span>
+        <span>{address?.name ?? PLACE_HOLDER.ADDRESS}</span>
       </AddressButton>
       {isAddressMenuOpen && (
         <Menu
