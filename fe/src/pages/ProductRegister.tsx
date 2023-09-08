@@ -1,4 +1,5 @@
-import { getProductDetail, patchProduct, postProduct } from "@api/index";
+import { patchProduct, postProduct } from "@api/index";
+import { useProductDetailQuery } from "@api/queries";
 import { AddressInfo, CategoryInfo } from "@api/type";
 import ProductRegisterAddress from "@components/ProductRegister/ProductRegisterAddress";
 import ProductRegisterCategory from "@components/ProductRegister/ProductRegisterCategory";
@@ -12,22 +13,24 @@ import {
   DEFAULT_SELECTED_ADDRESS_INDEX,
 } from "@components/ProductRegister/constants";
 import { ProductInfo } from "@components/ProductRegister/type";
-import { Error } from "@components/common/Guide";
+import { Error, Loading } from "@components/common/Guide";
 import { Page } from "@styles/common";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAddressList, useCurrentAddressId } from "store";
+import { useAddressListValue, useCurrentAddressIdValue } from "store";
 import { styled } from "styled-components";
 
 export default function ProductRegister() {
   const navigate = useNavigate();
   const { productId } = useParams();
-  const [addressList] = useAddressList();
-  const [currentAddressId] = useCurrentAddressId();
+  const addressList = useAddressListValue();
+  const currentAddressId = useCurrentAddressIdValue();
   const [selectedAddressId, setSelectedAddressId] = useState<
     number | undefined
   >(productId ? undefined : currentAddressId);
+
+  // Todo: 상태 분리하기 & 상태 관리 라이브러리 쓰기
   const [productInfo, setProductInfo] = useState<ProductInfo>({
     images: [],
     newImages: [],
@@ -41,43 +44,29 @@ export default function ProductRegister() {
       addressList[DEFAULT_SELECTED_ADDRESS_INDEX],
   });
 
-  const { mutate: getProduct } = useMutation(
-    () => getProductDetail(Number(productId)),
-    {
-      onSuccess: (res) => {
-        setProductInfo((prev) => {
-          return {
-            ...prev,
-            images: res.data.images,
-            title: res.data.product.title,
-            category: res.data.product.category,
-            price: res.data.product.price.toString(),
-            content: res.data.product.contents,
-            address: res.data.product.address,
-          };
-        });
-      },
-      onError: () => {
-        return (
-          <Error
-            messages={[
-              "상세 물품을 불러오는데 실패했어요.",
-              "잠시 후 다시 시도해주세요.",
-            ]}
-          />
-        );
-      },
-    }
+  const { data, isSuccess, isLoading, isError } = useProductDetailQuery(
+    Number(productId),
+    !!productId
   );
-
-  useEffect(() => {
-    if (productId) {
-      getProduct();
-    }
-  }, [productId, getProduct]);
 
   const newProductMutation = useMutation(postProduct);
   const editProductMutation = useMutation(patchProduct);
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setProductInfo((prev) => {
+        return {
+          ...prev,
+          images: data.data.images,
+          title: data.data.product.title,
+          category: data.data.product.category,
+          price: data.data.product.price.toString(),
+          content: data.data.product.contents,
+          address: data.data.product.address,
+        };
+      });
+    }
+  }, [isSuccess, data]);
 
   const onPostNewProduct = () => {
     const price = productInfo.price.replace(/,/g, "");
@@ -91,7 +80,7 @@ export default function ProductRegister() {
     formData.append("title", productInfo.title);
     formData.append("content", productInfo.content);
     formData.append("categoryId", productInfo.category.id.toString());
-    formData.append("addressId", productInfo.address!.id.toString());
+    formData.append("addressId", productInfo.address.id.toString());
     formData.append("price", price);
 
     newProductMutation.mutate(formData, {
@@ -127,7 +116,7 @@ export default function ProductRegister() {
     formData.append("title", productInfo.title);
     formData.append("content", productInfo.content);
     formData.append("categoryId", productInfo.category.id.toString());
-    formData.append("addressId", productInfo.address!.id.toString());
+    formData.append("addressId", productInfo.address.id.toString());
     formData.append("price", price);
 
     editProductMutation.mutate(
@@ -256,43 +245,61 @@ export default function ProductRegister() {
 
   return (
     <Page>
-      <ProductRegisterHeader
-        productInfo={productInfo}
-        onSubmit={onSubmitProduct}
-      />
-      <Main>
-        <ProductRegisterImage
-          images={productInfo.images}
-          onAddNewImage={onAddNewImage}
-          onRemoveImage={onRemoveImage}
+      {!!productId && isLoading ? (
+        <Loading
+          messages={[
+            "상세 상품을 불러오는 중입니다.",
+            "새로고침을 하지 마세요!",
+          ]}
         />
-        <div className="product-info">
-          <ProductRegisterTitle
-            title={productInfo.title}
-            onChange={onChangeTitle}
+      ) : isError ? (
+        <Error
+          messages={[
+            "상세 상품을 불러오는데 실패했어요.",
+            "잠시 후 다시 시도해주세요.",
+          ]}
+        />
+      ) : (
+        <>
+          <ProductRegisterHeader
+            productInfo={productInfo}
+            onSubmit={onSubmitProduct}
           />
-          {productInfo.title && (
-            <ProductRegisterCategory
-              category={productInfo.category}
-              onChange={onChangeCategory}
+          <Main>
+            <ProductRegisterImage
+              images={productInfo.images}
+              onAddNewImage={onAddNewImage}
+              onRemoveImage={onRemoveImage}
             />
-          )}
-        </div>
-        <ProductRegisterPrice
-          price={productInfo.price}
-          onChange={onChangePrice}
-        />
-        <ProductRegisterContent
-          content={productInfo.content}
-          address={productInfo.address}
-          onChange={onChangeContent}
-        />
-      </Main>
-      <ProductRegisterAddress
-        selectedAddressId={selectedAddressId}
-        address={productInfo.address}
-        onChange={onChangeAddress}
-      />
+            <div className="product-info">
+              <ProductRegisterTitle
+                title={productInfo.title}
+                onChange={onChangeTitle}
+              />
+              {productInfo.title && (
+                <ProductRegisterCategory
+                  category={productInfo.category}
+                  onChange={onChangeCategory}
+                />
+              )}
+            </div>
+            <ProductRegisterPrice
+              price={productInfo.price}
+              onChange={onChangePrice}
+            />
+            <ProductRegisterContent
+              content={productInfo.content}
+              address={productInfo.address}
+              onChange={onChangeContent}
+            />
+          </Main>
+          <ProductRegisterAddress
+            selectedAddressId={selectedAddressId}
+            address={productInfo.address}
+            onChange={onChangeAddress}
+          />
+        </>
+      )}
     </Page>
   );
 }

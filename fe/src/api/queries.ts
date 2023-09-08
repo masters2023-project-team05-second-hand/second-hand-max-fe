@@ -47,10 +47,10 @@ export const useCategoryQuery = () => {
   });
 };
 
-export const useProductDetailQuery = (id: number) => {
+export const useProductDetailQuery = (id: number, enabled: boolean) => {
   return useQuery({
     queryKey: ["getProductDetail"],
     queryFn: () => getProductDetail(id),
-    staleTime: Infinity,
+    enabled,
   });
 };

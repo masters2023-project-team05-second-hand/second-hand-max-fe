@@ -73,7 +73,7 @@ export default function ProductRegisterCategory({
               selectedId={category.id}
               onSelectCategory={onChange}
               closeHandler={toggleCategoryModal}
-              categories={data ?? []}
+              categories={data}
             />
           )}
         </>
