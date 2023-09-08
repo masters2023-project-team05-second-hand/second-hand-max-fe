@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { postSocialLogin } from "api";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSetAddresses, useSetCurrentAddressId, useSetMember } from "store";
+import { useSetAddresses, useSetMember } from "store";
 
 export function Auth() {
   const { provider } = useParams<{ provider: "kakao" | "github" }>();
@@ -17,7 +17,6 @@ export function Auth() {
 
   const setMember = useSetMember();
   const setAddresses = useSetAddresses();
-  const setCurrentAddressId = useSetCurrentAddressId();
 
   const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: ["socialLogin"],
@@ -51,11 +50,8 @@ export function Auth() {
           name: address.name,
         }))
       );
-      setCurrentAddressId(
-        userAddressesInfo.find((address) => address.isLastVisited)?.id
-      );
     }
-  }, [memberAddressResult, setAddresses, setCurrentAddressId]);
+  }, [memberAddressResult, setAddresses]);
 
   useEffect(() => {
     if (memberAddressResult.isSuccess && memberResult.isSuccess) {

@@ -1,7 +1,7 @@
 import { useUserInfoQuery } from "@api/queries";
 import { useToast } from "@hooks/useToast";
 import React, { useEffect } from "react";
-import { useSetAddresses, useSetCurrentAddressId, useSetMember } from "store";
+import { useSetAddresses, useSetMember } from "store";
 export default function UserProvider({
   children,
 }: {
@@ -11,7 +11,6 @@ export default function UserProvider({
 
   const setMember = useSetMember();
   const setAddresses = useSetAddresses();
-  const setCurrentAddressId = useSetCurrentAddressId();
 
   const { toast } = useToast();
 
@@ -41,9 +40,6 @@ export default function UserProvider({
           name: address.name,
         }))
       );
-      setCurrentAddressId(
-        userAddressesInfo.find((address) => address.isLastVisited)?.id
-      );
     }
     if (memberAddressResult.isError) {
       toast({
@@ -52,7 +48,7 @@ export default function UserProvider({
         message: "유저 주소를 조회하는데 실패했습니다. 새로고침 해주세요.",
       });
     }
-  }, [memberAddressResult, setAddresses, setCurrentAddressId, toast]);
+  }, [memberAddressResult, setAddresses, toast]);
 
   return children;
 }
