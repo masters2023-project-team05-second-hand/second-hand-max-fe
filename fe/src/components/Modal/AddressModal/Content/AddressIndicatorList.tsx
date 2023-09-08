@@ -39,7 +39,6 @@ export default function AddressIndicatorList({
     setAddresses(newAddresses);
     setCurrentAddressId(newAddresses[0].id);
   };
-  console.log(addresses, "나 왜 이렇게 실행되니");
 
   return (
     <StyledAddressIndicatorList>
