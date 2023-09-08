@@ -1,9 +1,11 @@
 import { AddressInfo, Member } from "api/type";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 
+const lastAddressId = localStorage.getItem("currentAddressId");
+
 const memberAtom = atom<Member>({ nickname: "", profileImgUrl: "" });
 const addressListAtom = atom<AddressInfo[]>([]);
-const currentAddressIdAtom = atom<number | undefined>(undefined);
+const currentAddressIdAtom = atom<number | null>(Number(lastAddressId));
 const currentCategoryIdAtom = atom<number | undefined>(undefined);
 
 const useMemberAtom = atom(
@@ -22,8 +24,9 @@ const useAddressListAtom = atom(
 
 const useCurrentAddressIdAtom = atom(
   (get) => get(currentAddressIdAtom),
-  (_, set, payload?: number) => {
+  (_, set, payload: number) => {
     set(currentAddressIdAtom, payload);
+    localStorage.setItem("currentAddressId", String(payload));
   }
 );
 

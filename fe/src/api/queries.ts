@@ -29,11 +29,13 @@ export const useUserInfoQuery = (
         queryKey: ["getMember"],
         queryFn: getMember,
         enabled,
+        staleTime: Infinity,
       },
       {
         queryKey: ["getMemberAddresses"],
         queryFn: getMemberAddress,
         enabled,
+        staleTime: Infinity,
       },
     ],
   });
