@@ -52,5 +52,6 @@ export const useProductDetailQuery = (id: number, enabled: boolean) => {
     queryKey: ["getProductDetail"],
     queryFn: () => getProductDetail(id),
     enabled,
+    staleTime: Infinity,
   });
 };
