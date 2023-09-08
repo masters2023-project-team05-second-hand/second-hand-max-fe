@@ -1,12 +1,12 @@
 import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
 import { Page } from "@styles/common";
-import { useMember } from "store";
+import { useMemberValue } from "store";
 import Login from "./Login";
 import Setting from "./Setting";
 
 export default function MyAccount() {
-  const [member] = useMember();
+  const member = useMemberValue();
 
   return (
     <Page>

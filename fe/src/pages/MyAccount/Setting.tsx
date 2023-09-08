@@ -4,14 +4,14 @@ import { ROUTE_PATH } from "@router/constants";
 import { Main } from "@styles/common";
 import { postLogout } from "api";
 import { useNavigate } from "react-router-dom";
-import { useAddressList, useMember } from "store";
+import { useSetAddresses, useSetMember } from "store";
 
 export default function Setting() {
   const navigate = useNavigate();
   const refreshToken = localStorage.getItem("refreshToken");
 
-  const [, setMember] = useMember();
-  const [, setAddresses] = useAddressList();
+  const setMember = useSetMember();
+  const setAddresses = useSetAddresses();
 
   const onLogout = () => {
     refreshToken && postLogout({ refreshToken });
