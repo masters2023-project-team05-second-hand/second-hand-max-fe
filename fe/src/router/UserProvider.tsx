@@ -1,13 +1,12 @@
-import { useUserInfoQuery } from "@api/queries";
+import { useUserInfoQuery } from "@api/user/queries";
 import { useToast } from "@hooks/useToast";
-import React, { useEffect } from "react";
-import { useSetAddresses, useSetMember } from "store";
-export default function UserProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const accessToken = localStorage.getItem("accessToken");
+import { ROUTE_PATH } from "@router/constants";
+import { useEffect } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useIsLoginValue, useSetAddresses, useSetMember } from "store";
+
+export default function UserProvider() {
+  const isLogin = useIsLoginValue();
 
   const setMember = useSetMember();
   const setAddresses = useSetAddresses();
@@ -15,8 +14,11 @@ export default function UserProvider({
   const { toast } = useToast();
 
   const [memberResult, memberAddressResult] = useUserInfoQuery({
-    enabled: !!accessToken,
+    enabled: isLogin,
   });
+
+  const isFirstUser =
+    memberAddressResult.isSuccess && !memberAddressResult.data.length;
 
   useEffect(() => {
     if (memberResult.isSuccess) {
@@ -50,5 +52,5 @@ export default function UserProvider({
     }
   }, [memberAddressResult, setAddresses, toast]);
 
-  return children;
+  return isFirstUser ? <Navigate to={ROUTE_PATH.register} /> : <Outlet />;
 }
