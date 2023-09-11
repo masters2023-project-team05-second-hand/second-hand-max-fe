@@ -1,4 +1,4 @@
-import { useAddressesInfiniteQuery } from "@api/queries";
+import { useAddressesInfiniteQuery } from "@api/product/queries";
 import { ListItem, ListPanel } from "@components/Modal/Modal.style";
 import { Error, Loading } from "@components/common/Guide";
 import { useIntersect } from "@hooks/useIntersect";
