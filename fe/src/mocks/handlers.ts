@@ -77,7 +77,6 @@ export const handlers = [
 
   rest.put(USER_API_PATH.memberAddress, async (req, res, ctx) => {
     const { addressIds } = await req.json<{ addressIds: number[] }>();
-    console.log("왜안돼;;;");
 
     if (!addressIds) {
       return res(
