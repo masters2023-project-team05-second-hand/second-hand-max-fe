@@ -54,7 +54,7 @@ const NAVIGATION = [
 ];
 
 const StyledNavigationBar = styled.ul`
-  width: ${WIDTH.app}px;
+  width: ${WIDTH.page}px;
   position: fixed;
   bottom: 0;
   display: flex;

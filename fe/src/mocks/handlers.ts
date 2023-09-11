@@ -151,16 +151,16 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json<UserAddressInfo[]>([
-        // {
-        //   id: 1,
-        //   name: "역삼 1동",
-        //   isLastVisited: true,
-        // },
-        // {
-        //   id: 5,
-        //   name: "역삼 5동",
-        //   isLastVisited: false,
-        // },
+        {
+          id: 1,
+          name: "역삼 1동",
+          isLastVisited: true,
+        },
+        {
+          id: 5,
+          name: "역삼 5동",
+          isLastVisited: false,
+        },
       ])
     );
   }),

@@ -1,3 +1,4 @@
+import gajiBackground from "@assets/image/gaji.png";
 import Toaster from "@components/common/Toaster";
 import { router } from "@router/router";
 import GlobalStyle from "@styles/GlobalStyle";
@@ -15,13 +16,21 @@ export default function App() {
       <GlobalStyle />
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <RouterProvider router={router} />
+        <StyledApp>
+          <RouterProvider router={router} />
+        </StyledApp>
       </QueryClientProvider>
       <ModalRoot id="modal-root" />
       <Toaster />
     </ThemeProvider>
   );
 }
+
+const StyledApp = styled.div`
+  box-sizing: border-box;
+  background: url(${gajiBackground}) repeat center;
+  background-size: 300px;
+`;
 
 const ModalRoot = styled.div`
   position: fixed;

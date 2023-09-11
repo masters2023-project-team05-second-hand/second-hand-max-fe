@@ -60,7 +60,7 @@ function Toast({ id, type, title, message }: ToasterType) {
   );
 }
 
-const TOAST_DURATION = 5000;
+const TOAST_DURATION = 3000;
 const ANIMATION_DURATION = 1000;
 
 const fadeIn = keyframes`
