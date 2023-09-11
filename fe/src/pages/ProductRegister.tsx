@@ -65,6 +65,8 @@ export default function ProductRegister() {
           address: data.data.product.address,
         };
       });
+
+      setSelectedAddressId(data.data.product.address.id);
     }
   }, [isSuccess, data]);
 
@@ -79,8 +81,8 @@ export default function ProductRegister() {
 
     formData.append("title", productInfo.title);
     formData.append("content", productInfo.content);
-    formData.append("categoryId", productInfo.category.id.toString());
-    formData.append("addressId", productInfo.address.id.toString());
+    formData.append("categoryId", JSON.stringify(productInfo.category.id));
+    formData.append("addressId", JSON.stringify(productInfo.address.id));
     formData.append("price", price);
 
     newProductMutation.mutate(formData, {
@@ -111,12 +113,12 @@ export default function ProductRegister() {
 
     formData.append(
       "deletedImageIds",
-      productInfo.deletedImageIds?.toString() ?? ""
+      JSON.stringify(productInfo.deletedImageIds) ?? JSON.stringify([])
     );
     formData.append("title", productInfo.title);
     formData.append("content", productInfo.content);
-    formData.append("categoryId", productInfo.category.id.toString());
-    formData.append("addressId", productInfo.address.id.toString());
+    formData.append("categoryId", JSON.stringify(productInfo.category.id));
+    formData.append("addressId", JSON.stringify(productInfo.address.id));
     formData.append("price", price);
 
     editProductMutation.mutate(
@@ -293,13 +295,11 @@ export default function ProductRegister() {
               onChange={onChangeContent}
             />
           </Main>
-          {selectedAddressId && (
-            <ProductRegisterAddress
-              selectedAddressId={selectedAddressId}
-              address={productInfo.address}
-              onChange={onChangeAddress}
-            />
-          )}
+          <ProductRegisterAddress
+            selectedAddressId={selectedAddressId}
+            address={productInfo.address}
+            onChange={onChangeAddress}
+          />
         </>
       )}
     </Page>

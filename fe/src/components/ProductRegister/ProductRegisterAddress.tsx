@@ -8,7 +8,7 @@ import { useAddressListValue } from "store";
 import { PLACE_HOLDER } from "./constants";
 
 type ProductRegisterAddressProps = {
-  selectedAddressId?: number;
+  selectedAddressId: number | null;
   address?: AddressInfo;
   onChange: (addressList: AddressInfo[], newAddressId: number) => void;
 };
