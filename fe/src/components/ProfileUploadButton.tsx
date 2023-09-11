@@ -1,7 +1,7 @@
+import { postUserProfile } from "@api/user";
 import { ReactComponent as CameraIcon } from "@assets/icon/camera.svg";
 import { useToast } from "@hooks/useToast";
 import { useMutation } from "@tanstack/react-query";
-import { postUserProfile } from "api";
 import { useMember } from "store";
 import styled from "styled-components";
 

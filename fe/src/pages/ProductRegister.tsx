@@ -1,5 +1,5 @@
-import { patchProduct, postProduct } from "@api/index";
-import { useProductDetailQuery } from "@api/queries";
+import { patchProduct, postProduct } from "@api/product/index";
+import { useProductDetailQuery } from "@api/product/queries";
 import { AddressInfo, CategoryInfo } from "@api/type";
 import ProductRegisterAddress from "@components/ProductRegister/ProductRegisterAddress";
 import ProductRegisterCategory from "@components/ProductRegister/ProductRegisterCategory";

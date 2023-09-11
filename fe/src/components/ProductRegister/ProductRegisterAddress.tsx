@@ -1,10 +1,10 @@
-import { ReactComponent as MapIcon } from "@assets/icon/map-pin-filled.svg";
-import { HEIGHT, WIDTH } from "@styles/constants";
-import { styled } from "styled-components";
-import { useState } from "react";
-import Menu from "@components/common/Menu/Menu";
 import { AddressInfo } from "@api/type";
+import { ReactComponent as MapIcon } from "@assets/icon/map-pin-filled.svg";
+import Menu from "@components/common/Menu/Menu";
+import { HEIGHT, WIDTH } from "@styles/constants";
+import { useState } from "react";
 import { useAddressListValue } from "store";
+import { styled } from "styled-components";
 import { PLACE_HOLDER } from "./constants";
 
 type ProductRegisterAddressProps = {
@@ -67,7 +67,7 @@ const AddressButton = styled.button`
   bottom: 0;
   padding: 0 16px;
   box-sizing: border-box;
-  width: ${WIDTH.app}px;
+  width: ${WIDTH.page}px;
   height: ${HEIGHT.navigationBar}px;
   border-top: ${({ theme: { color } }) => `1px solid ${color.neutralBorder}`};
   background-color: ${({ theme: { color } }) => color.neutralBackgroundWeak};

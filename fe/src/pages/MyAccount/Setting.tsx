@@ -2,9 +2,9 @@ import UserAccount from "@components/UserAccount";
 import Button from "@components/common/Buttons/Button";
 import { ROUTE_PATH } from "@router/constants";
 import { Main } from "@styles/common";
-import { postLogout } from "api";
+import { postLogout } from "api/user";
 import { useNavigate } from "react-router-dom";
-import { useSetAddresses, useSetMember } from "store";
+import { useSetAddresses, useSetIsLogin, useSetMember } from "store";
 
 export default function Setting() {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ export default function Setting() {
 
   const setMember = useSetMember();
   const setAddresses = useSetAddresses();
+  const setIsLogin = useSetIsLogin();
 
   const onLogout = () => {
     refreshToken && postLogout({ refreshToken });
@@ -19,6 +20,7 @@ export default function Setting() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
 
+    setIsLogin(false);
     setMember({
       nickname: "",
       profileImgUrl: "",

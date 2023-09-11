@@ -1,4 +1,5 @@
-import { API_PATH } from "api/constants";
+import { PRODUCT_API_PATH } from "@api/product/constants";
+import { USER_API_PATH } from "@api/user/constants";
 import { Member, Tokens, UserAddressInfo } from "api/type";
 import { rest } from "msw";
 import { getMockAddresses } from "./data/address";
@@ -6,7 +7,7 @@ import { categories } from "./data/categories";
 import { productDetail } from "./data/productDetail";
 
 export const handlers = [
-  rest.post(API_PATH.login("kakao"), async (req, res, ctx) => {
+  rest.post(USER_API_PATH.login("kakao"), async (req, res, ctx) => {
     const { accessCode } = await req.json<{ accessCode: string }>();
 
     if (!accessCode) {
@@ -31,7 +32,7 @@ export const handlers = [
     );
   }),
 
-  rest.post(API_PATH.login("github"), async (req, res, ctx) => {
+  rest.post(USER_API_PATH.login("github"), async (req, res, ctx) => {
     const { accessCode } = await req.json<{ accessCode: string }>();
 
     if (!accessCode) {
@@ -54,7 +55,7 @@ export const handlers = [
     );
   }),
 
-  rest.post(API_PATH.logout, async (req, res, ctx) => {
+  rest.post(USER_API_PATH.logout, async (req, res, ctx) => {
     const { refreshToken } = await req.json<{ refreshToken: string | null }>();
 
     if (!refreshToken) {
@@ -69,12 +70,12 @@ export const handlers = [
     return res(ctx.status(200));
   }),
 
-  rest.get(API_PATH.categories, async (_req, res, ctx) => {
+  rest.get(PRODUCT_API_PATH.categories, async (_req, res, ctx) => {
     // return res(ctx.status(400), ctx.json({ message: "잘못된 요청입니다." }));
-    return res(ctx.status(200), ctx.json({ categories }));
+    return res(ctx.status(200), ctx.json(categories));
   }),
 
-  rest.post(API_PATH.memberAddress, async (req, res, ctx) => {
+  rest.put(USER_API_PATH.memberAddress, async (req, res, ctx) => {
     const { addressIds } = await req.json<{ addressIds: number[] }>();
 
     if (!addressIds) {
@@ -101,7 +102,7 @@ export const handlers = [
     );
   }),
 
-  rest.post(API_PATH.userProfile, async (req, res, ctx) => {
+  rest.post(USER_API_PATH.userProfile, async (req, res, ctx) => {
     const { image } = req.body as { image: File };
 
     if (!image) {
@@ -121,11 +122,11 @@ export const handlers = [
     );
   }),
 
-  rest.get(API_PATH.productDetail(1), async (_req, res, ctx) => {
+  rest.get(PRODUCT_API_PATH.productDetail(1), async (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(productDetail));
   }),
 
-  rest.get(API_PATH.member, async (req, res, ctx) => {
+  rest.get(USER_API_PATH.member, async (req, res, ctx) => {
     const Authorization = req.headers.get("Authorization");
 
     if (!Authorization) {
@@ -146,7 +147,7 @@ export const handlers = [
     );
   }),
 
-  rest.get(API_PATH.memberAddress, async (_req, res, ctx) => {
+  rest.get(USER_API_PATH.memberAddress, async (_req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json<UserAddressInfo[]>([
@@ -181,7 +182,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(currentAddresses));
   }),
 
-  rest.patch(API_PATH.nickname, async (req, res, ctx) => {
+  rest.patch(USER_API_PATH.nickname, async (req, res, ctx) => {
     const { nickname } = await req.json<{ nickname: string }>();
 
     if (!nickname) {
@@ -205,7 +206,7 @@ export const handlers = [
     return res(ctx.status(200));
   }),
 
-  rest.post(API_PATH.refresh, async (req, res, ctx) => {
+  rest.post(USER_API_PATH.refresh, async (req, res, ctx) => {
     const { refreshToken } = await req.json<{ refreshToken: string }>();
 
     if (!refreshToken) {

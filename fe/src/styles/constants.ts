@@ -4,5 +4,5 @@ export const HEIGHT = {
 };
 
 export const WIDTH = {
-  app: 393,
+  page: 393,
 };

@@ -1,11 +1,11 @@
+import { useCategoryQuery } from "@api/product/queries";
 import { CategoryInfo } from "@api/type";
 import { ReactComponent as ChevronRightIcon } from "@assets/icon/chevron-right.svg";
+import CategoryModal from "@components/Modal/CategoryModal/CategoryModal";
 import Button from "@components/common/Buttons/Button";
+import { Error, Loading } from "@components/common/Guide";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import CategoryModal from "@components/Modal/CategoryModal/CategoryModal";
-import { useCategoryQuery } from "@api/queries";
-import { Error, Loading } from "@components/common/Guide";
 import { RANDOM_CATEGORY_COUNT } from "./constants";
 
 export default function ProductRegisterCategory({
