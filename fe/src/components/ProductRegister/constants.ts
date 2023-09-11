@@ -7,8 +7,8 @@ export const PLACE_HOLDER = {
   PRICE: "가격(선택사항)",
   CONTENT: (address: string) =>
     `${address}에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요)`,
-  DEFAULT_PLACE: '동네',
-  ADDRESS: '동네를 설정해주세요'
+  DEFAULT_PLACE: "동네",
+  ADDRESS: "동네를 설정해주세요",
 };
 
 export const DEFAULT_CATEGORY = {
@@ -24,3 +24,4 @@ export const TEMP_CATEGORY = {
 
 export const DEFAULT_SELECTED_ADDRESS_INDEX = 0;
 export const DEFAULT_SELECTED_ADDRESS_ID = 1;
+export const RANDOM_CATEGORY_COUNT = 2;

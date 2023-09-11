@@ -6,6 +6,7 @@ import { styled } from "styled-components";
 import CategoryModal from "@components/Modal/CategoryModal/CategoryModal";
 import { useCategoryQuery } from "@api/queries";
 import { Error, Loading } from "@components/common/Guide";
+import { RANDOM_CATEGORY_COUNT } from "./constants";
 
 export default function ProductRegisterCategory({
   category,
@@ -86,16 +87,14 @@ function getRandomCategories(
   id: number,
   categories: CategoryInfo[]
 ): CategoryInfo[] {
-  const shuffledCategories = categories.sort(() => Math.random() - 0.5);
-  const slicedCategories = shuffledCategories.slice(0, 2);
-
-  const isContainSelectedCategory = slicedCategories.some(
-    (randomCategory) => randomCategory.id === id
+  const withOutSelectedCategory = categories.filter(
+    (category) => category.id !== id
   );
 
-  if (isContainSelectedCategory) {
-    return getRandomCategories(id, categories);
-  }
+  const shuffledCategories = withOutSelectedCategory.sort(
+    () => Math.random() - 0.5
+  );
+  const slicedCategories = shuffledCategories.slice(0, RANDOM_CATEGORY_COUNT);
 
   return slicedCategories;
 }
