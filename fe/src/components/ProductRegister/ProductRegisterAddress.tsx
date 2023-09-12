@@ -39,7 +39,7 @@ export default function ProductRegisterAddress({
     <Address>
       <AddressButton onClick={toggleAddressMenu}>
         <MapIcon />
-        <span>{address?.name ?? PLACE_HOLDER.ADDRESS}</span>
+        <span>{address?.name ?? PLACE_HOLDER.address}</span>
       </AddressButton>
       {isAddressMenuOpen && (
         <Menu
