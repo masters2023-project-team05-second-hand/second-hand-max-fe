@@ -57,16 +57,16 @@ export default function ProductRegister() {
       setProductInfo((prev) => {
         return {
           ...prev,
-          images: data.data.images,
-          title: data.data.product.title,
-          category: data.data.product.category,
-          price: data.data.product.price.toString(),
-          content: data.data.product.contents,
-          address: data.data.product.address,
+          images: data.images,
+          title: data.product.title,
+          category: data.product.category,
+          price: data.product.price.toString(),
+          content: data.product.contents,
+          address: data.product.address,
         };
       });
 
-      setSelectedAddressId(data.data.product.address.id);
+      setSelectedAddressId(data.product.address.id);
     }
   }, [isSuccess, data]);
 

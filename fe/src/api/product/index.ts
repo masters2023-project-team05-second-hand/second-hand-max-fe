@@ -17,9 +17,11 @@ export const getCategories = async () => {
 };
 
 export const getProductDetail = async (productId: number) => {
-  return await fetcher.get<ProductDetailInfo>(
+  const { data } = await fetcher.get<ProductDetailInfo>(
     `${PRODUCT_API_PATH.products}/${productId}`
   );
+
+  return data;
 };
 
 export const postProduct = async (productInfo: FormData) => {
