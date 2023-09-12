@@ -1,22 +1,26 @@
+import { useProductDetailQuery } from "@api/product/queries";
 import { ReactComponent as ChevronLeftIcon } from "@assets/icon/chevron-left.svg";
 import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
+import ProductImageList from "@components/ProductDetail/ProductImageList";
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
 import useScroll from "@hooks/useScroll";
 import { Page } from "@styles/common";
 import { useParams } from "react-router-dom";
-import { styled } from "styled-components";
 
 export default function ProductDetail() {
   const { productId } = useParams();
   const { scrollY, ref } = useScroll();
 
+  const { data: productDetailInfo, isSuccess } = useProductDetailQuery(
+    Number(productId),
+    !!productId
+  );
+
   const isScroll = !!scrollY && scrollY > 0;
 
   return (
     <Page ref={ref}>
-      {/* Todo: 사진 position absolute로 해야함 */}
-      <Test>{`상품 ${productId} 상세 페이지`}</Test>
       <TopBar
         backgroundColor="accentPrimary"
         isScrolled={isScroll}
@@ -35,13 +39,9 @@ export default function ProductDetail() {
           />
         }
       />
+      {isSuccess && (
+        <ProductImageList productImages={productDetailInfo.images} />
+      )}
     </Page>
   );
 }
-
-const Test = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 2000px;
-  background-color: gray;
-`;

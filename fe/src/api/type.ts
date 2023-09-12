@@ -40,10 +40,7 @@ export type ProductDetailInfo = {
     createdTime: string;
     status: number;
   };
-  images: {
-    id: number;
-    url: string;
-  }[];
+  images: ProductImages[];
   stats: {
     chatCount: number;
     wishCount: number;
@@ -53,6 +50,11 @@ export type ProductDetailInfo = {
     id: number;
     type: string;
   }[];
+};
+
+export type ProductImages = {
+  id: number;
+  url: string;
 };
 
 export type PostNewProduct = {
