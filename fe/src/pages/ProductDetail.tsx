@@ -1,15 +1,15 @@
 import { useProductDetailQuery } from "@api/product/queries";
-import { ReactComponent as ChevronLeftIcon } from "@assets/icon/chevron-left.svg";
-import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
+import { BackButton, MoreButton } from "@components/ProductDetail/Buttons";
+import ProductContents from "@components/ProductDetail/ProductContents/ProductContents";
 import ProductImageList from "@components/ProductDetail/ProductImageList";
-import SellerInfo from "@components/ProductDetail/SellerInfo";
 import TopBar from "@components/TopBar";
-import Button from "@components/common/Buttons/Button";
 import useScroll from "@hooks/useScroll";
-import { Main, Page } from "@styles/common";
+import { Page } from "@styles/common";
 import { useParams } from "react-router-dom";
+import { useMemberValue } from "store";
 
 export default function ProductDetail() {
+  const member = useMemberValue();
   const { productId } = useParams();
   const { scrollY, ref } = useScroll();
 
@@ -18,6 +18,7 @@ export default function ProductDetail() {
     !!productId
   );
 
+  const isSeller = member?.id === productDetailInfo?.product.seller.id;
   const isScroll = !!scrollY && scrollY > 0;
 
   return (
@@ -25,26 +26,17 @@ export default function ProductDetail() {
       <TopBar
         backgroundColor="accentPrimary"
         isScrolled={isScroll}
-        leftBtn={
-          <Button
-            value="뒤로"
-            color="accentText"
-            fontName="availableStrong16"
-            leftIcon={<ChevronLeftIcon />}
-          />
-        }
-        rightBtn={
-          <Button // Todo: 판매자 / 구매자 나눠야 함
-            color="accentText"
-            leftIcon={<DotsIcon />}
-          />
-        }
+        leftBtn={<BackButton />}
+        rightBtn={isSeller && <MoreButton />}
       />
       {isSuccess && (
-        <Main>
+        <>
           <ProductImageList productImages={productDetailInfo.images} />
-          <SellerInfo sellerName={productDetailInfo.product.seller.nickname} />
-        </Main>
+          <ProductContents
+            productInfo={productDetailInfo.product}
+            stats={productDetailInfo.stats}
+          />
+        </>
       )}
     </Page>
   );

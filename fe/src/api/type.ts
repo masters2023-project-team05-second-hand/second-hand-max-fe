@@ -4,6 +4,7 @@ export type Tokens = {
 };
 
 export type Member = {
+  id: number;
   nickname: string;
   profileImgUrl: string;
 };
@@ -29,29 +30,33 @@ export type AddressList = {
 };
 
 export type ProductDetailInfo = {
-  product: {
-    seller: {
-      id: number;
-      nickname: string;
-    };
-    category: CategoryInfo;
-    address: AddressInfo;
-    title: string;
-    contents: string;
-    price: number;
-    createdTime: string;
-    status: number;
-  };
+  product: ProductInfo;
   images: ProductImages[];
-  stats: {
-    chatCount: number;
-    wishCount: number;
-    viewCount: number;
-  };
+  stats: ProductStats;
   statuses: {
     id: number;
     type: string;
   }[];
+};
+
+export type ProductStats = {
+  chatCount: number;
+  wishCount: number;
+  viewCount: number;
+};
+
+export type ProductInfo = {
+  seller: {
+    id: number;
+    nickname: string;
+  };
+  category: CategoryInfo;
+  address: AddressInfo;
+  title: string;
+  contents: string;
+  price: number;
+  createdTime: string;
+  status: number;
 };
 
 export type ProductImages = {

@@ -140,6 +140,7 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json<Member>({
+        id: 1,
         nickname: "jjinbbang",
         profileImgUrl:
           "https://github.com/masters2023-project-team05-second-hand/second-hand-max-fe/assets/111998760/4ce425f1-d40b-421f-a24f-3c5b73737120",
