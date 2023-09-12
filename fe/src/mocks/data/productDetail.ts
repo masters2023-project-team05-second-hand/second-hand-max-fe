@@ -1,7 +1,6 @@
 export const productDetail = {
-  isSeller: true,
   product: {
-    sellers: "나판매자ㅋ",
+    seller: { id: 1, nickname: "나판매자ㅋ" },
     category: {
       id: 7,
       name: "가구/인테리어",

@@ -2,10 +2,11 @@ import { useProductDetailQuery } from "@api/product/queries";
 import { ReactComponent as ChevronLeftIcon } from "@assets/icon/chevron-left.svg";
 import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
 import ProductImageList from "@components/ProductDetail/ProductImageList";
+import SellerInfo from "@components/ProductDetail/SellerInfo";
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
 import useScroll from "@hooks/useScroll";
-import { Page } from "@styles/common";
+import { Main, Page } from "@styles/common";
 import { useParams } from "react-router-dom";
 
 export default function ProductDetail() {
@@ -40,7 +41,10 @@ export default function ProductDetail() {
         }
       />
       {isSuccess && (
-        <ProductImageList productImages={productDetailInfo.images} />
+        <Main>
+          <ProductImageList productImages={productDetailInfo.images} />
+          <SellerInfo sellerName={productDetailInfo.product.seller.nickname} />
+        </Main>
       )}
     </Page>
   );
