@@ -1,7 +1,7 @@
 import { Auth } from "@pages/Auth";
 import Category from "@pages/Category";
 import Chat from "@pages/Chat";
-import Home from "@pages/Home";
+import ProductList from "@pages/ProductList";
 import MyAccount from "@pages/MyAccount/MyAccount";
 import ProductDetail from "@pages/ProductDetail";
 import ProductRegister from "@pages/ProductRegister";
@@ -21,7 +21,7 @@ export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path={ROUTE_PATH.home} element={<UserProvider />}>
-        <Route index element={<Home />} />
+        <Route index element={<ProductList />} />
         <Route element={<ProtectedRoutes />}>
           <Route path={ROUTE_PATH.new} element={<ProductRegister />} />
           <Route path={ROUTE_PATH.edit} element={<ProductRegister />} />
