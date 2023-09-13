@@ -3,7 +3,6 @@ import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
 import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import { ReactComponent as HeartIcon } from "@assets/icon/heart.svg";
 import ProductStatus from "@components/ProductStatus";
-import Button from "@components/common/Buttons/Button";
 import { getFormattedPrice, getTimeLine } from "@utils/index";
 import { useNavigate } from "react-router-dom";
 import MenuIndicator from "./common/Menu/MenuIndicator";
@@ -34,16 +33,10 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
     navigate(`/product-detail/${productItem.productId}`);
   };
 
-  const onMoreButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    console.log("더보기 버튼 클릭");
-  };
-
   const moreButtonItems = [
     {
       name: "게시글 수정",
       onClick: () => {
-        // Memo: 생성 페이지, 수정 페이지 모두 product-register로 바꿀까요??
         navigate(`/product-edit/${productItem.productId}`);
       },
     },
@@ -64,7 +57,7 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
     {
       name: "삭제",
       onClick: () => {
-        // Todo: 상품 삭제 api 붙이기, 삭제하시겠습니까 모달 띄우기
+        // Todo: 상품 삭제 api 붙이기 & 삭제하시겠습니까 모달 띄우기
         console.log("상품 삭제");
       },
       isWarning: true,
@@ -77,24 +70,17 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
   return (
     <StyledProductListItem onClick={onProductClick}>
       <Product>
-        <ProductImage src={productItem.thumbnailUrl} alt="" />
+        <ProductImage src={productItem.thumbnailUrl} />
         <ProductInfo>
           <div className="info-main">
             <div className="info-top">
               <TextDefault>{productItem.title}</TextDefault>
               {isSeller && (
-                <MenuIndicator
-                  className="more"
-                  button={
-                    <Button
-                      leftIcon={<DotsIcon />}
-                      onClick={onMoreButtonClick}
-                    />
-                  }
-                  itemList={moreButtonItems}
-                  positionX="right"
-                  positionY="bottom"
-                />
+                <>
+                  <MenuIndicator itemList={moreButtonItems}>
+                    <DotsIcon className="more" />
+                  </MenuIndicator>
+                </>
               )}
             </div>
             <div className="info-middle">
@@ -174,9 +160,8 @@ const ProductInfo = styled.div`
 
       .more {
         &:hover {
-          svg {
-            filter: ${({ theme: { filter } }) => filter.neutralTextWeak};
-          }
+          cursor: pointer;
+          filter: ${({ theme: { filter } }) => filter.neutralTextWeak};
         }
       }
     }
