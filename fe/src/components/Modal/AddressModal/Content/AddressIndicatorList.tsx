@@ -97,6 +97,7 @@ const StyledAddressIndicatorList = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  height: 600px;
 
   .button-wrapper {
     display: flex;

@@ -9,10 +9,6 @@ export type Member = {
   profileImgUrl: string;
 };
 
-export type UserAddressInfo = AddressInfo & {
-  isLastVisited: boolean;
-};
-
 export type AddressInfo = {
   id: number;
   name: string;
@@ -82,3 +78,17 @@ export type PatchProduct = {
   addressId: number;
   categoryId: number;
 };
+
+export type Status =
+  | {
+      id: 1;
+      type: "판매중";
+    }
+  | {
+      id: 2;
+      type: "예약중";
+    }
+  | {
+      id: 3;
+      type: "판매 완료";
+    };
