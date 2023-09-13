@@ -1,11 +1,12 @@
+import { useToast } from "@hooks/useToast";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import {
   deleteProduct,
   getAddresses,
   getCategories,
   getProductDetail,
+  getStatuses,
 } from ".";
-import { useToast } from "@hooks/useToast";
 
 export const useAddressesInfiniteQuery = (option?: { size: number }) => {
   return useInfiniteQuery({
@@ -26,7 +27,7 @@ export const useCategoryQuery = () => {
 
 export const useProductDetailQuery = (id: number, enabled: boolean) => {
   return useQuery({
-    queryKey: ["getProductDetail"],
+    queryKey: ["getProductDetail", id],
     queryFn: () => getProductDetail(id),
     enabled,
     staleTime: Infinity,
@@ -58,4 +59,12 @@ export const useDeleteProductQuery = (productId: number) => {
   };
 
   return { onDeleteProduct };
+};
+
+export const useProductStatusesQuery = () => {
+  return useQuery({
+    queryKey: ["getStatuses"],
+    queryFn: () => getStatuses(),
+    staleTime: Infinity,
+  });
 };

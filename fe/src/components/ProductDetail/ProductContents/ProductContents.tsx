@@ -3,17 +3,21 @@ import ProductInfo from "@components/ProductDetail/ProductContents/ProductInfo";
 import SellerInfo from "@components/ProductDetail/ProductContents/SellerInfo";
 import { SubInfo } from "@components/ProductDetail/common.style";
 import styled from "styled-components";
+import ProductStatus from "../ProductStatus";
 
 export default function ProductContents({
   productInfo,
   stats,
+  isSeller,
 }: {
   productInfo: ProductInfoType;
   stats: ProductStats;
+  isSeller: boolean;
 }) {
   return (
     <StyledProductContents>
       <SellerInfo sellerName={productInfo.seller.nickname} />
+      {isSeller && <ProductStatus currentStatusId={productInfo.status} />}
       <ProductInfo
         title={productInfo.title}
         categoryName={productInfo.category.name}

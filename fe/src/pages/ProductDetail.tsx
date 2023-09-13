@@ -35,6 +35,7 @@ export default function ProductDetail() {
           <ProductContents
             productInfo={productDetailInfo.product}
             stats={productDetailInfo.stats}
+            isSeller={isSeller}
           />
         </>
       )}
