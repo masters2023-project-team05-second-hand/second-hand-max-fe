@@ -36,8 +36,6 @@ export default function ProductImageList({
 const StyledProductImageList = styled.div`
   width: 100%;
   height: 40vh;
-  position: absolute;
-  top: 0;
   display: flex;
 
   .swiper-slide {

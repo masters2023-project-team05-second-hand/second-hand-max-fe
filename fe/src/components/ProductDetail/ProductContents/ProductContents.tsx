@@ -34,10 +34,7 @@ export default function ProductContents({
 }
 
 const StyledProductContents = styled.div`
-  height: 60vh;
-  position: absolute;
   padding: 1rem;
-  top: 40vh;
   display: flex;
   flex-direction: column;
   gap: 1rem;
