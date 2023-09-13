@@ -60,7 +60,7 @@ export default function ProductRegister() {
           images: data.images,
           title: data.product.title,
           category: data.product.category,
-          price: data.product.price.toString(),
+          price: data.product.price?.toString() ?? "",
           content: data.product.contents,
           address: data.product.address,
         };
