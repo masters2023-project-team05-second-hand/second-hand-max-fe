@@ -25,7 +25,7 @@ export default function AddressModal({
   const openAddressSearch = () => setIsSearchingAddress(true);
   const closeAddressSearch = () => setIsSearchingAddress(false);
 
-  const userAddressMutation = useMutation(putUserAddress, {
+  const { mutate: mutateUserAddresses } = useMutation(putUserAddress, {
     onSuccess: () =>
       toast({
         type: "success",
@@ -51,7 +51,7 @@ export default function AddressModal({
     title: "동네 설정",
     closeHandler: () => {
       !isSameItems(userAddressIDs, prevAddressIDs) &&
-        userAddressMutation.mutate(userAddressIDs);
+        mutateUserAddresses(userAddressIDs);
       closeHandler();
     },
   };

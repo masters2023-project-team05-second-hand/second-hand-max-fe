@@ -6,7 +6,7 @@ const lastAddressId = localStorage.getItem("currentAddressId");
 const accessToken = localStorage.getItem("accessToken");
 
 const isLoginAtom = atom<boolean>(!!accessToken);
-const memberAtom = atom<Member | null>(null);
+const memberAtom = atom<Member>({ id: -1, nickname: "", profileImgUrl: "" });
 const addressListAtom = atom<AddressInfo[]>([]);
 const currentAddressIdAtom = atom<number | null>(Number(lastAddressId));
 const currentCategoryIdAtom = atom<number | null>(null);
