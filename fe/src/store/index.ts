@@ -1,6 +1,7 @@
 import { AddressInfo, Member } from "api/type";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 
+// Todo: currentAddressId, memberId 제대로 오는지 확인해야함
 const lastAddressId = localStorage.getItem("currentAddressId");
 const accessToken = localStorage.getItem("accessToken");
 
