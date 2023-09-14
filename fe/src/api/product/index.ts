@@ -18,7 +18,7 @@ export const getCategories = async () => {
 
 export const getProductDetail = async (productId: number) => {
   return await fetcher.get<ProductDetailInfo>(
-    PRODUCT_API_PATH.productDetail(productId)
+    `${PRODUCT_API_PATH.products}/${productId}`
   );
 };
 
@@ -30,7 +30,7 @@ export const postProduct = async (productInfo: FormData) => {
   };
 
   return await fetcher.post<{ productId: number }>(
-    PRODUCT_API_PATH.newProduct,
+    PRODUCT_API_PATH.products,
     productInfo,
     config
   );
@@ -50,12 +50,12 @@ export const patchProduct = async ({
   };
 
   return await fetcher.patch(
-    PRODUCT_API_PATH.editProduct(productId),
+    `${PRODUCT_API_PATH.products}/${productId}`,
     productInfo,
     config
   );
 };
 
 export const deleteProduct = async (productId: number) => {
-  return await fetcher.delete(PRODUCT_API_PATH.deleteProduct(productId));
+  return await fetcher.delete(`${PRODUCT_API_PATH.products}/${productId}`);
 };
