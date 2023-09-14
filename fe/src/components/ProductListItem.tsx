@@ -1,11 +1,10 @@
 import { styled } from "styled-components";
-import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
 import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import { ReactComponent as HeartIcon } from "@assets/icon/heart.svg";
 import ProductStatus from "@components/ProductStatus";
 import { getFormattedPrice, getTimeLine } from "@utils/index";
 import { useNavigate } from "react-router-dom";
-import MenuIndicator from "./common/Menu/MenuIndicator";
+import ProductMoreButton from "./ProductMoreButton";
 
 type ProductItem = {
   sellerId: number;
@@ -33,37 +32,6 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
     navigate(`/product-detail/${productItem.productId}`);
   };
 
-  const moreButtonItems = [
-    {
-      name: "게시글 수정",
-      onClick: () => {
-        navigate(`/product-edit/${productItem.productId}`);
-      },
-    },
-    {
-      name: "판매 중 상태로 전환",
-      onClick: () => {
-        // Todo: 판매 상태 변경 api 붙이기
-        console.log("판매 중");
-      },
-    },
-    {
-      name: "판매 완료 상태로 전환",
-      onClick: () => {
-        // Todo: 판매 상태 변경 api 붙이기
-        console.log("판매 완료");
-      },
-    },
-    {
-      name: "삭제",
-      onClick: () => {
-        // Todo: 상품 삭제 api 붙이기 & 삭제하시겠습니까 모달 띄우기
-        console.log("상품 삭제");
-      },
-      isWarning: true,
-    },
-  ];
-
   // Todo: memberId와 비교하는 로직으로 바꿔야함
   const isSeller = productItem.sellerId !== 0;
 
@@ -76,11 +44,7 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
             <div className="info-top">
               <TextDefault>{productItem.title}</TextDefault>
               {isSeller && (
-                <>
-                  <MenuIndicator itemList={moreButtonItems}>
-                    <DotsIcon className="more" />
-                  </MenuIndicator>
-                </>
+                <ProductMoreButton productId={productItem.productId} />
               )}
             </div>
             <div className="info-middle">
