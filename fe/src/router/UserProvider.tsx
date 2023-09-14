@@ -3,13 +3,19 @@ import { useToast } from "@hooks/useToast";
 import { ROUTE_PATH } from "@router/constants";
 import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useIsLoginValue, useSetAddresses, useSetMember } from "store";
+import {
+  useIsLoginValue,
+  useSetAddresses,
+  useSetCurrentAddressId,
+  useSetMember,
+} from "store";
 
 export default function UserProvider() {
   const isLogin = useIsLoginValue();
 
   const setMember = useSetMember();
   const setAddresses = useSetAddresses();
+  const setCurrentAddressId = useSetCurrentAddressId();
 
   const { toast } = useToast();
 
@@ -42,7 +48,13 @@ export default function UserProvider() {
           name: address.name,
         }))
       );
+
+      const currentAddressId =
+        localStorage.getItem("currentAddressId") ??
+        memberAddressResult.data[0].id;
+      setCurrentAddressId(Number(currentAddressId));
     }
+
     if (memberAddressResult.isError) {
       toast({
         type: "error",
@@ -50,7 +62,7 @@ export default function UserProvider() {
         message: "유저 주소를 조회하는데 실패했습니다. 새로고침 해주세요.",
       });
     }
-  }, [memberAddressResult, setAddresses, toast]);
+  }, [memberAddressResult, setAddresses, setCurrentAddressId, toast]);
 
   return isFirstUser ? <Navigate to={ROUTE_PATH.register} /> : <Outlet />;
 }

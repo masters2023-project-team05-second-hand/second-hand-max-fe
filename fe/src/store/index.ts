@@ -1,14 +1,15 @@
 import { AddressInfo, Member } from "api/type";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 
-// Todo: currentAddressId, memberId 제대로 오는지 확인해야함
-const lastAddressId = localStorage.getItem("currentAddressId");
+const DEFAULT_ADDRESS_ID = 1;
+const currentAddressId =
+  localStorage.getItem("currentAddressId") ?? DEFAULT_ADDRESS_ID;
 const accessToken = localStorage.getItem("accessToken");
 
 const isLoginAtom = atom<boolean>(!!accessToken);
 const memberAtom = atom<Member>({ id: -1, nickname: "", profileImgUrl: "" });
 const addressListAtom = atom<AddressInfo[]>([]);
-const currentAddressIdAtom = atom<number | null>(Number(lastAddressId));
+const currentAddressIdAtom = atom<number | null>(Number(currentAddressId));
 const currentCategoryIdAtom = atom<number | null>(null);
 
 const useIsLoginAtom = atom(
