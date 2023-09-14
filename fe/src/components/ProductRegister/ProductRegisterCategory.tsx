@@ -4,19 +4,17 @@ import { ReactComponent as ChevronRightIcon } from "@assets/icon/chevron-right.s
 import CategoryModal from "@components/Modal/CategoryModal/CategoryModal";
 import Button from "@components/common/Buttons/Button";
 import { Error, Loading } from "@components/common/Guide";
+import TabButtons from "@components/common/TabButtons";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { RANDOM_CATEGORY_COUNT } from "./constants";
 
 export default function ProductRegisterCategory({
-  category,
+  categoryId,
   onChange,
 }: {
-  category: Pick<CategoryInfo, "id" | "name">;
-  onChange: (
-    id: number,
-    categories: Pick<CategoryInfo, "id" | "name">[]
-  ) => void;
+  categoryId: number;
+  onChange: (categoryId: number) => void;
 }) {
   const [randomCategories, setRandomCategories] = useState<CategoryInfo[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -24,16 +22,21 @@ export default function ProductRegisterCategory({
 
   useEffect(() => {
     if (data && isSuccess) {
-      const randomCategories = getRandomCategories(category.id, data);
+      const selectedCategory = data.find(
+        (category) => category.id === categoryId
+      );
+      const randomCategories = getRandomCategories(categoryId, data);
 
-      setRandomCategories(randomCategories);
+      selectedCategory &&
+        setRandomCategories([selectedCategory, ...randomCategories]);
     }
-  }, [category.id, isSuccess, data]);
+  }, [categoryId, isSuccess, data]);
 
   const toggleCategoryModal = () => {
     setIsOpen(!isOpen);
   };
 
+  // TODO: toast로 변경하기 (레이아웃 안맞음)
   return (
     <Category>
       {isLoading ? (
@@ -52,18 +55,13 @@ export default function ProductRegisterCategory({
         />
       ) : (
         <>
-          <CategoryList>
-            <SelectedCategory>{category.name}</SelectedCategory>
-            <ul>
-              {randomCategories.map((category) => (
-                <RandomCategory
-                  key={category.id}
-                  onClick={() => onChange(category.id, randomCategories)}>
-                  {category.name}
-                </RandomCategory>
-              ))}
-            </ul>
-          </CategoryList>
+          {randomCategories.length && (
+            <TabButtons
+              activeTabId={categoryId}
+              tabList={randomCategories}
+              onTabClick={onChange}
+            />
+          )}
           <Button
             size={{ width: 24, height: 24 }}
             leftIcon={<ChevronRightIcon />}
@@ -71,7 +69,7 @@ export default function ProductRegisterCategory({
           />
           {isOpen && (
             <CategoryModal
-              selectedId={category.id}
+              selectedId={categoryId}
               onSelectCategory={onChange}
               closeHandler={toggleCategoryModal}
               categories={data}
@@ -103,31 +101,4 @@ const Category = styled.div`
   display: flex;
   justify-content: space-between;
   height: 32px;
-`;
-
-const CategoryList = styled.div`
-  display: flex;
-  gap: 4px;
-
-  ul {
-    display: flex;
-    gap: 4px;
-  }
-`;
-
-const SelectedCategory = styled.button`
-  padding: 0 16px;
-  border-radius: ${({ theme: { radius } }) => radius[50]};
-  color: ${({ theme: { color } }) => color.accentText};
-  background-color: ${({ theme: { color } }) => color.accentPrimary};
-  font: ${({ theme: { font } }) => font.displayDefault12};
-`;
-
-const RandomCategory = styled.button`
-  padding: 0 16px;
-  border-radius: ${({ theme: { radius } }) => radius[50]};
-  color: ${({ theme: { color } }) => color.accentTextWeak};
-  background-color: ${({ theme: { color } }) => color.accentText};
-  font: ${({ theme: { font } }) => font.displayDefault12};
-  border: ${({ theme: { color } }) => `1px solid ${color.neutralBorder}`};
 `;

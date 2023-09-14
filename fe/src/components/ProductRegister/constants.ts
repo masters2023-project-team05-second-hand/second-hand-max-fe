@@ -11,16 +11,7 @@ export const PLACE_HOLDER = {
   address: "동네를 설정해주세요",
 };
 
-export const DEFAULT_CATEGORY = {
-  id: 1,
-  name: "기타 중고물품",
-};
-
-export const TEMP_CATEGORY = {
-  id: 2,
-  name: "인기매물",
-  imgUrl: "https://i.ibb.co/LSkHKbL/star.png",
-};
+export const DEFAULT_CATEGORY_ID = 1;
 
 export const DEFAULT_SELECTED_ADDRESS_INDEX = 0;
 export const DEFAULT_SELECTED_ADDRESS_ID = 1;
