@@ -14,7 +14,7 @@ export default function ProductStatusContent({
 
   const { mutate: mutateProductStatus } = useMutateProductStatus({
     onSettled: closeHandler,
-    productId: Number(productId),
+    invalidateQueryKey: ["getProductDetail", productId!],
   });
 
   return (

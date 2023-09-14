@@ -21,7 +21,7 @@ export const getCategories = async () => {
   return data;
 };
 
-export const getProductDetail = async (productId: number) => {
+export const getProductDetail = async (productId: string) => {
   const { data } = await fetcher.get<ProductDetailInfo>(
     `${PRODUCT_API_PATH.products}/${productId}`
   );
@@ -79,7 +79,10 @@ export const patchProductStatus = async ({
   productId: number;
   statusId: number;
 }) => {
-  return await fetcher.patch(PRODUCT_API_PATH.updateProductStatus(productId), {
-    statusId,
-  });
+  return await fetcher.patch(
+    `${PRODUCT_API_PATH.products}/${productId}/status`,
+    {
+      statusId,
+    }
+  );
 };

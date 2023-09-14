@@ -31,7 +31,7 @@ export const useCategoryQuery = () => {
   });
 };
 
-export const useProductDetailQuery = (id: number, enabled: boolean) => {
+export const useProductDetailQuery = (id: string, enabled: boolean) => {
   return useQuery({
     queryKey: ["getProductDetail", id],
     queryFn: () => getProductDetail(id),
@@ -77,10 +77,10 @@ export const useProductStatusesQuery = () => {
 
 export const useMutateProductStatus = ({
   onSettled,
-  productId,
+  invalidateQueryKey,
 }: {
-  onSettled: () => void;
-  productId: number;
+  onSettled?: () => void;
+  invalidateQueryKey?: string[];
 }) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -92,7 +92,7 @@ export const useMutateProductStatus = ({
         title: "상태 변경 완료",
         message: "상태 변경이 완료되었습니다.",
       });
-      queryClient.invalidateQueries(["getProductDetail", productId]);
+      queryClient.invalidateQueries(invalidateQueryKey);
     },
     onError: () => {
       toast({

@@ -122,9 +122,12 @@ export const handlers = [
     );
   }),
 
-  rest.get(PRODUCT_API_PATH.productDetail(1), async (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(productDetail));
-  }),
+  rest.get(
+    `${PRODUCT_API_PATH.products}/:productId`,
+    async (_req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(productDetail));
+    }
+  ),
 
   rest.get(USER_API_PATH.member, async (req, res, ctx) => {
     const Authorization = req.headers.get("Authorization");
@@ -245,18 +248,34 @@ export const handlers = [
     );
   }),
 
-  rest.patch(PRODUCT_API_PATH.updateProductStatus(1), async (req, res, ctx) => {
-    const { statusId } = await req.json<{ statusId: number }>();
-    productDetail.product.status = statusId;
+  rest.patch(
+    `${PRODUCT_API_PATH.products}/:productId/status`,
+    async (req, res, ctx) => {
+      const { statusId } = await req.json<{ statusId: number }>();
+      productDetail.product.status = statusId;
 
-    if (!statusId) {
-      return res(
-        ctx.status(400),
-        ctx.json({
-          message: "잘못된 요청입니다.",
-        })
-      );
+      if (!statusId) {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            message: "잘못된 요청입니다.",
+          })
+        );
+      }
+      return res(ctx.status(200));
     }
+  ),
+
+  rest.get(`${USER_API_PATH.wishlist}/:productId`, async (_, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        isWished: true,
+      })
+    );
+  }),
+
+  rest.patch(`${USER_API_PATH.wishlist}/:productId`, async (_req, res, ctx) => {
     return res(ctx.status(200));
   }),
 ];

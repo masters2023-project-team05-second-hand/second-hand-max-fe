@@ -1,4 +1,5 @@
 import { useProductDetailQuery } from "@api/product/queries";
+import { useUserWishProductQuery } from "@api/user/queries";
 import {
   BackButton,
   ChatButton,
@@ -16,16 +17,17 @@ import styled from "styled-components";
 
 export default function ProductDetail() {
   const member = useMemberValue();
+
   const { productId } = useParams();
   const { scrollY, ref } = useScroll();
 
-  const { data: productDetailInfo, isSuccess } = useProductDetailQuery(
-    Number(productId),
-    !!productId
-  );
+  const { data: productDetailInfo, isSuccess: isProductDetailSuccess } =
+    useProductDetailQuery(productId!, !!productId);
+  const { data: userWishProduct, isSuccess: isUserWishSuccess } =
+    useUserWishProductQuery(productId!);
 
   const isScroll = !!scrollY && scrollY > 0;
-  const isSeller = member?.id === productDetailInfo?.product.seller.id;
+  const isSeller = member.id === productDetailInfo?.product.seller.id;
   const productPrice =
     productDetailInfo?.product.price?.toLocaleString("ko-KR");
 
@@ -37,7 +39,7 @@ export default function ProductDetail() {
         leftBtn={<BackButton />}
         rightBtn={isSeller && <MoreButton />}
       />
-      {isSuccess && (
+      {isProductDetailSuccess && (
         <StyledProductDetail>
           <ProductImageList productImages={productDetailInfo.images} />
           <ProductContents
@@ -49,12 +51,14 @@ export default function ProductDetail() {
       )}
       <BottomBar>
         <ButtonContainer>
-          {isSuccess && (
-            <LeftWrapper>
-              <LikeButton isLiked={true} />
+          <LeftWrapper>
+            {isUserWishSuccess && (
+              <LikeButton isLiked={userWishProduct.isWished} />
+            )}
+            {isProductDetailSuccess && (
               <span>{productPrice ? `${productPrice} 원` : "가격미정"}</span>
-            </LeftWrapper>
-          )}
+            )}
+          </LeftWrapper>
           <ChatButton />
         </ButtonContainer>
       </BottomBar>
