@@ -1,4 +1,5 @@
-import { IS_RESERVATION_ID, IS_SELLING_ID, STATUS } from "store/constants";
+import { useProductStatusesQuery } from "@api/product/queries";
+import { IS_RESERVATION_ID, IS_SELLING_ID } from "store/constants";
 import { styled } from "styled-components";
 
 type ProductStatusProps = {
@@ -6,8 +7,9 @@ type ProductStatusProps = {
 };
 
 export default function ProductStatus({ id }: ProductStatusProps) {
-  const statusName = STATUS.find((item) => item.id === id)?.type;
-  // Todo: 전역 상태로 있는 상태 목록과 비교 해야 함
+  const { data, isSuccess } = useProductStatusesQuery();
+
+  const statusName = isSuccess && data.find((item) => item.id === id)?.type;
   const isSelling = id === IS_SELLING_ID;
 
   return <>{!isSelling && <Status $statusId={id}>{statusName}</Status>}</>;
