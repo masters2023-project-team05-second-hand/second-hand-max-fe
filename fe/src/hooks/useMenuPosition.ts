@@ -13,6 +13,7 @@ type ReturnType = {
 };
 
 export default function useMenuPosition(): ReturnType {
+  // Memo: marginY를 height값을 받아올 수 있음
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<ReturnType["position"]>({});
 
@@ -39,33 +40,12 @@ export default function useMenuPosition(): ReturnType {
       refPositionInfo!.bottom +
       (refPositionInfo!.height - refPositionInfo!.height + HEIGHT.menuMarginY);
 
-    if (isOverHalfOfX) {
-      setPosition((prev) => ({
-        ...prev,
-        left: null,
-        right: right,
-      }));
-    } else {
-      setPosition((prev) => ({
-        ...prev,
-        left: left,
-        right: null,
-      }));
-    }
-
-    if (isOverY) {
-      setPosition((prev) => ({
-        ...prev,
-        top: null,
-        bottom: bottom,
-      }));
-    } else {
-      setPosition((prev) => ({
-        ...prev,
-        top: top,
-        bottom: null,
-      }));
-    }
+    setPosition({
+      left: isOverHalfOfX ? null : left,
+      right: isOverHalfOfX ? right : null,
+      top: isOverY ? null : top,
+      bottom: isOverY ? bottom : null,
+    });
   };
 
   return { ref, position, onClick };
