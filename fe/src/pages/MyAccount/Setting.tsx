@@ -22,6 +22,7 @@ export default function Setting() {
 
     setIsLogin(false);
     setMember({
+      id: -1,
       nickname: "",
       profileImgUrl: "",
     });

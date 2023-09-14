@@ -9,7 +9,7 @@ type ReturnType = {
     bottom?: number | null;
     left?: number | null;
   };
-  onClick: (e: React.MouseEvent) => void;
+  calcPosition: (e: React.MouseEvent) => void;
 };
 
 export default function useMenuPosition(): ReturnType {
@@ -17,7 +17,7 @@ export default function useMenuPosition(): ReturnType {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<ReturnType["position"]>({});
 
-  const onClick = (e: React.MouseEvent) => {
+  const calcPosition = (e: React.MouseEvent) => {
     const refPositionInfo = ref.current?.getBoundingClientRect();
 
     const HALF_OF_X = window.innerWidth / 2;
@@ -46,5 +46,5 @@ export default function useMenuPosition(): ReturnType {
     });
   };
 
-  return { ref, position, onClick };
+  return { ref, position, calcPosition };
 }
