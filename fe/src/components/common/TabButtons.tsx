@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 type Tab = {
@@ -5,40 +6,47 @@ type Tab = {
   name: string;
 };
 
-export default function TabButtons({
-  activeTabId,
-  tabList,
-  onTabClick,
-}: {
+type TabButtonsProps = {
   activeTabId: number;
   tabList: Tab[];
   onTabClick: (id: number) => void;
-}) {
-  const isActiveTab = (id: number) => activeTabId === id;
+} & React.HTMLAttributes<HTMLUListElement>;
 
-  const onClick = (id: number) => {
-    onTabClick(id);
-  };
+export const TabButtons = React.forwardRef<HTMLUListElement, TabButtonsProps>(
+  ({ activeTabId, tabList, onTabClick, ...props }, ref) => {
+    const isActiveTab = (id: number) => activeTabId === id;
 
-  return (
-    <StyledTabButtons>
-      {tabList.map(({ id, name }) => {
-        return (
-          <TabButton
-            key={id}
-            $active={isActiveTab(id)}
-            onClick={() => onClick(id)}>
-            {name}
-          </TabButton>
-        );
-      })}
-    </StyledTabButtons>
-  );
-}
+    const onClick = (id: number) => {
+      onTabClick(id);
+    };
+
+    return (
+      <StyledTabButtons ref={ref} {...props}>
+        {tabList.map(({ id, name }) => {
+          return (
+            <TabButton
+              key={id}
+              $active={isActiveTab(id)}
+              onClick={() => onClick(id)}>
+              {name}
+            </TabButton>
+          );
+        })}
+      </StyledTabButtons>
+    );
+  }
+);
 
 const StyledTabButtons = styled.ul`
   display: flex;
   gap: 4px;
+  width: 100%;
+  overflow-x: scroll;
+  height: 2rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TabButton = styled.li<{ $active: boolean }>`
@@ -46,6 +54,7 @@ const TabButton = styled.li<{ $active: boolean }>`
   align-items: center;
   justify-content: center;
   padding: 0 16px;
+  white-space: nowrap;
   cursor: pointer;
   border-radius: ${({ theme: { radius } }) => radius[50]};
   color: ${({ $active, theme: { color } }) =>

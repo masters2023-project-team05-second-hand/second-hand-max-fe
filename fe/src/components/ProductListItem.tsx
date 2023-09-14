@@ -1,25 +1,13 @@
+import { ProductItem } from "@api/type";
 import { ReactComponent as HeartIcon } from "@assets/icon/heart.svg";
 import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import ProductStatus from "@components/ProductStatus";
-import { getFormattedPrice, getTimeLine } from "@utils/index";
+import { ROUTE_PATH } from "@router/constants";
+import { getTimeLine } from "@utils/index";
 import { useNavigate } from "react-router-dom";
+import { useMemberValue } from "store";
 import { styled } from "styled-components";
 import ProductMoreButton from "./ProductMoreButton";
-
-type ProductItem = {
-  sellerId: number;
-  productId: number;
-  thumbnailUrl: string;
-  title: string;
-  addressName: string;
-  createdTime: string;
-  price: number;
-  statusId: number;
-  stats: {
-    chatCount: number;
-    likeCount: number;
-  };
-};
 
 type ProductListItemProps = {
   productItem: ProductItem;
@@ -27,13 +15,14 @@ type ProductListItemProps = {
 
 export default function ProductListItem({ productItem }: ProductListItemProps) {
   const navigate = useNavigate();
+  const member = useMemberValue();
 
   const onProductClick = () => {
-    navigate(`/product-detail/${productItem.productId}`);
+    navigate(`${ROUTE_PATH.detail}/${productItem.productId}`);
   };
 
-  // Todo: memberId와 비교하는 로직으로 바꿔야함
-  const isSeller = productItem.sellerId !== 0;
+  const isSeller = productItem.sellerId === member.id;
+  const productPrice = productItem.price?.toLocaleString("ko-KR");
 
   return (
     <StyledProductListItem onClick={onProductClick}>
@@ -55,7 +44,7 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
             <div className="info-bottom">
               <ProductStatus id={productItem.statusId} />
               <TextBold>
-                {getFormattedPrice(productItem.price.toString())}원
+                {productPrice ? `${productPrice} 원` : "가격미정"}
               </TextBold>
             </div>
           </div>
@@ -84,7 +73,11 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
 }
 
 const StyledProductListItem = styled.li`
-  margin: 0 16px;
+  border-bottom: 1px solid ${({ theme: { color } }) => color.neutralBorder};
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 const Product = styled.div`

@@ -86,9 +86,29 @@ export type Status =
     }
   | {
       id: 2;
-      type: "예약중";
+      type: "판매완료";
     }
   | {
       id: 3;
-      type: "판매 완료";
+      type: "예약중";
     };
+
+export type ProductItem = {
+  sellerId: number;
+  productId: number;
+  thumbnailUrl: string;
+  title: string;
+  addressName: string;
+  createdTime: string;
+  price: number;
+  statusId: number;
+  stats: {
+    chatCount: number;
+    likeCount: number;
+  };
+};
+
+export type ProductList = {
+  products: ProductItem[];
+  hasNext: boolean;
+};

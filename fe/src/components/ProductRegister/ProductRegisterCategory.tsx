@@ -4,7 +4,7 @@ import { ReactComponent as ChevronRightIcon } from "@assets/icon/chevron-right.s
 import CategoryModal from "@components/Modal/CategoryModal/CategoryModal";
 import Button from "@components/common/Buttons/Button";
 import { Error, Loading } from "@components/common/Guide";
-import TabButtons from "@components/common/TabButtons";
+import { TabButtons } from "@components/common/TabButtons";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { RANDOM_CATEGORY_COUNT } from "./constants";

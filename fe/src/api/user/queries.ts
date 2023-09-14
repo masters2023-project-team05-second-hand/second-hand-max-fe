@@ -1,5 +1,6 @@
 import { useToast } from "@hooks/useToast";
 import {
+  useInfiniteQuery,
   useMutation,
   useQueries,
   useQuery,
@@ -9,6 +10,8 @@ import {
   getMember,
   getMemberAddress,
   getProductLikeStatus,
+  getUserWishlistCategory,
+  getUserWishlistProduct,
   postProductLike,
 } from ".";
 
@@ -68,9 +71,35 @@ export const useMutateProductLike = ({
       });
       onError();
     },
-    onSettled: () =>
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ["getProductLikeStatus", productId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getUserWishlistCategory"],
+      });
+    },
+  });
+};
+
+export const useUserLikeCategories = () => {
+  return useQuery({
+    queryKey: ["getUserWishlistCategory"],
+    queryFn: getUserWishlistCategory,
+    staleTime: Infinity,
+  });
+};
+
+export const useUserWishlistInfiniteQuery = (categoryId: number) => {
+  return useInfiniteQuery({
+    queryKey: ["getUserWishlistProduct", categoryId],
+    queryFn: ({ pageParam }) =>
+      getUserWishlistProduct({
+        categoryId,
+        page: pageParam,
+        size: 10,
       }),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.hasNext ? allPages.length : undefined,
   });
 };

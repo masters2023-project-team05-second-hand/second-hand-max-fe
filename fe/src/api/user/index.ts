@@ -1,5 +1,5 @@
 import { fetcher } from "@api/fetcher";
-import { AddressInfo, Member, Tokens } from "@api/type";
+import { AddressInfo, Member, ProductList, Tokens } from "@api/type";
 import { USER_API_PATH } from "./constants";
 
 export const postSocialLogin = async (
@@ -80,4 +80,26 @@ export const postProductLike = async ({
     productId,
     isWished,
   });
+};
+
+export const getUserWishlistCategory = async () => {
+  const { data } = await fetcher.get<{ id: number; name: string }[]>(
+    `${USER_API_PATH.wishlist}/categories`
+  );
+  return data;
+};
+
+export const getUserWishlistProduct = async ({
+  categoryId,
+  page = 0,
+  size = 10,
+}: {
+  categoryId: number;
+  page: number;
+  size: number;
+}) => {
+  const { data } = await fetcher.get<ProductList>(
+    `${USER_API_PATH.wishlist}?categoryId=${categoryId}&page=${page}&size=${size}`
+  );
+  return data;
 };
