@@ -1,10 +1,10 @@
+import { useDeleteProductQuery } from "@api/product/queries";
+import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
 import { useNavigate } from "react-router-dom";
 import MenuIndicator from "./common/Menu/MenuIndicator";
-import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
-import { useDeleteProductQuery } from "@api/product/queries";
 
 type ProductMoreButtonProps = {
-  productId: number;
+  productId: string;
 };
 
 export default function ProductMoreButton({

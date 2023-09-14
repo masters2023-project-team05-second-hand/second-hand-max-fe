@@ -252,7 +252,6 @@ export const handlers = [
     `${PRODUCT_API_PATH.products}/:productId/status`,
     async (req, res, ctx) => {
       const { statusId } = await req.json<{ statusId: number }>();
-      productDetail.product.status = statusId;
 
       if (!statusId) {
         return res(
@@ -262,6 +261,7 @@ export const handlers = [
           })
         );
       }
+      productDetail.product.status = statusId;
       return res(ctx.status(200));
     }
   ),
@@ -270,12 +270,29 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        isWished: true,
+        isWished: mockIsWished,
       })
     );
   }),
 
-  rest.patch(`${USER_API_PATH.wishlist}/:productId`, async (_req, res, ctx) => {
+  rest.post(USER_API_PATH.wishlist, async (req, res, ctx) => {
+    const { isWished } = await req.json<{
+      productId: string;
+      isWished: boolean;
+    }>();
+
+    // return res(ctx.status(400));
+
+    mockIsWished = isWished;
     return res(ctx.status(200));
   }),
+
+  rest.delete(
+    `${PRODUCT_API_PATH.products}/:productId`,
+    async (_, res, ctx) => {
+      return res(ctx.status(200));
+    }
+  ),
 ];
+
+let mockIsWished = true;

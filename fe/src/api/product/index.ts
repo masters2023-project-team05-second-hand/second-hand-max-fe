@@ -63,7 +63,7 @@ export const patchProduct = async ({
   );
 };
 
-export const deleteProduct = async (productId: number) => {
+export const deleteProduct = async (productId: string) => {
   return await fetcher.delete(`${PRODUCT_API_PATH.products}/${productId}`);
 };
 

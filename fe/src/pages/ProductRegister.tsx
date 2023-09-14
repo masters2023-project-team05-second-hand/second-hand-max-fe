@@ -16,7 +16,7 @@ import { ProductInfo } from "@components/ProductRegister/type";
 import { Error, Loading } from "@components/common/Guide";
 import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAddressListValue, useCurrentAddressIdValue } from "store";
@@ -30,6 +30,7 @@ export default function ProductRegister() {
   const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
     currentAddressId
   );
+  const queryClient = useQueryClient();
 
   // Todo: 상태 분리하기 & 상태 관리 라이브러리 쓰기
   const [productInfo, setProductInfo] = useState<ProductInfo>({
@@ -91,6 +92,9 @@ export default function ProductRegister() {
         navigate(`${ROUTE_PATH.detail}/${res.data.productId}`, {
           state: { prevRoute: ROUTE_PATH.home },
         });
+        queryClient.invalidateQueries({
+          queryKey: ["getProductDetail", productId],
+        });
       },
       onError: () => {
         return (
@@ -114,10 +118,10 @@ export default function ProductRegister() {
       formData.append("newImages", image.image);
     });
 
-    formData.append(
-      "deletedImageIds",
-      JSON.stringify(productInfo.deletedImageIds) ?? JSON.stringify([])
-    );
+    if (productInfo.deletedImageIds?.length) {
+      formData.append("deletedImageIds", productInfo.deletedImageIds?.join());
+    }
+
     formData.append("title", productInfo.title);
     formData.append("content", productInfo.content);
     formData.append("categoryId", JSON.stringify(productInfo.category.id));
@@ -130,6 +134,9 @@ export default function ProductRegister() {
         onSuccess: () => {
           navigate(`${ROUTE_PATH.detail}/${productId}`, {
             state: { prevRoute: ROUTE_PATH.home },
+          });
+          queryClient.invalidateQueries({
+            queryKey: ["getProductDetail", productId],
           });
         },
         onError: () => {

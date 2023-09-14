@@ -40,7 +40,10 @@ export const useProductDetailQuery = (id: string, enabled: boolean) => {
   });
 };
 
-export const useDeleteProductQuery = (productId: number) => {
+export const useDeleteProductQuery = (
+  productId: string,
+  onSuccess?: () => void
+) => {
   const { toast } = useToast();
 
   const deleteProductMutation = useMutation(deleteProduct);
@@ -53,6 +56,7 @@ export const useDeleteProductQuery = (productId: number) => {
           title: "상품 삭제 성공",
           message: "상품 삭제에 성공했습니다.",
         });
+        onSuccess?.();
       },
       onError: () => {
         toast({
@@ -92,7 +96,7 @@ export const useMutateProductStatus = ({
         title: "상태 변경 완료",
         message: "상태 변경이 완료되었습니다.",
       });
-      queryClient.invalidateQueries(invalidateQueryKey);
+      queryClient.invalidateQueries({ queryKey: invalidateQueryKey });
     },
     onError: () => {
       toast({

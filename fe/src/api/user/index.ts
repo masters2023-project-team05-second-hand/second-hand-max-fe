@@ -12,8 +12,10 @@ export const postSocialLogin = async (
   return data;
 };
 
-export const postLogout = async (body: { refreshToken: string }) => {
-  return await fetcher.post(USER_API_PATH.logout, body);
+export const postLogout = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  return await fetcher.post(USER_API_PATH.logout, { refreshToken });
 };
 
 export const postRefreshToken = async (refreshToken: string) => {
@@ -28,16 +30,16 @@ export const putUserAddress = async (addressIds: number[]) => {
   });
 };
 
-export const postUserProfile = async (file: File) => {
+export const patchUserProfile = async (file: File) => {
   const config = {
     headers: {
       "content-type": "multipart/form-data",
     },
   };
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append("newProfileImg", file);
 
-  return await fetcher.post<{ profileImgUrl: string }>(
+  return await fetcher.patch<{ updatedImgUrl: string }>(
     USER_API_PATH.userProfile,
     formData,
     config
@@ -56,6 +58,26 @@ export const getMemberAddress = async () => {
   return data;
 };
 
-export const patchNickname = async (nickname: string) => {
-  return await fetcher.patch(USER_API_PATH.nickname, { nickname });
+export const patchNickname = async (newNickname: string) => {
+  return await fetcher.patch(USER_API_PATH.nickname, { newNickname });
+};
+
+export const getProductLikeStatus = async (productId: string) => {
+  const path = `${USER_API_PATH.wishlist}/${productId}`;
+
+  const { data } = await fetcher.get<{ isWished: boolean }>(path);
+  return data;
+};
+
+export const postProductLike = async ({
+  productId,
+  isWished,
+}: {
+  productId: string;
+  isWished: boolean;
+}) => {
+  return await fetcher.post(USER_API_PATH.wishlist, {
+    productId,
+    isWished,
+  });
 };

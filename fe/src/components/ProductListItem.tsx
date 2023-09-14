@@ -1,9 +1,9 @@
-import { styled } from "styled-components";
-import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import { ReactComponent as HeartIcon } from "@assets/icon/heart.svg";
+import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import ProductStatus from "@components/ProductStatus";
 import { getFormattedPrice, getTimeLine } from "@utils/index";
 import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
 import ProductMoreButton from "./ProductMoreButton";
 
 type ProductItem = {
@@ -44,7 +44,7 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
             <div className="info-top">
               <TextDefault>{productItem.title}</TextDefault>
               {isSeller && (
-                <ProductMoreButton productId={productItem.productId} />
+                <ProductMoreButton productId={productItem.productId + ""} />
               )}
             </div>
             <div className="info-middle">

@@ -1,35 +1,29 @@
 import UserAccount from "@components/UserAccount";
 import Button from "@components/common/Buttons/Button";
-import { ROUTE_PATH } from "@router/constants";
 import { Main } from "@styles/common";
+import { useMutation } from "@tanstack/react-query";
 import { postLogout } from "api/user";
-import { useNavigate } from "react-router-dom";
 import { useSetAddresses, useSetIsLogin, useSetMember } from "store";
 
 export default function Setting() {
-  const navigate = useNavigate();
-  const refreshToken = localStorage.getItem("refreshToken");
-
   const setMember = useSetMember();
   const setAddresses = useSetAddresses();
   const setIsLogin = useSetIsLogin();
 
-  const onLogout = () => {
-    refreshToken && postLogout({ refreshToken });
+  const { mutate: mutateLogout } = useMutation(postLogout, {
+    onSuccess: () => {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
 
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-
-    setIsLogin(false);
-    setMember({
-      id: -1,
-      nickname: "",
-      profileImgUrl: "",
-    });
-    setAddresses([]);
-
-    navigate(ROUTE_PATH.account);
-  };
+      setIsLogin(false);
+      setMember({
+        id: -1,
+        nickname: "",
+        profileImgUrl: "",
+      });
+      setAddresses([]);
+    },
+  });
 
   return (
     <Main>
@@ -41,7 +35,7 @@ export default function Setting() {
         fontName="availableStrong16"
         color="accentText"
         radius={8}
-        onClick={onLogout}
+        onClick={() => mutateLogout()}
       />
     </Main>
   );
