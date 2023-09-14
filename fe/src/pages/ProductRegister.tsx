@@ -14,6 +14,7 @@ import {
 } from "@components/ProductRegister/constants";
 import { ProductInfo } from "@components/ProductRegister/type";
 import { Error, Loading } from "@components/common/Guide";
+import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -87,7 +88,9 @@ export default function ProductRegister() {
 
     newProductMutation.mutate(formData, {
       onSuccess: (res) => {
-        navigate(`/product-detail/${res.data.productId}`);
+        navigate(`${ROUTE_PATH.detail}/${res.data.productId}`, {
+          state: { prevRoute: ROUTE_PATH.home },
+        });
       },
       onError: () => {
         return (
@@ -125,7 +128,9 @@ export default function ProductRegister() {
       { productId: Number(productId), productInfo: formData },
       {
         onSuccess: () => {
-          navigate(`/product-detail/${productId}`);
+          navigate(`${ROUTE_PATH.detail}/${productId}`, {
+            state: { prevRoute: ROUTE_PATH.home },
+          });
         },
         onError: () => {
           return (
