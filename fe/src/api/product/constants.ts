@@ -5,4 +5,5 @@ export const PRODUCT_API_PATH = {
     `/api/addresses?page=${page}&size=${size}`,
   newProduct: "/api/products",
   editProduct: (productId: number) => `/api/products/${productId}`,
+  deleteProduct: (productId: number) => `/api/products/${productId}`,
 };
