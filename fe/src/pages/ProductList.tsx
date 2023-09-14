@@ -1,125 +1,72 @@
 import NavigationBar from "@components/NavigationBar";
 import ProductListFAB from "@components/ProductList/ProductListFAB";
 import ProductListHeader from "@components/ProductList/ProductListHeader";
+import { useGetProductListInfiniteQuery } from "@api/product/queries";
+import { useCurrentAddressIdValue, useCurrentCategoryIdValue } from "store";
+import { Error, Loading } from "@components/common/Guide";
+import { useIntersect } from "@hooks/useIntersect";
 import Products from "@components/ProductList/Products";
-import { Page } from "@styles/common";
-
-const mockData = {
-  products: [
-    {
-      sellerId: 1,
-      productId: 1,
-      thumbnailUrl: "https://legacy.reactjs.org/logo-og.png",
-      title: "리액트",
-      addressName: "역삼 3동",
-      createdTime: "2023-09-11T18:42:12",
-      price: 56000,
-      statusId: 1,
-      stats: {
-        chatCount: 0,
-        likeCount: 0,
-      },
-    },
-    {
-      sellerId: 2,
-      productId: 2,
-      thumbnailUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-      title: "리액트 가지",
-      addressName: "상계 6동",
-      createdTime: "2023-09-08T17:55:24",
-      price: 24000,
-      statusId: 2,
-      stats: {
-        chatCount: 3,
-        likeCount: 5,
-      },
-    },
-    {
-      sellerId: 3,
-      productId: 3,
-      thumbnailUrl:
-        "https://blog.logrocket.com/wp-content/uploads/2020/07/react-native-geolocation.png",
-      title: "리액트 가지가지",
-      addressName: "역삼 1동",
-      createdTime: "2023-09-12T16:20:00",
-      price: 4800,
-      statusId: 3,
-      stats: {
-        chatCount: 6,
-        likeCount: 7,
-      },
-    },
-    {
-      sellerId: 3,
-      productId: 4,
-      thumbnailUrl:
-        "https://blog.logrocket.com/wp-content/uploads/2020/07/react-native-geolocation.png",
-      title: "리액트 가지가지",
-      addressName: "역삼 1동",
-      createdTime: "2023-09-12T16:20:00",
-      price: 4800,
-      statusId: 3,
-      stats: {
-        chatCount: 6,
-        likeCount: 7,
-      },
-    },
-    {
-      sellerId: 3,
-      productId: 5,
-      thumbnailUrl:
-        "https://blog.logrocket.com/wp-content/uploads/2020/07/react-native-geolocation.png",
-      title: "리액트 가지가지",
-      addressName: "역삼 1동",
-      createdTime: "2023-09-12T16:20:00",
-      price: 4800,
-      statusId: 3,
-      stats: {
-        chatCount: 6,
-        likeCount: 7,
-      },
-    },
-    {
-      sellerId: 3,
-      productId: 6,
-      thumbnailUrl:
-        "https://blog.logrocket.com/wp-content/uploads/2020/07/react-native-geolocation.png",
-      title: "리액트 가지가지",
-      addressName: "역삼 1동",
-      createdTime: "2023-09-12T16:20:00",
-      price: 4800,
-      statusId: 3,
-      stats: {
-        chatCount: 6,
-        likeCount: 7,
-      },
-    },
-    {
-      sellerId: 3,
-      productId: 7,
-      thumbnailUrl:
-        "https://blog.logrocket.com/wp-content/uploads/2020/07/react-native-geolocation.png",
-      title: "리액트 가지가지",
-      addressName: "역삼 1동",
-      createdTime: "2023-09-12T16:20:00",
-      price: 4800,
-      statusId: 3,
-      stats: {
-        chatCount: 6,
-        likeCount: 7,
-      },
-    },
-  ],
-  hasNext: false,
-};
+import { Main, Page, Target } from "@styles/common";
+import { SubInfo } from "@components/ProductDetail/common.style";
 
 export default function ProductList() {
+  const categoryId = useCurrentCategoryIdValue();
+  const currentAddressId = useCurrentAddressIdValue();
+
+  const {
+    data: productList,
+    status,
+    hasNextPage,
+    isFetching,
+    fetchNextPage,
+  } = useGetProductListInfiniteQuery({
+    addressId: currentAddressId,
+    categoryId: categoryId,
+  });
+
+  const ref = useIntersect((entry, observer) => {
+    observer.unobserve(entry.target);
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  });
+
+  const isEmpty = productList?.pages[0].products.length === 0;
+
   return (
     <Page>
       <ProductListHeader />
-      <Products productLists={[mockData]} />
+      {status === "loading" && (
+        <Loading
+          messages={[
+            "상품 목록을 불러오는 중입니다.",
+            "새로고침을 하지 마세요!",
+          ]}
+        />
+      )}
+      {status === "error" && (
+        <Error
+          messages={[
+            "상품 목록을 불러오는데 실패했어요.",
+            "잠시 후 다시 시도해주세요.",
+          ]}
+        />
+      )}
+      {status === "success" && (
+        <>
+          {isEmpty ? (
+            <>
+              <Main>
+                <SubInfo>동네 물품 목록이 없습니다</SubInfo>
+              </Main>
+            </>
+          ) : (
+            <Products productLists={productList.pages} />
+          )}
+        </>
+      )}
       <ProductListFAB />
+      <Target ref={ref} />
       <NavigationBar />
     </Page>
   );
