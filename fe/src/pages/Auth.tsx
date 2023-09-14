@@ -42,16 +42,14 @@ export function Auth() {
         <Loading messages={["로그인중입니다...", "새로고침을 하지 마세요!"]} />
       )}
       {isError && (
-        <>
-          <Error
-            messages={[
-              "로그인에 실패했습니다.",
-              "새로고침을 하거나 다시 시도해주세요.",
-            ]}
-          />
-          <NavigationBar />
-        </>
+        <Error
+          messages={[
+            "로그인에 실패했습니다.",
+            "새로고침을 하거나 다시 시도해주세요.",
+          ]}
+        />
       )}
+      <NavigationBar />
     </Page>
   );
 }

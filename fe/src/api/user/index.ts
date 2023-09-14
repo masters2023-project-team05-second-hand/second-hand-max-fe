@@ -12,8 +12,10 @@ export const postSocialLogin = async (
   return data;
 };
 
-export const postLogout = async (body: { refreshToken: string }) => {
-  return await fetcher.post(USER_API_PATH.logout, body);
+export const postLogout = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  return await fetcher.post(USER_API_PATH.logout, { refreshToken });
 };
 
 export const postRefreshToken = async (refreshToken: string) => {
