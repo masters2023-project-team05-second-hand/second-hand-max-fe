@@ -1,6 +1,6 @@
 import { patchProduct, postProduct } from "@api/product/index";
 import { useProductDetailQuery } from "@api/product/queries";
-import { AddressInfo, CategoryInfo } from "@api/type";
+import { AddressInfo } from "@api/type";
 import ProductRegisterAddress from "@components/ProductRegister/ProductRegisterAddress";
 import ProductRegisterCategory from "@components/ProductRegister/ProductRegisterCategory";
 import ProductRegisterContent from "@components/ProductRegister/ProductRegisterContent";
@@ -9,7 +9,7 @@ import ProductRegisterImage from "@components/ProductRegister/ProductRegisterIma
 import ProductRegisterPrice from "@components/ProductRegister/ProductRegisterPrice";
 import ProductRegisterTitle from "@components/ProductRegister/ProductRegisterTitle";
 import {
-  DEFAULT_CATEGORY,
+  DEFAULT_CATEGORY_ID,
   DEFAULT_SELECTED_ADDRESS_INDEX,
 } from "@components/ProductRegister/constants";
 import { ProductInfo } from "@components/ProductRegister/type";
@@ -38,7 +38,7 @@ export default function ProductRegister() {
     newImages: [],
     deletedImageIds: [],
     title: "",
-    category: DEFAULT_CATEGORY,
+    categoryId: DEFAULT_CATEGORY_ID,
     price: "",
     content: "",
     address:
@@ -61,7 +61,7 @@ export default function ProductRegister() {
           ...prev,
           images: data.images,
           title: data.product.title,
-          category: data.product.category,
+          categoryId: data.product.category.id,
           price: data.product.price?.toString() ?? "",
           content: data.product.contents,
           address: data.product.address,
@@ -83,7 +83,7 @@ export default function ProductRegister() {
 
     formData.append("title", productInfo.title);
     formData.append("content", productInfo.content);
-    formData.append("categoryId", JSON.stringify(productInfo.category.id));
+    formData.append("categoryId", JSON.stringify(productInfo.categoryId));
     formData.append("addressId", JSON.stringify(productInfo.address.id));
     formData.append("price", price);
 
@@ -124,7 +124,7 @@ export default function ProductRegister() {
 
     formData.append("title", productInfo.title);
     formData.append("content", productInfo.content);
-    formData.append("categoryId", JSON.stringify(productInfo.category.id));
+    formData.append("categoryId", JSON.stringify(productInfo.categoryId));
     formData.append("addressId", JSON.stringify(productInfo.address.id));
     formData.append("price", price);
 
@@ -215,18 +215,11 @@ export default function ProductRegister() {
     }));
   };
 
-  const onChangeCategory = (
-    id: number,
-    categories: Pick<CategoryInfo, "id" | "name">[]
-  ) => {
-    const selectedCategory = categories.find((category) => category.id === id);
-
-    if (selectedCategory) {
-      setProductInfo((prev) => ({
-        ...prev,
-        category: selectedCategory,
-      }));
-    }
+  const onChangeCategory = (categoryId: number) => {
+    setProductInfo((prev) => ({
+      ...prev,
+      categoryId,
+    }));
   };
 
   const onChangePrice = (price: string) => {
@@ -292,7 +285,7 @@ export default function ProductRegister() {
               />
               {productInfo.title && (
                 <ProductRegisterCategory
-                  category={productInfo.category}
+                  categoryId={productInfo.categoryId}
                   onChange={onChangeCategory}
                 />
               )}
