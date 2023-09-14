@@ -28,16 +28,16 @@ export const putUserAddress = async (addressIds: number[]) => {
   });
 };
 
-export const postUserProfile = async (file: File) => {
+export const patchUserProfile = async (file: File) => {
   const config = {
     headers: {
       "content-type": "multipart/form-data",
     },
   };
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append("newProfileImg", file);
 
-  return await fetcher.post<{ profileImgUrl: string }>(
+  return await fetcher.patch<{ updatedImgUrl: string }>(
     USER_API_PATH.userProfile,
     formData,
     config
