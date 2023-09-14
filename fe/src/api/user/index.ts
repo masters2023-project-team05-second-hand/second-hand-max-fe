@@ -1,5 +1,5 @@
 import { fetcher } from "@api/fetcher";
-import { Member, Tokens, UserAddressInfo } from "@api/type";
+import { AddressInfo, Member, Tokens } from "@api/type";
 import { USER_API_PATH } from "./constants";
 
 export const postSocialLogin = async (
@@ -23,7 +23,7 @@ export const postRefreshToken = async (refreshToken: string) => {
 };
 
 export const putUserAddress = async (addressIds: number[]) => {
-  return await fetcher.put<UserAddressInfo[]>(USER_API_PATH.memberAddress, {
+  return await fetcher.put<AddressInfo[]>(USER_API_PATH.memberAddress, {
     addressIds,
   });
 };
@@ -50,7 +50,7 @@ export const getMember = async () => {
 };
 
 export const getMemberAddress = async () => {
-  const { data } = await fetcher.get<UserAddressInfo[]>(
+  const { data } = await fetcher.get<AddressInfo[]>(
     USER_API_PATH.memberAddress
   );
   return data;

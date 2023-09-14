@@ -4,12 +4,9 @@ export type Tokens = {
 };
 
 export type Member = {
+  id: number;
   nickname: string;
   profileImgUrl: string;
-};
-
-export type UserAddressInfo = AddressInfo & {
-  isLastVisited: boolean;
 };
 
 export type AddressInfo = {
@@ -29,30 +26,38 @@ export type AddressList = {
 };
 
 export type ProductDetailInfo = {
-  isSeller: boolean;
-  product: {
-    seller: string;
-    category: CategoryInfo;
-    address: AddressInfo;
-    title: string;
-    contents: string;
-    price: number;
-    createdTime: string;
-    status: number;
-  };
-  images: {
-    id: number;
-    url: string;
-  }[];
-  stats: {
-    chatCount: number;
-    wishCount: number;
-    viewCount: number;
-  };
+  product: ProductInfo;
+  images: ProductImages[];
+  stats: ProductStats;
   statuses: {
     id: number;
     type: string;
   }[];
+};
+
+export type ProductStats = {
+  chatCount: number;
+  wishCount: number;
+  viewCount: number;
+};
+
+export type ProductInfo = {
+  seller: {
+    id: number;
+    nickname: string;
+  };
+  category: CategoryInfo;
+  address: AddressInfo;
+  title: string;
+  contents: string;
+  price: number;
+  createdTime: string;
+  status: number;
+};
+
+export type ProductImages = {
+  id: number;
+  url: string;
 };
 
 export type PostNewProduct = {
@@ -73,3 +78,17 @@ export type PatchProduct = {
   addressId: number;
   categoryId: number;
 };
+
+export type Status =
+  | {
+      id: 1;
+      type: "판매중";
+    }
+  | {
+      id: 2;
+      type: "예약중";
+    }
+  | {
+      id: 3;
+      type: "판매 완료";
+    };

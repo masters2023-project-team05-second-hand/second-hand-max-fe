@@ -1,7 +1,7 @@
+import useMenuPosition from "@hooks/useMenuPosition";
 import { useState } from "react";
 import Menu from "./Menu";
 import { MenuIndicatorProps } from "./type";
-import useMenuPosition from "@hooks/useMenuPosition";
 
 export default function MenuIndicator({
   itemList,
@@ -9,7 +9,7 @@ export default function MenuIndicator({
   ...props
 }: MenuIndicatorProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { ref, position, onClick: calcPosition } = useMenuPosition();
+  const { ref, position, calcPosition } = useMenuPosition();
 
   const toggleModal = () => {
     setIsMenuOpen((prev) => !prev);
