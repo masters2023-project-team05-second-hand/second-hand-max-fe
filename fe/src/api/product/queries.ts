@@ -9,6 +9,7 @@ import {
   deleteProduct,
   getAddresses,
   getCategories,
+  getProduct,
   getProductDetail,
   getStatuses,
   patchProductStatus,
@@ -40,11 +41,17 @@ export const useProductDetailQuery = (id: string, enabled: boolean) => {
   });
 };
 
-export const useDeleteProductQuery = (
-  productId: string,
-  onSuccess?: () => void
-) => {
+export const useDeleteProductQuery = ({
+  productId,
+  onSuccess,
+  invalidateQueryKey,
+}: {
+  productId: string;
+  onSuccess?: () => void;
+  invalidateQueryKey?: string[];
+}) => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const deleteProductMutation = useMutation(deleteProduct);
 
@@ -57,6 +64,7 @@ export const useDeleteProductQuery = (
           message: "상품 삭제에 성공했습니다.",
         });
         onSuccess?.();
+        queryClient.invalidateQueries({ queryKey: invalidateQueryKey });
       },
       onError: () => {
         toast({
@@ -106,5 +114,26 @@ export const useMutateProductStatus = ({
       });
     },
     onSettled,
+  });
+};
+
+export const useGetProductListInfiniteQuery = ({
+  addressId,
+  categoryId,
+  size,
+}: {
+  addressId: number | null;
+  categoryId: number | null;
+  size?: number;
+}) => {
+  return useInfiniteQuery({
+    queryKey: ["getProduct", addressId, categoryId, size],
+    queryFn: ({ pageParam }) =>
+      getProduct({ addressId, categoryId, cursor: pageParam, size }),
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNext
+        ? lastPage.products[lastPage.products.length - 1].productId
+        : undefined;
+    },
   });
 };
