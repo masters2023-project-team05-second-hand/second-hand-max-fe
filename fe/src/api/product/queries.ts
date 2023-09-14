@@ -96,7 +96,7 @@ export const useMutateProductStatus = ({
         title: "상태 변경 완료",
         message: "상태 변경이 완료되었습니다.",
       });
-      queryClient.invalidateQueries(invalidateQueryKey);
+      queryClient.invalidateQueries({ queryKey: invalidateQueryKey });
     },
     onError: () => {
       toast({

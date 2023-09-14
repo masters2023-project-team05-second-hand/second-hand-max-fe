@@ -69,6 +69,8 @@ export const useMutateProductLike = ({
       onError();
     },
     onSettled: () =>
-      queryClient.invalidateQueries(["getProductLikeStatus", productId]),
+      queryClient.invalidateQueries({
+        queryKey: ["getProductLikeStatus", productId],
+      }),
   });
 };
