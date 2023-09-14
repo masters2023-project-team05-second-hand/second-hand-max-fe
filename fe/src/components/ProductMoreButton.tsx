@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import MenuIndicator from "./common/Menu/MenuIndicator";
 import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
-import { deleteProduct } from "@api/product";
-import { useToast } from "@hooks/useToast";
-import { useMutation } from "@tanstack/react-query";
+import { useDeleteProductQuery } from "@api/product/queries";
 
 type ProductMoreButtonProps = {
   productId: number;
@@ -13,28 +11,8 @@ export default function ProductMoreButton({
   productId,
 }: ProductMoreButtonProps) {
   const navigate = useNavigate();
-  const { toast } = useToast();
 
-  const deleteProductMutation = useMutation(deleteProduct);
-
-  const onDeleteProduct = (id: number) => {
-    deleteProductMutation.mutate(id, {
-      onSuccess: () => {
-        toast({
-          type: "success",
-          title: "상품 삭제 성공",
-          message: "상품 삭제에 성공했습니다.",
-        });
-      },
-      onError: () => {
-        toast({
-          type: "error",
-          title: "상품 삭제 실패",
-          message: "상품 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.",
-        });
-      },
-    });
-  };
+  const { onDeleteProduct } = useDeleteProductQuery(productId);
 
   const moreButtonItems = [
     {
@@ -60,7 +38,7 @@ export default function ProductMoreButton({
     {
       name: "삭제",
       onClick: () => {
-        onDeleteProduct(productId);
+        onDeleteProduct();
       },
       isWarning: true,
     },
