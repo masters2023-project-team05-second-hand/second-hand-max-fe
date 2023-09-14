@@ -1,5 +1,6 @@
 import { AddressInfo } from "@api/type";
 import { ReactComponent as MapIcon } from "@assets/icon/map-pin-filled.svg";
+import MenuIndicator from "@components/common/Menu/MenuIndicator";
 import { BottomBar } from "@styles/common";
 import { useAddressListValue } from "store";
 import { styled } from "styled-components";
