@@ -18,8 +18,8 @@ export default function ProductRegisterContent({
 
   return (
     <Content
-      placeholder={PLACE_HOLDER.CONTENT(
-        address?.name ?? PLACE_HOLDER.DEFAULT_PLACE
+      placeholder={PLACE_HOLDER.content(
+        address?.name ?? PLACE_HOLDER.defaultPlace
       )}
       value={content}
       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>

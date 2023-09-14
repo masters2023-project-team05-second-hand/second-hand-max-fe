@@ -1,11 +1,10 @@
 import { AddressInfo } from "@api/type";
 import { ReactComponent as MapIcon } from "@assets/icon/map-pin-filled.svg";
-import Menu from "@components/common/Menu/Menu";
 import { HEIGHT, WIDTH } from "@styles/constants";
-import { useState } from "react";
 import { useAddressListValue } from "store";
 import { styled } from "styled-components";
 import { PLACE_HOLDER } from "./constants";
+import MenuIndicator from "@components/common/Menu/MenuIndicator";
 
 type ProductRegisterAddressProps = {
   selectedAddressId: number | null;
@@ -19,37 +18,24 @@ export default function ProductRegisterAddress({
   onChange,
 }: ProductRegisterAddressProps) {
   const addressList = useAddressListValue();
-  const [isAddressMenuOpen, setIsAddressMenuOpen] = useState(false);
 
   const addressMenuList = addressList.map((address) => ({
     id: address.id,
     name: address.name,
     onClick: () => {
       onChange(addressList, address.id);
-      toggleAddressMenu();
     },
     isSelected: address.id === selectedAddressId,
   }));
 
-  const toggleAddressMenu = () => {
-    setIsAddressMenuOpen((prev) => !prev);
-  };
-
   return (
     <Address>
-      <AddressButton onClick={toggleAddressMenu}>
-        <MapIcon />
-        <span>{address?.name ?? PLACE_HOLDER.ADDRESS}</span>
-      </AddressButton>
-      {isAddressMenuOpen && (
-        <Menu
-          itemList={addressMenuList}
-          withShadow={true}
-          positionX="left"
-          positionY="bottom"
-          closeMenuHandler={toggleAddressMenu}
-        />
-      )}
+      <MenuIndicator itemList={addressMenuList} withShadow={true}>
+        <AddressButton>
+          <MapIcon />
+          <span>{address?.name ?? PLACE_HOLDER.address}</span>
+        </AddressButton>
+      </MenuIndicator>
     </Address>
   );
 }
