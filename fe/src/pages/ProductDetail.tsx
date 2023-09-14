@@ -1,11 +1,8 @@
 import { useProductDetailQuery } from "@api/product/queries";
-import { useUserWishProductQuery } from "@api/user/queries";
-import {
-  BackButton,
-  ChatButton,
-  LikeButton,
-  MoreButton,
-} from "@components/ProductDetail/Buttons";
+import BackButton from "@components/ProductDetail/Buttons/BackButton";
+import ChatButton from "@components/ProductDetail/Buttons/ChatButton";
+import LikeButton from "@components/ProductDetail/Buttons/LikeButton";
+import MoreButton from "@components/ProductDetail/Buttons/MoreButton";
 import ProductContents from "@components/ProductDetail/ProductContents/ProductContents";
 import ProductImageList from "@components/ProductDetail/ProductImageList";
 import TopBar from "@components/TopBar";
@@ -23,8 +20,6 @@ export default function ProductDetail() {
 
   const { data: productDetailInfo, isSuccess: isProductDetailSuccess } =
     useProductDetailQuery(productId!, !!productId);
-  const { data: userWishProduct, isSuccess: isUserWishSuccess } =
-    useUserWishProductQuery(productId!);
 
   const isScroll = !!scrollY && scrollY > 0;
   const isSeller = member.id === productDetailInfo?.product.seller.id;
@@ -52,9 +47,7 @@ export default function ProductDetail() {
       <BottomBar>
         <ButtonContainer>
           <LeftWrapper>
-            {isUserWishSuccess && (
-              <LikeButton isLiked={userWishProduct.isWished} />
-            )}
+            <LikeButton />
             {isProductDetailSuccess && (
               <span>{productPrice ? `${productPrice} 원` : "가격미정"}</span>
             )}

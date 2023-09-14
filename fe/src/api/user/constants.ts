@@ -14,6 +14,7 @@ export const USER_API_PATH = {
   userProfile: "/api/members/profile-image",
   memberAddress: "/api/members/addresses",
   nickname: "/api/members/nickname",
+  wishlist: "/api/members/wishlist",
 };
 
 export const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${VITE_OAUTH_KAKAO_CLIENT_ID}&redirect_uri=${VITE_APP_API_URL}${ROUTE_PATH.auth.kakao}&response_type=code`;

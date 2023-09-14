@@ -56,6 +56,26 @@ export const getMemberAddress = async () => {
   return data;
 };
 
-export const patchNickname = async (nickname: string) => {
-  return await fetcher.patch(USER_API_PATH.nickname, { nickname });
+export const patchNickname = async (newNickname: string) => {
+  return await fetcher.patch(USER_API_PATH.nickname, { newNickname });
+};
+
+export const getProductLikeStatus = async (productId: string) => {
+  const path = `${USER_API_PATH.wishlist}/${productId}`;
+
+  const { data } = await fetcher.get<{ isWished: boolean }>(path);
+  return data;
+};
+
+export const postProductLike = async ({
+  productId,
+  isWished,
+}: {
+  productId: string;
+  isWished: boolean;
+}) => {
+  return await fetcher.post(USER_API_PATH.wishlist, {
+    productId,
+    isWished,
+  });
 };
