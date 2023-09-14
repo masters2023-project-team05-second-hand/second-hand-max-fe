@@ -66,5 +66,4 @@ const DEFAULT_TAB = { id: 0, name: "전체" };
 
 const PageContent = styled.div`
   max-width: 100%;
-  padding: 0.5rem 1rem;
 `;

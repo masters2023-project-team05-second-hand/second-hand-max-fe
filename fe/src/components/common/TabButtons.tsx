@@ -43,6 +43,8 @@ const StyledTabButtons = styled.ul`
   width: 100%;
   overflow-x: scroll;
   height: 2rem;
+  margin: 1rem 1rem 0.5rem;
+  box-sizing: border-box;
 
   &::-webkit-scrollbar {
     display: none;

@@ -24,8 +24,6 @@ export const convertPastTimestamp = (timestamp: string) => {
   const currDate = new Date();
   const diffMs = currDate.getTime() - startDate.getTime();
 
-  if (diffMs < 0) throw Error("timestamp cannot be in the future.");
-
   for (const { unit, threshold, divisor } of timeUnits) {
     if (diffMs < threshold) {
       const value = Math.floor(diffMs / divisor);

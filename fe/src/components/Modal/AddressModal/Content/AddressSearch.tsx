@@ -2,6 +2,7 @@ import { useAddressesInfiniteQuery } from "@api/product/queries";
 import { ListItem, ListPanel } from "@components/Modal/Modal.style";
 import { Error, Loading } from "@components/common/Guide";
 import { useIntersect } from "@hooks/useIntersect";
+import { Target } from "@styles/common";
 import { AddressInfo } from "api/type";
 import { useAddressList, useSetCurrentAddressId } from "store";
 import styled from "styled-components";
@@ -78,8 +79,4 @@ const SearchBar = styled.input`
     font: ${({ theme: { font } }) => font.availableDefault16};
     color: ${({ theme: { color } }) => color.neutralTextWeak};
   }
-`;
-
-const Target = styled.div`
-  height: 1px;
 `;
