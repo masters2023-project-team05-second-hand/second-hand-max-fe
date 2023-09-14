@@ -1,7 +1,7 @@
+import { CategoryInfo } from "@api/type";
+import useOutsideClick from "@hooks/useOutsideClick";
 import Modal from "../Modal";
 import CategoryModalContent from "./CategoryModalContent";
-import useOutsideClick from "@hooks/useOutsideClick";
-import { CategoryInfo } from "@api/type";
 
 type CategoryModalProps = {
   selectedId: number;
@@ -32,7 +32,7 @@ export default function CategoryModal({
   return (
     <Modal
       ref={categoryRef}
-      headerProps={{
+      header={{
         title: "카테고리",
         closeHandler,
       }}

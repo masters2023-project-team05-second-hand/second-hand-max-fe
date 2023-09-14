@@ -1,6 +1,6 @@
 import { PRODUCT_API_PATH } from "@api/product/constants";
 import { USER_API_PATH } from "@api/user/constants";
-import { Member, Tokens, UserAddressInfo } from "api/type";
+import { AddressInfo, Member, Tokens } from "api/type";
 import { rest } from "msw";
 import { getMockAddresses } from "./data/address";
 import { categories } from "./data/categories";
@@ -122,9 +122,12 @@ export const handlers = [
     );
   }),
 
-  rest.get(PRODUCT_API_PATH.productDetail(1), async (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(productDetail));
-  }),
+  rest.get(
+    `${PRODUCT_API_PATH.products}/:productId`,
+    async (_req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(productDetail));
+    }
+  ),
 
   rest.get(USER_API_PATH.member, async (req, res, ctx) => {
     const Authorization = req.headers.get("Authorization");
@@ -140,6 +143,7 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json<Member>({
+        id: 1,
         nickname: "jjinbbang",
         profileImgUrl:
           "https://github.com/masters2023-project-team05-second-hand/second-hand-max-fe/assets/111998760/4ce425f1-d40b-421f-a24f-3c5b73737120",
@@ -150,16 +154,14 @@ export const handlers = [
   rest.get(USER_API_PATH.memberAddress, async (_req, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.json<UserAddressInfo[]>([
+      ctx.json<AddressInfo[]>([
         {
           id: 1,
           name: "역삼 1동",
-          isLastVisited: true,
         },
         {
           id: 5,
           name: "역삼 5동",
-          isLastVisited: false,
         },
       ])
     );
@@ -224,5 +226,56 @@ export const handlers = [
         accessToken: "newAccessToken",
       })
     );
+  }),
+
+  rest.get(PRODUCT_API_PATH.statuses, async (_req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: 1,
+          type: "판매중",
+        },
+        {
+          id: 2,
+          type: "예약중",
+        },
+        {
+          id: 3,
+          type: "판매완료",
+        },
+      ])
+    );
+  }),
+
+  rest.patch(
+    `${PRODUCT_API_PATH.products}/:productId/status`,
+    async (req, res, ctx) => {
+      const { statusId } = await req.json<{ statusId: number }>();
+      productDetail.product.status = statusId;
+
+      if (!statusId) {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            message: "잘못된 요청입니다.",
+          })
+        );
+      }
+      return res(ctx.status(200));
+    }
+  ),
+
+  rest.get(`${USER_API_PATH.wishlist}/:productId`, async (_, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        isWished: true,
+      })
+    );
+  }),
+
+  rest.patch(`${USER_API_PATH.wishlist}/:productId`, async (_req, res, ctx) => {
+    return res(ctx.status(200));
   }),
 ];

@@ -1,5 +1,10 @@
 import { fetcher } from "@api/fetcher";
-import { AddressList, CategoryInfo, ProductDetailInfo } from "@api/type";
+import {
+  AddressList,
+  CategoryInfo,
+  ProductDetailInfo,
+  Status,
+} from "@api/type";
 import { PRODUCT_API_PATH } from "./constants";
 
 export const getAddresses = async (page: number = 0, size: number = 10) => {
@@ -16,10 +21,12 @@ export const getCategories = async () => {
   return data;
 };
 
-export const getProductDetail = async (productId: number) => {
-  return await fetcher.get<ProductDetailInfo>(
+export const getProductDetail = async (productId: string) => {
+  const { data } = await fetcher.get<ProductDetailInfo>(
     `${PRODUCT_API_PATH.products}/${productId}`
   );
+
+  return data;
 };
 
 export const postProduct = async (productInfo: FormData) => {
@@ -58,4 +65,24 @@ export const patchProduct = async ({
 
 export const deleteProduct = async (productId: number) => {
   return await fetcher.delete(`${PRODUCT_API_PATH.products}/${productId}`);
+};
+
+export const getStatuses = async () => {
+  const { data } = await fetcher.get<Status[]>(PRODUCT_API_PATH.statuses);
+  return data;
+};
+
+export const patchProductStatus = async ({
+  productId,
+  statusId,
+}: {
+  productId: number;
+  statusId: number;
+}) => {
+  return await fetcher.patch(
+    `${PRODUCT_API_PATH.products}/${productId}/status`,
+    {
+      statusId,
+    }
+  );
 };

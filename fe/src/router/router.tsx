@@ -1,9 +1,9 @@
 import { Auth } from "@pages/Auth";
 import Category from "@pages/Category";
 import Chat from "@pages/Chat";
-import ProductList from "@pages/ProductList";
 import MyAccount from "@pages/MyAccount/MyAccount";
 import ProductDetail from "@pages/ProductDetail";
+import ProductList from "@pages/ProductList";
 import ProductRegister from "@pages/ProductRegister";
 import Register from "@pages/Register";
 import SalesList from "@pages/SalesList";
@@ -24,9 +24,15 @@ export const router = createBrowserRouter(
         <Route index element={<ProductList />} />
         <Route element={<ProtectedRoutes />}>
           <Route path={ROUTE_PATH.new} element={<ProductRegister />} />
-          <Route path={ROUTE_PATH.edit} element={<ProductRegister />} />
+          <Route
+            path={`${ROUTE_PATH.edit}/:productId`}
+            element={<ProductRegister />}
+          />
           <Route path={ROUTE_PATH.category} element={<Category />} />
-          <Route path={ROUTE_PATH.detail} element={<ProductDetail />} />
+          <Route
+            path={`${ROUTE_PATH.detail}/:productId`}
+            element={<ProductDetail />}
+          />
           <Route path={ROUTE_PATH.sales} element={<SalesList />} />
           <Route path={ROUTE_PATH.wish} element={<WishList />} />
           <Route path={ROUTE_PATH.chat} element={<Chat />} />

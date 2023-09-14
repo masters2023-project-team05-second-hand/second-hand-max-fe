@@ -14,7 +14,7 @@ export const NameEditor = ({
   const [member, setMember] = useMember();
   const [newNickname, setNewNickname] = useState(member?.nickname);
 
-  const userNicknameMutation = useMutation(patchNickname);
+  const { mutate: mutateUserNickname } = useMutation(patchNickname);
   const { toast } = useToast();
 
   const editNickname = () => {
@@ -26,7 +26,7 @@ export const NameEditor = ({
       return;
     }
 
-    userNicknameMutation.mutate(newNickname, {
+    mutateUserNickname(newNickname, {
       onSuccess: () => {
         setMember({
           ...member,

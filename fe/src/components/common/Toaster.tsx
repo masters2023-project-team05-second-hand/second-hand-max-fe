@@ -112,7 +112,8 @@ const StyledToast = styled.div<{
     justify-content: center;
     gap: 8px;
     padding: 16px 0;
-    background-color: ${({ theme: { color } }) => color.neutralOverlay};
+    background-color: ${({ theme: { color } }) => color.neutralBackgroundWeak};
+    border: 1px solid ${({ theme: { color } }) => color.neutralBorder};
     border-radius: ${({ theme: { radius } }) => radius[8]};
   }
 `;

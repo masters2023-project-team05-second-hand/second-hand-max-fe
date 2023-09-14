@@ -25,7 +25,7 @@ export default function AddressModal({
   const openAddressSearch = () => setIsSearchingAddress(true);
   const closeAddressSearch = () => setIsSearchingAddress(false);
 
-  const userAddressMutation = useMutation(putUserAddress, {
+  const { mutate: mutateUserAddresses } = useMutation(putUserAddress, {
     onSuccess: () =>
       toast({
         type: "success",
@@ -42,23 +42,23 @@ export default function AddressModal({
     },
   });
 
-  const addressSearchHeaderProps = {
+  const addressSearchHeader = {
     backHandler: closeAddressSearch,
     closeHandler,
   };
 
-  const addressIndicatorListHeaderProps = {
+  const addressIndicatorListHeader = {
     title: "동네 설정",
     closeHandler: () => {
       !isSameItems(userAddressIDs, prevAddressIDs) &&
-        userAddressMutation.mutate(userAddressIDs);
+        mutateUserAddresses(userAddressIDs);
       closeHandler();
     },
   };
 
-  const currentHeaderProps = isSearchingAddress
-    ? addressSearchHeaderProps
-    : addressIndicatorListHeaderProps;
+  const currentHeader = isSearchingAddress
+    ? addressSearchHeader
+    : addressIndicatorListHeader;
 
   const currentContent = isSearchingAddress ? (
     <AddressSearch {...{ closeAddressSearch, userAddressIDs }} />
@@ -66,5 +66,5 @@ export default function AddressModal({
     <AddressIndicatorList openAddressSearch={openAddressSearch} />
   );
 
-  return <Modal headerProps={currentHeaderProps} content={currentContent} />;
+  return <Modal header={currentHeader} content={currentContent} />;
 }

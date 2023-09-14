@@ -9,13 +9,13 @@ export default function ProfileUploadButton() {
   const [member, setMember] = useMember();
   const { toast } = useToast();
 
-  const userProfileMutation = useMutation(postUserProfile);
+  const { mutate: mutateUserProfile } = useMutation(postUserProfile);
 
   const onChangeProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
-      userProfileMutation.mutate(file, {
+      mutateUserProfile(file, {
         onSuccess: ({ data }) => {
           const newProfileImageUrl = data.profileImgUrl;
           setMember({
