@@ -1,11 +1,17 @@
 import { useToast } from "@hooks/useToast";
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   deleteProduct,
   getAddresses,
   getCategories,
   getProductDetail,
   getStatuses,
+  patchProductStatus,
 } from ".";
 
 export const useAddressesInfiniteQuery = (option?: { size: number }) => {
@@ -66,5 +72,35 @@ export const useProductStatusesQuery = () => {
     queryKey: ["getStatuses"],
     queryFn: () => getStatuses(),
     staleTime: Infinity,
+  });
+};
+
+export const useMutateProductStatus = ({
+  onSettled,
+  productId,
+}: {
+  onSettled: () => void;
+  productId: number;
+}) => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation(patchProductStatus, {
+    onSuccess: () => {
+      toast({
+        type: "success",
+        title: "상태 변경 완료",
+        message: "상태 변경이 완료되었습니다.",
+      });
+      queryClient.invalidateQueries(["getProductDetail", productId]);
+    },
+    onError: () => {
+      toast({
+        type: "error",
+        title: "상태 변경 실패",
+        message: "상태 변경에 실패했습니다. 잠시 후 다시 시도해주세요.",
+      });
+    },
+    onSettled,
   });
 };
