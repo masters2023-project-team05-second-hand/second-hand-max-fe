@@ -1,16 +1,22 @@
-import TopBar from "@components/TopBar";
-import Button from "@components/common/Buttons/Button";
 import { ReactComponent as ChevronDownIcon } from "@assets/icon/chevron-down.svg";
 import { ReactComponent as LayoutGridIcon } from "@assets/icon/layout-grid.svg";
-import { useAddressListValue, useCurrentAddressId } from "store";
-import { useNavigate } from "react-router-dom";
-import { ROUTE_PATH } from "@router/constants";
-import MenuIndicator from "@components/common/Menu/MenuIndicator";
-import { useState } from "react";
 import AddressModal from "@components/Modal/AddressModal/AddressModal";
+import TopBar from "@components/TopBar";
+import Button from "@components/common/Buttons/Button";
+import MenuIndicator from "@components/common/Menu/MenuIndicator";
+import { ROUTE_PATH } from "@router/constants";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  useAddressListValue,
+  useCurrentAddressId,
+  useIsLoginValue,
+} from "store";
 
 export default function ProductListHeader() {
   const navigate = useNavigate();
+
+  const isLogin = useIsLoginValue();
   const addressList = useAddressListValue();
   const [currentAddressId, setCurrentAddressId] = useCurrentAddressId();
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
@@ -39,15 +45,17 @@ export default function ProductListHeader() {
     };
   });
 
-  const addressMenuItems = [
-    ...addressMenuList,
-    {
-      name: "내 동네 설정하기",
-      onClick: () => {
-        openAddressModal();
-      },
-    },
-  ];
+  const addressMenuItems = isLogin
+    ? [
+        ...addressMenuList,
+        {
+          name: "내 동네 설정하기",
+          onClick: () => {
+            openAddressModal();
+          },
+        },
+      ]
+    : addressMenuList;
 
   return (
     <>
