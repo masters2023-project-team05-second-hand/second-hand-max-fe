@@ -9,6 +9,7 @@ export default function Setting() {
   const setMember = useSetMember();
   const setIsLogin = useSetIsLogin();
 
+  // TODO: 로그아웃 시 전역 상태 초기화 필요 (현재는 로그아웃 후 새로고침 시 초기화)
   const { mutate: mutateLogout } = useMutation(postLogout, {
     onSuccess: () => {
       localStorage.removeItem("accessToken");
