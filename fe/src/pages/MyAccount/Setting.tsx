@@ -3,17 +3,17 @@ import Button from "@components/common/Buttons/Button";
 import { Main } from "@styles/common";
 import { useMutation } from "@tanstack/react-query";
 import { postLogout } from "api/user";
-import { useSetAddresses, useSetIsLogin, useSetMember } from "store";
+import { useSetIsLogin, useSetMember } from "store";
 
 export default function Setting() {
   const setMember = useSetMember();
-  const setAddresses = useSetAddresses();
   const setIsLogin = useSetIsLogin();
 
   const { mutate: mutateLogout } = useMutation(postLogout, {
     onSuccess: () => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      localStorage.removeItem("currentAddressId");
 
       setIsLogin(false);
       setMember({
@@ -21,7 +21,6 @@ export default function Setting() {
         nickname: "",
         profileImgUrl: "",
       });
-      setAddresses([]);
     },
   });
 
