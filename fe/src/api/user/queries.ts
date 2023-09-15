@@ -10,6 +10,7 @@ import {
   getMember,
   getMemberAddress,
   getProductLikeStatus,
+  getUserSalesProduct,
   getUserWishlistCategory,
   getUserWishlistProduct,
   postProductLike,
@@ -96,6 +97,20 @@ export const useUserWishlistInfiniteQuery = (categoryId: number) => {
     queryFn: ({ pageParam }) =>
       getUserWishlistProduct({
         categoryId,
+        page: pageParam,
+        size: 10,
+      }),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.hasNext ? allPages.length : undefined,
+  });
+};
+
+export const useUserSalesInfiniteQuery = (statusId: number) => {
+  return useInfiniteQuery({
+    queryKey: ["getUserSalesProduct", statusId],
+    queryFn: ({ pageParam }) =>
+      getUserSalesProduct({
+        statusId,
         page: pageParam,
         size: 10,
       }),
