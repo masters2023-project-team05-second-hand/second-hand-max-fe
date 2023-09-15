@@ -104,7 +104,7 @@ export type ProductItem = {
   statusId: number;
   stats: {
     chatCount: number;
-    likeCount: number;
+    wishCount: number;
   };
 };
 

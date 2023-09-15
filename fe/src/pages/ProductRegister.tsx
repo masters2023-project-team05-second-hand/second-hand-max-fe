@@ -14,6 +14,7 @@ import {
 } from "@components/ProductRegister/constants";
 import { ProductInfo } from "@components/ProductRegister/type";
 import { Error, Loading } from "@components/common/Guide";
+import { useToast } from "@hooks/useToast";
 import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,6 +25,7 @@ import { styled } from "styled-components";
 
 export default function ProductRegister() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { productId } = useParams();
   const addressList = useAddressListValue();
   const currentAddressId = useCurrentAddressIdValue();
@@ -129,7 +131,7 @@ export default function ProductRegister() {
     formData.append("price", price);
 
     editProductMutation.mutate(
-      { productId: Number(productId), productInfo: formData },
+      { productId: productId, productInfo: formData },
       {
         onSuccess: () => {
           navigate(`${ROUTE_PATH.detail}/${productId}`, {
@@ -188,6 +190,16 @@ export default function ProductRegister() {
 
   const onRemoveImage = (id: number) => {
     const isNewImage = productInfo.newImages?.find((image) => image.id === id);
+
+    if (productInfo.newImages?.length === 1) {
+      toast({
+        type: "error",
+        title: "사진 삭제 실패",
+        message: "사진은 한 개 이상 필요합니다.",
+      });
+
+      return;
+    }
 
     if (!isNewImage) {
       setProductInfo((prev) => {

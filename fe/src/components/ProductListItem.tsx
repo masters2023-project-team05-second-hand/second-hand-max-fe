@@ -3,11 +3,11 @@ import { ReactComponent as HeartIcon } from "@assets/icon/heart.svg";
 import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import ProductStatus from "@components/ProductStatus";
 import { ROUTE_PATH } from "@router/constants";
-import { getTimeLine } from "@utils/index";
 import { useNavigate } from "react-router-dom";
 import { useMemberValue } from "store";
 import { styled } from "styled-components";
 import ProductMoreButton from "./ProductMoreButton";
+import { convertPastTimestamp } from "@utils/time";
 
 type ProductListItemProps = {
   productItem: ProductItem;
@@ -15,13 +15,13 @@ type ProductListItemProps = {
 
 export default function ProductListItem({ productItem }: ProductListItemProps) {
   const navigate = useNavigate();
-  const member = useMemberValue();
+  const { id: memberId } = useMemberValue();
 
   const onProductClick = () => {
     navigate(`${ROUTE_PATH.detail}/${productItem.productId}`);
   };
 
-  const isSeller = productItem.sellerId === member.id;
+  const isSeller = productItem.sellerId === memberId;
   const productPrice = productItem.price?.toLocaleString("ko-KR");
 
   return (
@@ -33,13 +33,18 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
             <div className="info-top">
               <TextDefault>{productItem.title}</TextDefault>
               {isSeller && (
-                <ProductMoreButton productId={productItem.productId + ""} />
+                <ProductMoreButton
+                  productId={productItem.productId + ""}
+                  currentStatusId={productItem.statusId}
+                />
               )}
             </div>
             <div className="info-middle">
               <TextWeak>{productItem.addressName}</TextWeak>
               <TextWeak>・</TextWeak>
-              <TextWeak>{getTimeLine(productItem.createdTime)}</TextWeak>
+              <TextWeak>
+                {convertPastTimestamp(productItem.createdTime)}
+              </TextWeak>
             </div>
             <div className="info-bottom">
               <ProductStatus id={productItem.statusId} />
@@ -57,11 +62,11 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
                 </History>
               </>
             )}
-            {!!productItem.stats.likeCount && (
+            {!!productItem.stats.wishCount && (
               <>
                 <History>
                   <HeartIcon />
-                  <TextWeak>{productItem.stats.likeCount}</TextWeak>
+                  <TextWeak>{productItem.stats.wishCount}</TextWeak>
                 </History>
               </>
             )}
@@ -81,6 +86,7 @@ const StyledProductListItem = styled.li`
 `;
 
 const Product = styled.div`
+  margin: 0 16px;
   padding: 16px 0;
   height: 152px;
   box-sizing: border-box;
@@ -141,6 +147,11 @@ const ProductInfo = styled.div`
 `;
 
 const TextDefault = styled.span`
+  display: block;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${({ theme: { color } }) => color.neutralText};
   font: ${({ theme: { font } }) => font.displayDefault16};
 `;

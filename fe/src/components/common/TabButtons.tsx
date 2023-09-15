@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 type Tab = {
   id: number;
-  name: string;
+  name?: string;
+  type?: string;
 };
 
 type TabButtonsProps = {
@@ -22,13 +23,13 @@ export const TabButtons = React.forwardRef<HTMLUListElement, TabButtonsProps>(
 
     return (
       <StyledTabButtons ref={ref} {...props}>
-        {tabList.map(({ id, name }) => {
+        {tabList.map(({ id, name, type }) => {
           return (
             <TabButton
               key={id}
               $active={isActiveTab(id)}
               onClick={() => onClick(id)}>
-              {name}
+              {name ? name : type}
             </TabButton>
           );
         })}
@@ -43,6 +44,8 @@ const StyledTabButtons = styled.ul`
   width: 100%;
   overflow-x: scroll;
   height: 2rem;
+  margin: 1rem 1rem 0.5rem;
+  box-sizing: border-box;
 
   &::-webkit-scrollbar {
     display: none;

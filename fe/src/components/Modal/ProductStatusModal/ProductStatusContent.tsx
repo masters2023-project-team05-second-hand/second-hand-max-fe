@@ -24,7 +24,7 @@ export default function ProductStatusContent({
           key={id}
           $active={false}
           onClick={() =>
-            mutateProductStatus({ productId: Number(productId), statusId: id })
+            mutateProductStatus({ productId: productId, statusId: id })
           }>
           <span>{type}</span>
         </ListItem>

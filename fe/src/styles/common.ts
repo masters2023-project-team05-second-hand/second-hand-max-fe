@@ -54,3 +54,11 @@ export const BottomBar = styled.div`
   font: ${({ theme: { font } }) => font.availableDefault16};
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 `;
+
+export const Target = styled.div`
+  height: 1px;
+`;
+
+export const PageContent = styled.div`
+  max-width: 100%;
+`;

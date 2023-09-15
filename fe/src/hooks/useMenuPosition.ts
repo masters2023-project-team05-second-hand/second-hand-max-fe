@@ -13,7 +13,6 @@ type ReturnType = {
 };
 
 export default function useMenuPosition(): ReturnType {
-  // Memo: marginY를 height값을 받아올 수 있음
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<ReturnType["position"]>({});
 

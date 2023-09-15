@@ -1,6 +1,6 @@
 import { fetcher } from "@api/fetcher";
 import { AddressInfo, Member, ProductList, Tokens } from "@api/type";
-import { USER_API_PATH } from "./constants";
+import { ENTIRE_STATUS_ID, USER_API_PATH } from "./constants";
 
 export const postSocialLogin = async (
   provider: "kakao" | "github",
@@ -100,6 +100,23 @@ export const getUserWishlistProduct = async ({
 }) => {
   const { data } = await fetcher.get<ProductList>(
     `${USER_API_PATH.wishlist}?categoryId=${categoryId}&page=${page}&size=${size}`
+  );
+  return data;
+};
+
+export const getUserSalesProduct = async ({
+  statusId,
+  page = 0,
+  size = 10,
+}: {
+  statusId: number;
+  page: number;
+  size: number;
+}) => {
+  const { data } = await fetcher.get<ProductList>(
+    `${USER_API_PATH.sales}?statusId=${
+      statusId ? statusId : ENTIRE_STATUS_ID
+    }&page=${page}&size=${size}`
   );
   return data;
 };

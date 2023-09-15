@@ -3,6 +3,7 @@ import {
   AddressList,
   CategoryInfo,
   ProductDetailInfo,
+  ProductList,
   Status,
 } from "@api/type";
 import { PRODUCT_API_PATH } from "./constants";
@@ -47,7 +48,7 @@ export const patchProduct = async ({
   productId,
   productInfo,
 }: {
-  productId: number;
+  productId: string | undefined;
   productInfo: FormData;
 }) => {
   const config = {
@@ -76,7 +77,7 @@ export const patchProductStatus = async ({
   productId,
   statusId,
 }: {
-  productId: number;
+  productId: string | undefined;
   statusId: number;
 }) => {
   return await fetcher.patch(
@@ -85,4 +86,27 @@ export const patchProductStatus = async ({
       statusId,
     }
   );
+};
+
+export const getProduct = async ({
+  addressId,
+  categoryId,
+  cursor = 0,
+  size = 10,
+}: {
+  addressId: number | null;
+  categoryId: number | null;
+  cursor: number | undefined;
+  size?: number;
+}) => {
+  const baseUrl = PRODUCT_API_PATH.products;
+  const pathVariable = `?addressId=${addressId}${
+    categoryId ? `&categoryId=${categoryId}` : ""
+  }&cursor=${cursor}&size=${size}
+  `;
+
+  const url = baseUrl + pathVariable;
+  const { data } = await fetcher.get<ProductList>(url);
+
+  return data;
 };
