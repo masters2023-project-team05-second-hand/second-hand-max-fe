@@ -3,13 +3,14 @@ import Button from "@components/common/Buttons/Button";
 import { Main } from "@styles/common";
 import { useMutation } from "@tanstack/react-query";
 import { postLogout } from "api/user";
+import { useNavigate } from "react-router-dom";
 import { useSetIsLogin, useSetMember } from "store";
 
 export default function Setting() {
+  const navigate = useNavigate();
   const setMember = useSetMember();
   const setIsLogin = useSetIsLogin();
 
-  // TODO: 로그아웃 시 전역 상태 초기화 필요 (현재는 로그아웃 후 새로고침 시 초기화)
   const { mutate: mutateLogout } = useMutation(postLogout, {
     onSuccess: () => {
       localStorage.removeItem("accessToken");
@@ -22,6 +23,8 @@ export default function Setting() {
         nickname: "",
         profileImgUrl: "",
       });
+      // TODO: 로그아웃 시 전역 상태 초기화 필요 (현재 임시로 새로고침 되도록 설정)
+      navigate(0);
     },
   });
 
