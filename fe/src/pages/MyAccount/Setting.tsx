@@ -11,11 +11,15 @@ export default function Setting() {
   const setMember = useSetMember();
   const setIsLogin = useSetIsLogin();
 
+  // TODO: 개선 필요
   const { mutate: mutateLogout } = useMutation(postLogout, {
     onSuccess: () => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      localStorage.removeItem("currentAddressId");
+
+      // 로그아웃 시 세션 스토리지에 저장된 currentAddressId를 로컬 스토리지에 저장
+      const currentAddressId = sessionStorage.getItem("currentAddressId");
+      localStorage.setItem("currentAddressId", currentAddressId || "");
 
       setIsLogin(false);
       setMember({

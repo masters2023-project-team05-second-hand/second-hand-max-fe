@@ -49,6 +49,7 @@ export default function UserProvider() {
         }))
       );
 
+      // 유저가 다른 브라우저에서 로그인 한 경우 필요
       const currentAddressId =
         localStorage.getItem("currentAddressId") ??
         memberAddressResult.data[0].id;
