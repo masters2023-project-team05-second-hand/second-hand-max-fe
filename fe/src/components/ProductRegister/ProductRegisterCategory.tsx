@@ -19,17 +19,17 @@ export default function ProductRegisterCategory({
   const { toast } = useToast();
   const [randomCategories, setRandomCategories] = useState<CategoryInfo[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isSuccess, isError, isLoading } = useCategoryQuery();
+  const { data, isSuccess, isError } = useCategoryQuery();
 
   useEffect(() => {
-    if (!isLoading && isError) {
+    if (isError) {
       toast({
         type: "error",
         title: "카테고리 목록 조회 실패",
         message: "카테고리 목록 조회에 실패했습니다.",
       });
     }
-  }, [isLoading, isError, toast]);
+  }, [isError, toast]);
 
   useEffect(() => {
     if (data && isSuccess) {
