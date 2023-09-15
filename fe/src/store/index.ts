@@ -1,14 +1,18 @@
 import { AddressInfo, Member } from "api/type";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 
-const DEFAULT_ADDRESS_ID = 1;
+const DEFAULT_ADDRESS = {
+  id: 1,
+  name: "역삼1동",
+};
+
 const currentAddressId =
-  localStorage.getItem("currentAddressId") ?? DEFAULT_ADDRESS_ID;
+  localStorage.getItem("currentAddressId") ?? DEFAULT_ADDRESS.id;
 const accessToken = localStorage.getItem("accessToken");
 
 const isLoginAtom = atom<boolean>(!!accessToken);
 const memberAtom = atom<Member>({ id: -1, nickname: "", profileImgUrl: "" });
-const addressListAtom = atom<AddressInfo[]>([]);
+const addressListAtom = atom<AddressInfo[]>([DEFAULT_ADDRESS]);
 const currentAddressIdAtom = atom<number | null>(Number(currentAddressId));
 const currentCategoryIdAtom = atom<number | null>(null);
 
