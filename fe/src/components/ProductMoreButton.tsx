@@ -18,13 +18,22 @@ export default function ProductMoreButton({
   currentStatusId,
 }: ProductMoreButtonProps) {
   const navigate = useNavigate();
+  const currentPathname = window.location.pathname;
+
+  const invalidateQueryKey =
+    currentPathname === "/sales"
+      ? ["getUserSalesProduct"]
+      : currentPathname === "/wish"
+      ? ["getUserWishlistProduct"]
+      : ["getProduct"];
+
   const { data: productStatuses, isSuccess } = useProductStatusesQuery();
   const { onDeleteProduct } = useDeleteProductQuery({
     productId: productId,
-    invalidateQueryKey: ["getProduct"],
+    invalidateQueryKey: invalidateQueryKey,
   });
   const { mutate: mutateProductStatus } = useMutateProductStatus({
-    invalidateQueryKey: ["getProduct"],
+    invalidateQueryKey: invalidateQueryKey,
   });
 
   let restStatusList: MenuItemInfo[] = [];
