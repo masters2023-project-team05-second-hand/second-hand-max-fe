@@ -36,23 +36,21 @@ export default function ProductMoreButton({
     invalidateQueryKey: invalidateQueryKey,
   });
 
-  let restStatusList: MenuItemInfo[] = [];
-
-  if (isSuccess) {
-    restStatusList = productStatuses
-      .filter((status) => status.id !== currentStatusId)
-      .map((productStatus) => {
-        return {
-          name: `${productStatus.type} 상태로 전환`,
-          onClick: () => {
-            mutateProductStatus({
-              productId: productId,
-              statusId: productStatus.id,
-            });
-          },
-        };
-      });
-  }
+  const getProductStatusList = (): MenuItemInfo[] => {
+    return isSuccess
+      ? productStatuses
+          .filter((status) => status.id !== currentStatusId)
+          .map((productStatus) => ({
+            name: `${productStatus.type} 상태로 전환`,
+            onClick: () => {
+              mutateProductStatus({
+                productId,
+                statusId: productStatus.id,
+              });
+            },
+          }))
+      : [];
+  };
 
   const moreButtonItems = [
     {
@@ -61,7 +59,7 @@ export default function ProductMoreButton({
         navigate(`/product-edit/${productId}`);
       },
     },
-    ...restStatusList,
+    ...getProductStatusList(),
     {
       name: "삭제",
       onClick: () => {
