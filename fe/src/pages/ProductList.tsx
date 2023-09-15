@@ -1,13 +1,13 @@
+import { useGetProductListInfiniteQuery } from "@api/product/queries";
 import NavigationBar from "@components/NavigationBar";
+import { SubInfo } from "@components/ProductDetail/common.style";
 import ProductListFAB from "@components/ProductList/ProductListFAB";
 import ProductListHeader from "@components/ProductList/ProductListHeader";
-import { useGetProductListInfiniteQuery } from "@api/product/queries";
-import { useCurrentAddressIdValue, useCurrentCategoryIdValue } from "store";
+import Products from "@components/ProductList/Products";
 import { Error, Loading } from "@components/common/Guide";
 import { useIntersect } from "@hooks/useIntersect";
-import Products from "@components/ProductList/Products";
 import { Main, Page, Target } from "@styles/common";
-import { SubInfo } from "@components/ProductDetail/common.style";
+import { useCurrentAddressIdValue, useCurrentCategoryIdValue } from "store";
 
 export default function ProductList() {
   const categoryId = useCurrentCategoryIdValue();
@@ -61,7 +61,9 @@ export default function ProductList() {
               </Main>
             </>
           ) : (
-            <Products productLists={productList.pages} />
+            <Products
+              productList={productList.pages.map((page) => page.products)}
+            />
           )}
         </>
       )}

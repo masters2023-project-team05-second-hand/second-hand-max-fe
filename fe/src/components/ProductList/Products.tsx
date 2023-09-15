@@ -1,16 +1,16 @@
-import { ProductItem, ProductList } from "@api/type";
+import { ProductItem } from "@api/type";
 import ProductListItem from "@components/ProductListItem";
 import { styled } from "styled-components";
 
 export default function Products({
-  productLists,
+  productList,
 }: {
-  productLists: ProductList[];
+  productList: ProductItem[][];
 }) {
   return (
     <StyledProductList>
-      {productLists.map((productList) =>
-        productList.products.map((productItem: ProductItem) => (
+      {productList.map((products) =>
+        products.map((productItem: ProductItem) => (
           <ProductListItem
             key={productItem.productId}
             productItem={productItem}

@@ -58,7 +58,9 @@ export default function SalesList() {
                 </Main>
               </>
             ) : (
-              <Products productLists={salesProducts.pages} />
+              <Products
+                productList={salesProducts.pages.map((page) => page.products)}
+              />
             )}
           </>
         )}
