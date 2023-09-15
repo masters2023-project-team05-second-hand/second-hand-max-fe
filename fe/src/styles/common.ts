@@ -58,3 +58,7 @@ export const BottomBar = styled.div`
 export const Target = styled.div`
   height: 1px;
 `;
+
+export const PageContent = styled.div`
+  max-width: 100%;
+`;

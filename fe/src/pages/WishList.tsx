@@ -8,9 +8,9 @@ import Products from "@components/ProductList/Products";
 import TopBar from "@components/TopBar";
 import { TabButtons } from "@components/common/TabButtons";
 import useDrag from "@hooks/useDrag";
-import { Main, Page } from "@styles/common";
+import { Main, Page, PageContent } from "@styles/common";
 import { useState } from "react";
-import styled from "styled-components";
+import { DEFAULT_TAB } from "store/constants";
 
 export default function WishList() {
   const { data: userCategories, isSuccess: isUserCategoriesSuccess } =
@@ -61,9 +61,3 @@ export default function WishList() {
     </Page>
   );
 }
-
-const DEFAULT_TAB = { id: 0, name: "전체" };
-
-const PageContent = styled.div`
-  max-width: 100%;
-`;
