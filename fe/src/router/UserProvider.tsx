@@ -1,21 +1,24 @@
-import { useUserInfoQuery } from "@api/queries";
+import { useUserInfoQuery } from "@api/user/queries";
 import { useToast } from "@hooks/useToast";
-import React, { useEffect } from "react";
-import { useSetAddresses, useSetMember } from "store";
-export default function UserProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const accessToken = localStorage.getItem("accessToken");
+import { useEffect } from "react";
+import {
+  useIsLoginValue,
+  useSetAddresses,
+  useSetCurrentAddressId,
+  useSetMember,
+} from "store";
+
+export default function UserProvider() {
+  const isLogin = useIsLoginValue();
 
   const setMember = useSetMember();
   const setAddresses = useSetAddresses();
+  const setCurrentAddressId = useSetCurrentAddressId();
 
   const { toast } = useToast();
 
   const [memberResult, memberAddressResult] = useUserInfoQuery({
-    enabled: !!accessToken,
+    enabled: isLogin,
   });
 
   useEffect(() => {
@@ -34,13 +37,15 @@ export default function UserProvider({
   useEffect(() => {
     if (memberAddressResult.isSuccess) {
       const userAddressesInfo = memberAddressResult.data;
-      setAddresses(
-        userAddressesInfo.map((address) => ({
-          id: address.id,
-          name: address.name,
-        }))
-      );
+      setAddresses(userAddressesInfo);
+
+      // 기존 유저인 경우에만 로컬스토리지에 저장된 값이 없으면 첫번째 주소를 기본 주소로 설정
+      const lastVisitedAddressId =
+        localStorage.getItem("currentAddressId") ?? userAddressesInfo[0].id;
+      userAddressesInfo.length &&
+        setCurrentAddressId(Number(lastVisitedAddressId));
     }
+
     if (memberAddressResult.isError) {
       toast({
         type: "error",
@@ -48,7 +53,7 @@ export default function UserProvider({
         message: "유저 주소를 조회하는데 실패했습니다. 새로고침 해주세요.",
       });
     }
-  }, [memberAddressResult, setAddresses, toast]);
+  }, [memberAddressResult, setAddresses, setCurrentAddressId, toast]);
 
-  return children;
+  return null;
 }
