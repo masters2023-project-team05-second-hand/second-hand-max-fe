@@ -2,9 +2,10 @@ import { AddressInfo, Member } from "api/type";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DEFAULT_ADDRESS } from "./constants";
 
-const accessToken = localStorage.getItem("accessToken");
+// TODO: 로그인 상태 유지하는 방법 고민 (저장된 토큰이 만료된 경우)
+// const accessToken = localStorage.getItem("accessToken");
 
-const isLoginAtom = atom<boolean>(!!accessToken);
+const isLoginAtom = atom<boolean>(false);
 const memberAtom = atom<Member>({ id: -1, nickname: "", profileImgUrl: "" });
 const addressListAtom = atom<AddressInfo[]>([DEFAULT_ADDRESS]);
 const currentAddressIdAtom = atom<number>(DEFAULT_ADDRESS.id);
@@ -35,7 +36,7 @@ const useCurrentAddressIdAtom = atom(
   (get) => get(currentAddressIdAtom),
   (_, set, payload: number) => {
     set(currentAddressIdAtom, payload);
-    sessionStorage.setItem("currentAddressId", String(payload));
+    localStorage.setItem("currentAddressId", String(payload));
   }
 );
 

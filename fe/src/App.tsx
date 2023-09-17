@@ -1,5 +1,6 @@
 import gajiBackground from "@assets/image/gaji.png";
 import Toaster from "@components/common/Toaster";
+import UserProvider from "@router/UserProvider";
 import { router } from "@router/router";
 import GlobalStyle from "@styles/GlobalStyle";
 import { theme } from "@styles/designSystem";
@@ -17,6 +18,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <StyledApp>
+          <UserProvider />
           <RouterProvider router={router} />
         </StyledApp>
       </QueryClientProvider>

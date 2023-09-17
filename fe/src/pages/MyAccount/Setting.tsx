@@ -17,10 +17,6 @@ export default function Setting() {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
 
-      // 로그아웃 시 세션 스토리지에 저장된 currentAddressId를 로컬 스토리지에 저장
-      const currentAddressId = sessionStorage.getItem("currentAddressId");
-      localStorage.setItem("currentAddressId", currentAddressId || "");
-
       setIsLogin(false);
       setMember({
         id: -1,

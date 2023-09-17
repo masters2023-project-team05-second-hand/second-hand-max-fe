@@ -1,8 +1,6 @@
 import { useUserInfoQuery } from "@api/user/queries";
 import { useToast } from "@hooks/useToast";
-import { ROUTE_PATH } from "@router/constants";
 import { useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
 import {
   useIsLoginValue,
   useSetAddresses,
@@ -23,9 +21,6 @@ export default function UserProvider() {
     enabled: isLogin,
   });
 
-  const isFirstUser =
-    memberAddressResult.isSuccess && !memberAddressResult.data.length;
-
   useEffect(() => {
     if (memberResult.isSuccess) {
       setMember(memberResult.data);
@@ -42,18 +37,13 @@ export default function UserProvider() {
   useEffect(() => {
     if (memberAddressResult.isSuccess) {
       const userAddressesInfo = memberAddressResult.data;
-      setAddresses(
-        userAddressesInfo.map((address) => ({
-          id: address.id,
-          name: address.name,
-        }))
-      );
+      setAddresses(userAddressesInfo);
 
-      // 유저가 다른 브라우저에서 로그인 한 경우 필요
-      const currentAddressId =
-        localStorage.getItem("currentAddressId") ??
-        memberAddressResult.data[0].id;
-      setCurrentAddressId(Number(currentAddressId));
+      // 기존 유저인 경우에만 로컬스토리지에 저장된 값이 없으면 첫번째 주소를 기본 주소로 설정
+      const lastVisitedAddressId =
+        localStorage.getItem("currentAddressId") ?? userAddressesInfo[0].id;
+      userAddressesInfo.length &&
+        setCurrentAddressId(Number(lastVisitedAddressId));
     }
 
     if (memberAddressResult.isError) {
@@ -65,5 +55,5 @@ export default function UserProvider() {
     }
   }, [memberAddressResult, setAddresses, setCurrentAddressId, toast]);
 
-  return isFirstUser ? <Navigate to={ROUTE_PATH.register} /> : <Outlet />;
+  return null;
 }
