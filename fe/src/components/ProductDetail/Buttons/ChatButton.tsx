@@ -1,6 +1,21 @@
 import Button from "@components/common/Buttons/Button";
 
-export default function ChatButton() {
+type ChatButtonProps = {
+  onClick: () => void;
+  isSeller: boolean;
+  chatCount?: number;
+};
+
+export default function ChatButton({
+  onClick,
+  isSeller,
+  chatCount,
+}: ChatButtonProps) {
+  const sellerMessage = `대화 중인 채팅방${
+    chatCount && chatCount > 0 ? ` (${chatCount})` : ""
+  }`;
+  const buyerMessage = "채팅하기";
+
   return (
     <Button
       size={{ width: 115, height: 32 }}
@@ -8,8 +23,8 @@ export default function ChatButton() {
       backgroundColor="accentPrimary"
       radius={8}
       fontName="availableStrong12"
-      // TODO: 채팅방 개수 표시
-      value={"대화 중인 채팅방"}
+      value={isSeller ? sellerMessage : buyerMessage}
+      onClick={onClick}
     />
   );
 }

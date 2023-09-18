@@ -7,14 +7,18 @@ import ProductContents from "@components/ProductDetail/ProductContents/ProductCo
 import ProductImageList from "@components/ProductDetail/ProductImageList";
 import TopBar from "@components/TopBar";
 import useScroll from "@hooks/useScroll";
-import { BottomBar, ScrollPage } from "@styles/common";
-import { useParams } from "react-router-dom";
+import { useToast } from "@hooks/useToast";
+import { ROUTE_PATH } from "@router/constants";
+import { BottomBar, Page } from "@styles/common";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMemberValue } from "store";
 import styled from "styled-components";
 
 export default function ProductDetail() {
   const member = useMemberValue();
   const { scrollY, ref } = useScroll();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const { productId } = useParams();
   const numberProductId = Number(productId);
@@ -22,13 +26,36 @@ export default function ProductDetail() {
   const { data: productDetailInfo, isSuccess: isProductDetailSuccess } =
     useProductDetailQuery(numberProductId, !!productId);
 
+  const onClickChat = () => {
+    if (!isProductDetailSuccess) {
+      return;
+    }
+
+    if (isSeller && !!productDetailInfo.stats.chatCount) {
+      toast({
+        type: "info",
+        title: "상품 상세 목록 조회 완료",
+        message: "채팅한 이웃이 없습니다",
+      });
+      return;
+    }
+
+    if (isSeller) {
+      // TODO: 채팅 목록 조회 api 나오면 수정 => 상품 id를 path에 넣어야할듯??
+      navigate(ROUTE_PATH.chat);
+    } else {
+      // TODO: 채팅 상세 url 나오면 수정 => 채팅 id를 path에 넣어야할듯??
+      navigate(ROUTE_PATH.chat);
+    }
+  };
+
   const isScroll = !!scrollY && scrollY > 0;
   const isSeller = member.id === productDetailInfo?.product.seller.id;
   const productPrice =
     productDetailInfo?.product.price?.toLocaleString("ko-KR");
 
   return (
-    <ScrollPage ref={ref}>
+    <Page ref={ref}>
       <TopBar
         backgroundColor="accentPrimary"
         isScrolled={isScroll}
@@ -53,10 +80,14 @@ export default function ProductDetail() {
               <span>{productPrice ? `${productPrice} 원` : "가격미정"}</span>
             )}
           </LeftWrapper>
-          <ChatButton />
+          <ChatButton
+            onClick={onClickChat}
+            isSeller={isSeller}
+            chatCount={productDetailInfo?.stats.chatCount}
+          />
         </ButtonContainer>
       </BottomBar>
-    </ScrollPage>
+    </Page>
   );
 }
 
