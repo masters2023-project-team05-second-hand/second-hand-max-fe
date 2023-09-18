@@ -1,3 +1,4 @@
+import { userKeys } from "@api/queryKeys";
 import {
   useUserLikeCategories,
   useUserWishlistInfiniteQuery,
@@ -84,6 +85,9 @@ export default function WishList() {
             )}
             <Products
               productList={categoryProducts.pages.map((page) => page.products)}
+              invalidateQueryKey={
+                userKeys.wishlistProduct(activeTabId).queryKey
+              }
             />
             <Target ref={targetRef} />
           </PageContent>

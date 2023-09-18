@@ -1567,6 +1567,11 @@
   "resolved" "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz"
   "version" "3.4.0"
 
+"@lukemorales/query-key-factory@^1.3.2":
+  "integrity" "sha512-SFOWcB5ec+RhlKjLjZxTAbOPF2uXNED6lqXiMu3TUt2twKzxE/QLhnYkdbxOBMK5Wwc2Ia+WP3yqCPRKWywnwQ=="
+  "resolved" "https://registry.npmjs.org/@lukemorales/query-key-factory/-/query-key-factory-1.3.2.tgz"
+  "version" "1.3.2"
+
 "@mdx-js/react@^2.1.5":
   "integrity" "sha512-zQH//gdOmuu7nt2oJR29vFhDv88oGPmVw6BggmrHeMI+xgEkp1B2dX9/bMBSYtK0dyLX/aOmesKS09g222K1/g=="
   "resolved" "https://registry.npmjs.org/@mdx-js/react/-/react-2.3.0.tgz"
@@ -2804,7 +2809,7 @@
   dependencies:
     "remove-accents" "0.4.2"
 
-"@tanstack/query-core@4.35.0":
+"@tanstack/query-core@>= 4.0.0", "@tanstack/query-core@4.35.0":
   "integrity" "sha512-4GMcKQuLZQi6RFBiBZNsLhl+hQGYScRZ5ZoVq8QAzfqz9M7vcGin/2YdSESwl7WaV+Qzsb5CZOAbMBes4lNTnA=="
   "resolved" "https://registry.npmjs.org/@tanstack/query-core/-/query-core-4.35.0.tgz"
   "version" "4.35.0"
@@ -2818,7 +2823,7 @@
     "superjson" "^1.10.0"
     "use-sync-external-store" "^1.2.0"
 
-"@tanstack/react-query@^4.33.0", "@tanstack/react-query@^4.35.0":
+"@tanstack/react-query@^4.33.0", "@tanstack/react-query@^4.35.0", "@tanstack/react-query@>= 4.0.0":
   "integrity" "sha512-LLYDNnM9ewYHgjm2rzhk4KG/puN2rdoqCUD+N9+V7SwlsYwJk5ypX58rpkoZAhFyZ+KmFUJ7Iv2lIEOoUqydIg=="
   "resolved" "https://registry.npmjs.org/@tanstack/react-query/-/react-query-4.35.0.tgz"
   "version" "4.35.0"

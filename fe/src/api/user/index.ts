@@ -62,7 +62,7 @@ export const patchNickname = async (newNickname: string) => {
   return await fetcher.patch(USER_API_PATH.nickname, { newNickname });
 };
 
-export const getProductLikeStatus = async (productId: string) => {
+export const getProductLikeStatus = async (productId: number) => {
   const path = `${USER_API_PATH.wishlist}/${productId}`;
 
   const { data } = await fetcher.get<{ isWished: boolean }>(path);

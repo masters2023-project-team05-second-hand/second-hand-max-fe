@@ -1,3 +1,4 @@
+import { userKeys } from "@api/queryKeys";
 import NavigationBar from "@components/NavigationBar";
 import TopBar from "@components/TopBar";
 import { Error, Loading } from "@components/common/Guide";
@@ -16,7 +17,7 @@ export function Auth() {
   const setIsLogin = useSetIsLogin();
 
   const { data, isLoading, isSuccess, isError } = useQuery({
-    queryKey: ["socialLogin"],
+    ...userKeys.socialLogin,
     enabled: !!accessCode && !!provider,
     queryFn: () => postSocialLogin(provider!, accessCode!), // enabled 조건으로 보장 가능
   });

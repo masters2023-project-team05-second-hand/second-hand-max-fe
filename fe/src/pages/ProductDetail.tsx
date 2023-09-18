@@ -14,12 +14,13 @@ import styled from "styled-components";
 
 export default function ProductDetail() {
   const member = useMemberValue();
-
-  const { productId } = useParams();
   const { scrollY, ref } = useScroll();
 
+  const { productId } = useParams();
+  const numberProductId = Number(productId);
+
   const { data: productDetailInfo, isSuccess: isProductDetailSuccess } =
-    useProductDetailQuery(productId!, !!productId);
+    useProductDetailQuery(numberProductId, !!productId);
 
   const isScroll = !!scrollY && scrollY > 0;
   const isSeller = member.id === productDetailInfo?.product.seller.id;
