@@ -22,8 +22,7 @@ export default function SalesList() {
     fetchNextPage,
   } = useUserSalesInfiniteQuery(activeTabId);
 
-  const ref = useIntersect((entry, observer) => {
-    observer.unobserve(entry.target);
+  const ref = useIntersect(() => {
     if (hasNextPage && !isFetching) {
       fetchNextPage();
     }

@@ -24,8 +24,7 @@ export default function ProductList() {
     categoryId: categoryId,
   });
 
-  const ref = useIntersect((entry, observer) => {
-    observer.unobserve(entry.target);
+  const ref = useIntersect(() => {
     if (hasNextPage && !isFetching) {
       fetchNextPage();
     }
