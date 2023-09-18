@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { HEIGHT, WIDTH } from "./constants";
 
-// 참고: scroll을 Page에서 제어하고 있어서 min-height 하단바의 높이만큼 빼줘야 끝까지 스크롤 가능
 export const Page = styled.div`
   position: relative;
   margin: 0 auto;
   width: ${WIDTH.page}px;
-  height: calc(100vh - ${HEIGHT.navigationBar}px);
+  height: 100vh;
   overflow: scroll;
   background-color: ${({ theme: { color } }) => color.neutralBackground};
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -15,6 +14,10 @@ export const Page = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+export const ScrollPage = styled(Page)`
+  height: calc(100vh - ${HEIGHT.navigationBar}px);
 `;
 
 export const Main = styled.main`
