@@ -14,7 +14,6 @@ import {
 } from "@components/ProductRegister/constants";
 import { ProductInfo } from "@components/ProductRegister/type";
 import { Error, Loading } from "@components/common/Guide";
-import { useToast } from "@hooks/useToast";
 import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,7 +24,6 @@ import { styled } from "styled-components";
 
 export default function ProductRegister() {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { productId } = useParams();
   const addressList = useAddressListValue();
   const currentAddressId = useCurrentAddressIdValue();
@@ -189,17 +187,9 @@ export default function ProductRegister() {
   };
 
   const onRemoveImage = (id: number) => {
+    // Todo: 이미지 없을 때 처리 로직 추가, 상품 삭제시 alert 모달 띄우기
+    // Todo: 상품 생성 시 newImages 삭제 안되는 문제 해결
     const isNewImage = productInfo.newImages?.find((image) => image.id === id);
-
-    if (productInfo.newImages?.length === 1) {
-      toast({
-        type: "error",
-        title: "사진 삭제 실패",
-        message: "사진은 한 개 이상 필요합니다.",
-      });
-
-      return;
-    }
 
     if (!isNewImage) {
       setProductInfo((prev) => {
