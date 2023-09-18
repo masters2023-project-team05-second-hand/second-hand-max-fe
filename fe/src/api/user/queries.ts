@@ -63,6 +63,9 @@ export const useMutateProductLike = ({
         title: "관심 상품 변경 완료",
         message: "관심 상품 변경이 완료되었습니다.",
       });
+      queryClient.invalidateQueries({
+        queryKey: ["getUserWishlistCategory"],
+      });
     },
     onError: () => {
       toast({
@@ -72,12 +75,10 @@ export const useMutateProductLike = ({
       });
       onError();
     },
+    // TODO: 개선 필요
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ["getProductLikeStatus", productId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["getUserWishlistCategory"],
       });
     },
   });

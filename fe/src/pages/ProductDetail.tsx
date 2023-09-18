@@ -1,13 +1,13 @@
 import { useProductDetailQuery } from "@api/product/queries";
 import BackButton from "@components/ProductDetail/Buttons/BackButton";
 import ChatButton from "@components/ProductDetail/Buttons/ChatButton";
-import LikeButton from "@components/ProductDetail/Buttons/LikeButton";
 import MoreButton from "@components/ProductDetail/Buttons/MoreButton";
+import ProductLikeButton from "@components/ProductDetail/Buttons/ProductLikeButton";
 import ProductContents from "@components/ProductDetail/ProductContents/ProductContents";
 import ProductImageList from "@components/ProductDetail/ProductImageList";
 import TopBar from "@components/TopBar";
 import useScroll from "@hooks/useScroll";
-import { BottomBar, Page } from "@styles/common";
+import { BottomBar, ScrollPage } from "@styles/common";
 import { useParams } from "react-router-dom";
 import { useMemberValue } from "store";
 import styled from "styled-components";
@@ -27,7 +27,7 @@ export default function ProductDetail() {
     productDetailInfo?.product.price?.toLocaleString("ko-KR");
 
   return (
-    <Page ref={ref}>
+    <ScrollPage ref={ref}>
       <TopBar
         backgroundColor="accentPrimary"
         isScrolled={isScroll}
@@ -47,7 +47,7 @@ export default function ProductDetail() {
       <BottomBar>
         <ButtonContainer>
           <LeftWrapper>
-            <LikeButton />
+            <ProductLikeButton />
             {isProductDetailSuccess && (
               <span>{productPrice ? `${productPrice} 원` : "가격미정"}</span>
             )}
@@ -55,7 +55,7 @@ export default function ProductDetail() {
           <ChatButton />
         </ButtonContainer>
       </BottomBar>
-    </Page>
+    </ScrollPage>
   );
 }
 

@@ -20,6 +20,7 @@ export default function ProductMoreButton({
   const navigate = useNavigate();
   const currentPathname = window.location.pathname;
 
+  // TODO: 쿼리키 관리 방식 개선 후 리팩토링
   const invalidateQueryKey =
     currentPathname === "/sales"
       ? ["getUserSalesProduct"]
@@ -29,11 +30,11 @@ export default function ProductMoreButton({
 
   const { data: productStatuses, isSuccess } = useProductStatusesQuery();
   const { onDeleteProduct } = useDeleteProductQuery({
-    productId: productId,
-    invalidateQueryKey: invalidateQueryKey,
+    productId,
+    invalidateQueryKey,
   });
   const { mutate: mutateProductStatus } = useMutateProductStatus({
-    invalidateQueryKey: invalidateQueryKey,
+    invalidateQueryKey,
   });
 
   const getProductStatusList = (): MenuItemInfo[] => {

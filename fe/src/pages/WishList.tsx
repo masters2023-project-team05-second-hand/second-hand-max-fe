@@ -32,8 +32,7 @@ export default function WishList() {
     setActiveTabId(tabId);
   };
 
-  const targetRef = useIntersect((entry, observer) => {
-    observer.unobserve(entry.target);
+  const targetRef = useIntersect(() => {
     if (hasNextPage && !isFetching) {
       fetchNextPage();
     }

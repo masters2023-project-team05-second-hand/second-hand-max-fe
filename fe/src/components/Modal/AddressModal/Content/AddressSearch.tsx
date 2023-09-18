@@ -32,8 +32,7 @@ export default function AddressSearch({
   const { data, status, isFetching, hasNextPage, fetchNextPage } =
     useAddressesInfiniteQuery();
 
-  const ref = useIntersect((entry, observer) => {
-    observer.unobserve(entry.target);
+  const ref = useIntersect(() => {
     if (hasNextPage && !isFetching) {
       fetchNextPage();
     }

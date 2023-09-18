@@ -42,7 +42,12 @@ const useCurrentAddressIdAtom = atom(
 
 const useCurrentCategoryIdAtom = atom(
   (get) => get(currentCategoryIdAtom),
-  (_, set, payload: number) => {
+  (get, set, payload: number) => {
+    const prevCategoryId = get(currentCategoryIdAtom);
+    if (prevCategoryId === payload) {
+      set(currentCategoryIdAtom, null);
+      return;
+    }
     set(currentCategoryIdAtom, payload);
   }
 );
