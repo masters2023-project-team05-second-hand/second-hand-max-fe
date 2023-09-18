@@ -9,7 +9,7 @@ import { debounce } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function LikeButton() {
+export default function ProductLikeButton() {
   const { productId } = useParams();
   const { data: userProductLike, isSuccess: isGetProductLikeSuccess } =
     useGetProductLikeQuery(productId!);
