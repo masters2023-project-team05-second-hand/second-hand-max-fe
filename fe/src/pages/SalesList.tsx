@@ -1,4 +1,5 @@
 import { useProductStatusesQuery } from "@api/product/queries";
+import { userKeys } from "@api/queryKeys";
 import { useUserSalesInfiniteQuery } from "@api/user/queries";
 import NavigationBar from "@components/NavigationBar";
 import { SubInfo } from "@components/ProductDetail/common.style";
@@ -59,6 +60,7 @@ export default function SalesList() {
             ) : (
               <Products
                 productList={salesProducts.pages.map((page) => page.products)}
+                invalidateQueryKey={userKeys.salesProduct(activeTabId).queryKey}
               />
             )}
           </>

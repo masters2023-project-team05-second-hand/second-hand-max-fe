@@ -15,6 +15,7 @@ import {
   getUserWishlistProduct,
   postProductLike,
 } from ".";
+import { userKeys } from "./../queryKeys";
 
 export const useUserInfoQuery = (
   { enabled }: { enabled: boolean } = { enabled: true }
@@ -22,13 +23,13 @@ export const useUserInfoQuery = (
   return useQueries({
     queries: [
       {
-        queryKey: ["getMember"],
+        ...userKeys.member,
         queryFn: getMember,
         enabled,
         staleTime: Infinity,
       },
       {
-        queryKey: ["getMemberAddresses"],
+        ...userKeys.memberAddresses,
         queryFn: getMemberAddress,
         enabled,
         staleTime: Infinity,
@@ -37,9 +38,9 @@ export const useUserInfoQuery = (
   });
 };
 
-export const useGetProductLikeQuery = (productId: string) => {
+export const useGetProductLikeQuery = (productId: number) => {
   return useQuery({
-    queryKey: ["getProductLikeStatus", productId],
+    ...userKeys.productLikeStatus(productId),
     queryFn: () => getProductLikeStatus(productId),
     staleTime: Infinity,
   });
@@ -49,7 +50,7 @@ export const useMutateProductLike = ({
   productId,
   onError,
 }: {
-  productId: string;
+  productId: number;
   onError: () => void;
 }) => {
   const queryClient = useQueryClient();
@@ -63,9 +64,7 @@ export const useMutateProductLike = ({
         title: "관심 상품 변경 완료",
         message: "관심 상품 변경이 완료되었습니다.",
       });
-      queryClient.invalidateQueries({
-        queryKey: ["getUserWishlistCategory"],
-      });
+      queryClient.invalidateQueries(userKeys.wishlistCategory);
     },
     onError: () => {
       toast({
@@ -77,16 +76,14 @@ export const useMutateProductLike = ({
     },
     // TODO: 개선 필요
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["getProductLikeStatus", productId],
-      });
+      queryClient.invalidateQueries(userKeys.productLikeStatus(productId));
     },
   });
 };
 
 export const useUserLikeCategories = () => {
   return useQuery({
-    queryKey: ["getUserWishlistCategory"],
+    ...userKeys.wishlistCategory,
     queryFn: getUserWishlistCategory,
     staleTime: Infinity,
   });
@@ -94,7 +91,7 @@ export const useUserLikeCategories = () => {
 
 export const useUserWishlistInfiniteQuery = (categoryId: number) => {
   return useInfiniteQuery({
-    queryKey: ["getUserWishlistProduct", categoryId],
+    ...userKeys.wishlistProduct(categoryId),
     queryFn: ({ pageParam }) =>
       getUserWishlistProduct({
         categoryId,
@@ -108,7 +105,7 @@ export const useUserWishlistInfiniteQuery = (categoryId: number) => {
 
 export const useUserSalesInfiniteQuery = (statusId: number) => {
   return useInfiniteQuery({
-    queryKey: ["getUserSalesProduct", statusId],
+    ...userKeys.salesProduct(statusId),
     queryFn: ({ pageParam }) =>
       getUserSalesProduct({
         statusId,

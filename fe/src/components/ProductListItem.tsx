@@ -3,17 +3,21 @@ import { ReactComponent as HeartIcon } from "@assets/icon/heart.svg";
 import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import ProductStatus from "@components/ProductStatus";
 import { ROUTE_PATH } from "@router/constants";
+import { convertPastTimestamp } from "@utils/time";
 import { useNavigate } from "react-router-dom";
 import { useMemberValue } from "store";
 import { styled } from "styled-components";
 import ProductMoreButton from "./ProductMoreButton";
-import { convertPastTimestamp } from "@utils/time";
 
 type ProductListItemProps = {
   productItem: ProductItem;
+  invalidateQueryKey: readonly unknown[];
 };
 
-export default function ProductListItem({ productItem }: ProductListItemProps) {
+export default function ProductListItem({
+  productItem,
+  invalidateQueryKey,
+}: ProductListItemProps) {
   const navigate = useNavigate();
   const { id: memberId } = useMemberValue();
 
@@ -34,8 +38,9 @@ export default function ProductListItem({ productItem }: ProductListItemProps) {
               <TextDefault>{productItem.title}</TextDefault>
               {isSeller && (
                 <ProductMoreButton
-                  productId={productItem.productId + ""}
+                  productId={productItem.productId}
                   currentStatusId={productItem.statusId}
+                  invalidateQueryKey={invalidateQueryKey}
                 />
               )}
             </div>

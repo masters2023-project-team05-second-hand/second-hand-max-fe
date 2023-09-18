@@ -9,24 +9,17 @@ import MenuIndicator from "./common/Menu/MenuIndicator";
 import { MenuItemInfo } from "./common/Menu/type";
 
 type ProductMoreButtonProps = {
-  productId: string;
+  productId: number;
   currentStatusId: number;
+  invalidateQueryKey: readonly unknown[];
 };
 
 export default function ProductMoreButton({
   productId,
   currentStatusId,
+  invalidateQueryKey,
 }: ProductMoreButtonProps) {
   const navigate = useNavigate();
-  const currentPathname = window.location.pathname;
-
-  // TODO: 쿼리키 관리 방식 개선 후 리팩토링
-  const invalidateQueryKey =
-    currentPathname === "/sales"
-      ? ["getUserSalesProduct"]
-      : currentPathname === "/wish"
-      ? ["getUserWishlistProduct"]
-      : ["getProduct"];
 
   const { data: productStatuses, isSuccess } = useProductStatusesQuery();
   const { onDeleteProduct } = useDeleteProductQuery({

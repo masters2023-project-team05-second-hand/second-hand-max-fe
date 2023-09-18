@@ -1,4 +1,5 @@
 import { useGetProductListInfiniteQuery } from "@api/product/queries";
+import { productKeys } from "@api/queryKeys";
 import NavigationBar from "@components/NavigationBar";
 import { SubInfo } from "@components/ProductDetail/common.style";
 import ProductListFAB from "@components/ProductList/ProductListFAB";
@@ -21,7 +22,7 @@ export default function ProductList() {
     fetchNextPage,
   } = useGetProductListInfiniteQuery({
     addressId: currentAddressId,
-    categoryId: categoryId,
+    categoryId,
   });
 
   const ref = useIntersect(() => {
@@ -62,6 +63,9 @@ export default function ProductList() {
           ) : (
             <Products
               productList={productList.pages.map((page) => page.products)}
+              invalidateQueryKey={
+                productKeys.products(currentAddressId, categoryId).queryKey
+              }
             />
           )}
         </>

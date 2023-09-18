@@ -9,7 +9,7 @@ const isLoginAtom = atom<boolean>(false);
 const memberAtom = atom<Member>({ id: -1, nickname: "", profileImgUrl: "" });
 const addressListAtom = atom<AddressInfo[]>([DEFAULT_ADDRESS]);
 const currentAddressIdAtom = atom<number>(DEFAULT_ADDRESS.id);
-const currentCategoryIdAtom = atom<number | null>(null);
+const currentCategoryIdAtom = atom<number | undefined>(undefined);
 
 const useIsLoginAtom = atom(
   (get) => get(isLoginAtom),
@@ -45,7 +45,7 @@ const useCurrentCategoryIdAtom = atom(
   (get, set, payload: number) => {
     const prevCategoryId = get(currentCategoryIdAtom);
     if (prevCategoryId === payload) {
-      set(currentCategoryIdAtom, null);
+      set(currentCategoryIdAtom, undefined);
       return;
     }
     set(currentCategoryIdAtom, payload);

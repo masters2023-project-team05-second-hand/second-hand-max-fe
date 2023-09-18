@@ -1,5 +1,6 @@
 import { patchProduct, postProduct } from "@api/product/index";
 import { useProductDetailQuery } from "@api/product/queries";
+import { productKeys } from "@api/queryKeys";
 import { AddressInfo } from "@api/type";
 import ProductRegisterAddress from "@components/ProductRegister/ProductRegisterAddress";
 import ProductRegisterCategory from "@components/ProductRegister/ProductRegisterCategory";
@@ -24,14 +25,17 @@ import { styled } from "styled-components";
 
 export default function ProductRegister() {
   const navigate = useNavigate();
-  const { productId } = useParams();
+  const queryClient = useQueryClient();
+
   const addressList = useAddressListValue();
   const currentAddressId = useCurrentAddressIdValue();
+
+  const { productId } = useParams();
+  const numberProductId = Number(productId);
+
   const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
     currentAddressId
   );
-  const queryClient = useQueryClient();
-
   // Todo: 상태 분리하기 & 상태 관리 라이브러리 쓰기
   const [productInfo, setProductInfo] = useState<ProductInfo>({
     images: [],
@@ -47,10 +51,11 @@ export default function ProductRegister() {
   });
 
   const { data, isSuccess, isLoading, isError } = useProductDetailQuery(
-    productId!,
+    numberProductId,
     !!productId
   );
 
+  // TODO: 아래 두 Mutation 세부 구현 숨기기 위해 hook으로 분리하기
   const newProductMutation = useMutation(postProduct);
   const editProductMutation = useMutation(patchProduct);
 
@@ -92,9 +97,7 @@ export default function ProductRegister() {
         navigate(`${ROUTE_PATH.detail}/${res.data.productId}`, {
           state: { prevRoute: ROUTE_PATH.home },
         });
-        queryClient.invalidateQueries({
-          queryKey: ["getProductDetail", productId],
-        });
+        queryClient.invalidateQueries(productKeys.detail(numberProductId));
       },
       onError: () => {
         return (
@@ -129,15 +132,13 @@ export default function ProductRegister() {
     formData.append("price", price);
 
     editProductMutation.mutate(
-      { productId: productId, productInfo: formData },
+      { productId: numberProductId, productInfo: formData },
       {
         onSuccess: () => {
           navigate(`${ROUTE_PATH.detail}/${productId}`, {
             state: { prevRoute: ROUTE_PATH.home },
           });
-          queryClient.invalidateQueries({
-            queryKey: ["getProductDetail", productId],
-          });
+          queryClient.invalidateQueries(productKeys.detail(numberProductId));
         },
         onError: () => {
           return (

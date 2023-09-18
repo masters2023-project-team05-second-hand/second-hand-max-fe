@@ -39,11 +39,21 @@ export default function UserProvider() {
       const userAddressesInfo = memberAddressResult.data;
       setAddresses(userAddressesInfo);
 
-      // 기존 유저인 경우에만 로컬스토리지에 저장된 값이 없으면 첫번째 주소를 기본 주소로 설정
-      const lastVisitedAddressId =
-        localStorage.getItem("currentAddressId") ?? userAddressesInfo[0].id;
-      userAddressesInfo.length &&
-        setCurrentAddressId(Number(lastVisitedAddressId));
+      const isFirstUser = !userAddressesInfo.length;
+
+      // 기존 유저인 경우에만 로컬스토리지에 저장된 값을 확인하여 기본 주소 설정
+      if (isFirstUser) {
+        return;
+      }
+
+      const userAddressIDs = userAddressesInfo.map((address) => address.id);
+      const storageID = localStorage.getItem("currentAddressId");
+
+      const lastVisitedAddressId = userAddressIDs.includes(Number(storageID))
+        ? storageID
+        : userAddressIDs[0];
+
+      setCurrentAddressId(Number(lastVisitedAddressId));
     }
 
     if (memberAddressResult.isError) {
