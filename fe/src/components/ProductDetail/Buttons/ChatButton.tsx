@@ -11,9 +11,10 @@ export default function ChatButton({
   isSeller,
   chatCount,
 }: ChatButtonProps) {
-  const sellerMessage = `대화 중인 채팅방${
-    chatCount && chatCount > 0 ? ` (${chatCount})` : ""
-  }`;
+  const isThereChatList = chatCount && chatCount > 0;
+  const sellerMessage = isThereChatList
+    ? `대화 중인 채팅방 (${chatCount})`
+    : "대화 중인 채팅방";
   const buyerMessage = "채팅하기";
 
   return (
