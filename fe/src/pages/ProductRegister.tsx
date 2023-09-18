@@ -51,7 +51,7 @@ export default function ProductRegister() {
   });
 
   const { data, isSuccess, isLoading, isError } = useProductDetailQuery(
-    Number(productId),
+    numberProductId,
     !!productId
   );
 
