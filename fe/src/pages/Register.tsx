@@ -4,7 +4,7 @@ import TopBar from "@components/TopBar";
 import UserAccount from "@components/UserAccount";
 import Button from "@components/common/Buttons/Button";
 import { ROUTE_PATH } from "@router/constants";
-import { Main, Page } from "@styles/common";
+import { Main, StaticPage } from "@styles/common";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAddressListValue } from "store";
@@ -26,7 +26,7 @@ export default function Register() {
   }, [addresses, navigate]);
 
   return (
-    <Page>
+    <StaticPage>
       <TopBar
         title="회원가입"
         backgroundColor="neutralBackgroundBlur"
@@ -56,6 +56,6 @@ export default function Register() {
           <AddressModal closeHandler={closeAddressModal} />
         )}
       </Main>
-    </Page>
+    </StaticPage>
   );
 }

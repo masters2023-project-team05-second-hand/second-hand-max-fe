@@ -4,7 +4,7 @@ import CategoryList from "@components/Category";
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
 import { Error, Loading } from "@components/common/Guide";
-import { Main, Page } from "@styles/common";
+import { Main, StaticPage } from "@styles/common";
 import { useNavigate } from "react-router-dom";
 
 export default function Category() {
@@ -14,7 +14,7 @@ export default function Category() {
   const { data, isSuccess, isError, isLoading } = useCategoryQuery();
 
   return (
-    <Page>
+    <StaticPage>
       <TopBar
         title="카테고리"
         backgroundColor="neutralBackgroundBlur"
@@ -50,6 +50,6 @@ export default function Category() {
           ]}
         />
       )}
-    </Page>
+    </StaticPage>
   );
 }

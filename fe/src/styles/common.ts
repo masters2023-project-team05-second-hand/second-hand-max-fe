@@ -5,7 +5,7 @@ export const Page = styled.div`
   position: relative;
   margin: 0 auto;
   width: ${WIDTH.page}px;
-  height: 100vh;
+  height: calc(100vh - ${HEIGHT.navigationBar}px);
   overflow: scroll;
   background-color: ${({ theme: { color } }) => color.neutralBackground};
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -16,8 +16,8 @@ export const Page = styled.div`
   }
 `;
 
-export const ScrollPage = styled(Page)`
-  height: calc(100vh - ${HEIGHT.navigationBar}px);
+export const StaticPage = styled(Page)`
+  height: 100vh;
 `;
 
 export const Main = styled.main`
@@ -64,4 +64,24 @@ export const Target = styled.div`
 
 export const PageContent = styled.div`
   max-width: 100%;
+`;
+
+export const TextDefault = styled.span`
+  display: block;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${({ theme: { color } }) => color.neutralText};
+  font: ${({ theme: { font } }) => font.displayDefault16};
+`;
+
+export const TextWeak = styled.span`
+  color: ${({ theme: { color } }) => color.neutralTextWeak};
+  font: ${({ theme: { font } }) => font.displayDefault12};
+`;
+
+export const TextBold = styled.span`
+  color: ${({ theme: { color } }) => color.neutralTextStrong};
+  font: ${({ theme: { font } }) => font.displayStrong16};
 `;
