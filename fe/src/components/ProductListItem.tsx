@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useMemberValue } from "store";
 import { styled } from "styled-components";
 import ProductMoreButton from "./ProductMoreButton";
+import { TextBold, TextDefault, TextWeak } from "@styles/common";
 
 type ProductListItemProps = {
   productItem: ProductItem;
@@ -149,26 +150,6 @@ const ProductInfo = styled.div`
     gap: 8px;
     margin-left: auto;
   }
-`;
-
-const TextDefault = styled.span`
-  display: block;
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: ${({ theme: { color } }) => color.neutralText};
-  font: ${({ theme: { font } }) => font.displayDefault16};
-`;
-
-const TextWeak = styled.span`
-  color: ${({ theme: { color } }) => color.neutralTextWeak};
-  font: ${({ theme: { font } }) => font.displayDefault12};
-`;
-
-const TextBold = styled.span`
-  color: ${({ theme: { color } }) => color.neutralTextStrong};
-  font: ${({ theme: { font } }) => font.displayStrong16};
 `;
 
 const History = styled.div`
