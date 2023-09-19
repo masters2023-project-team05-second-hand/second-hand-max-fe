@@ -1,4 +1,4 @@
-import ChatListItem from "@components/Chat/ChatListItem";
+import ChatListItem from "@components/ChatList/ChatListItem";
 import NavigationBar from "@components/NavigationBar";
 import { SubInfo } from "@components/ProductDetail/common.style";
 import TopBar from "@components/TopBar";
@@ -49,7 +49,7 @@ const mockData: ChatItem[] = [
   },
 ];
 
-export default function Chat() {
+export default function ChatList() {
   // Todo: 채팅 목록 조회 api 붙이기
   const navigate = useNavigate();
 
