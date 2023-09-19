@@ -8,10 +8,18 @@ import {
 } from "@api/type";
 import { PRODUCT_API_PATH } from "./constants";
 
-export const getAddresses = async (page: number = 0, size: number = 10) => {
-  const { data } = await fetcher.get<AddressList>(
-    PRODUCT_API_PATH.addresses(page, size)
-  );
+export const getAddresses = async (
+  page: number = 0,
+  option?: {
+    searchWord?: string;
+    size?: number;
+  }
+) => {
+  const baseUrl = PRODUCT_API_PATH.addresses;
+  const pathVariable = `?page=${page}&size=${option?.size ?? 10}${
+    option?.searchWord && `&search=${option.searchWord}`
+  }`;
+  const { data } = await fetcher.get<AddressList>(baseUrl + pathVariable);
   return data;
 };
 
