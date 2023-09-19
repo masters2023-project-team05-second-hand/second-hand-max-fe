@@ -90,14 +90,14 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json([
-        {
-          id: 1,
-          address: "역삼1동",
-        },
-        {
-          id: 5,
-          address: "역삼5동",
-        },
+        // {
+        //   id: 1,
+        //   address: "역삼1동",
+        // },
+        // {
+        //   id: 5,
+        //   address: "역삼5동",
+        // },
       ])
     );
   }),
@@ -170,12 +170,32 @@ export const handlers = [
   rest.get("/api/addresses", (req, res, ctx) => {
     const page = req.url.searchParams.get("page");
     const size = req.url.searchParams.get("size");
+    const search = req.url.searchParams.get("search");
 
     if (!page || !size) {
       return res(
         ctx.status(400),
         ctx.json({
           message: "잘못된 요청입니다.",
+        })
+      );
+    }
+
+    if (search) {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          addresses: [
+            {
+              id: 11234124,
+              name: "청담1동",
+            },
+            {
+              id: 5124124,
+              name: "청담2동",
+            },
+          ],
+          hasNext: false,
         })
       );
     }
