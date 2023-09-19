@@ -1,8 +1,7 @@
-import { styled } from "styled-components";
-import Button from "./common/Buttons/Button";
-import { HEIGHT, WIDTH } from "@styles/constants";
 import { ReactComponent as SendIcon } from "@assets/icon/send.svg";
 import { useState } from "react";
+import { styled } from "styled-components";
+import Button from "../common/Buttons/Button";
 
 export default function ChatBar() {
   const [message, setMessage] = useState("");
@@ -32,17 +31,10 @@ export default function ChatBar() {
 }
 
 const StyledChatBar = styled.div`
-  width: ${WIDTH.page}px;
-  height: ${HEIGHT.navigationBar}px;
   display: flex;
+  width: 100%;
   gap: 10px;
-  position: fixed;
-  bottom: 0;
   padding: 16px;
-  box-sizing: border-box;
-  background-color: ${({ theme: { color } }) => color.neutralBackgroundWeak};
-  border-top: 1px solid ${({ theme: { color } }) => color.neutralBorder};
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 `;
 
 const MessageInput = styled.input`

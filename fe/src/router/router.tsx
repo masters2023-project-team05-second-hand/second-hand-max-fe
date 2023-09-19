@@ -1,6 +1,7 @@
 import { Auth } from "@pages/Auth";
 import Category from "@pages/Category";
-import Chat from "@pages/Chat";
+import ChatDetail from "@pages/ChatDetail";
+import ChatList from "@pages/ChatList";
 import MyAccount from "@pages/MyAccount/MyAccount";
 import ProductDetail from "@pages/ProductDetail";
 import ProductList from "@pages/ProductList";
@@ -35,7 +36,8 @@ export const router = createBrowserRouter(
           />
           <Route path={ROUTE_PATH.sales} element={<SalesList />} />
           <Route path={ROUTE_PATH.wish} element={<WishList />} />
-          <Route path={ROUTE_PATH.chat} element={<Chat />} />
+          <Route path={ROUTE_PATH.chat} element={<ChatList />} />
+          <Route path={`${ROUTE_PATH.chat}/:chatId`} element={<ChatDetail />} />
         </Route>
       </Route>
       <Route path={ROUTE_PATH.account} element={<MyAccount />} />

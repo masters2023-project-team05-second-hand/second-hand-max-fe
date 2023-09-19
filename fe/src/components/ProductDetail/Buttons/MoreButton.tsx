@@ -11,10 +11,11 @@ export default function MoreButton() {
   const location = useLocation();
   const navigate = useNavigate();
   const { productId } = useParams();
+  const numberProductId = Number(productId);
 
   const goBack = () => navigate(location.state?.prevRoute ?? -1);
   const { onDeleteProduct } = useDeleteProductQuery({
-    productId: productId!,
+    productId: numberProductId,
     onSuccess: goBack,
   });
   const [isRemoveAlertOpen, setIsRemoveAlertOpen] = useState(false);

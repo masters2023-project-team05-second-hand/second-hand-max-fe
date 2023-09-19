@@ -1,5 +1,5 @@
 import { useProductDetailQuery } from "@api/product/queries";
-import BackButton from "@components/ProductDetail/Buttons/BackButton";
+import BackButton from "@components/common/Buttons/BackButton";
 import ChatButton from "@components/ProductDetail/Buttons/ChatButton";
 import MoreButton from "@components/ProductDetail/Buttons/MoreButton";
 import ProductLikeButton from "@components/ProductDetail/Buttons/ProductLikeButton";
@@ -59,7 +59,7 @@ export default function ProductDetail() {
       <TopBar
         backgroundColor="accentPrimary"
         isScrolled={isScroll}
-        leftBtn={<BackButton />}
+        leftBtn={<BackButton color="accentText" />}
         rightBtn={isSeller && <MoreButton />}
       />
       {isProductDetailSuccess && (

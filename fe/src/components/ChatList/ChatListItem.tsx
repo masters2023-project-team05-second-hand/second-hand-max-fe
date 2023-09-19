@@ -1,4 +1,4 @@
-import { ChatItem } from "@pages/Chat";
+import { ChatItem } from "@pages/ChatList";
 import { TextBold, TextDefault, TextWeak } from "@styles/common";
 import { convertPastTimestamp } from "@utils/time";
 import { styled } from "styled-components";
