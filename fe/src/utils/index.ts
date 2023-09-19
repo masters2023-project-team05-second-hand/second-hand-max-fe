@@ -17,3 +17,12 @@ export const getFormattedPrice = (inputValue: string) => {
     return ""; // Notice: inputValue의 length가 0일 경우 NaN 방지
   }
 };
+
+export const formatKoreanDate = (date: string) => {
+  return new Date(date).toLocaleDateString("ko-KR", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
