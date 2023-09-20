@@ -1,4 +1,7 @@
-import { useProductDetailQuery } from "@api/product/queries";
+import {
+  useDeleteProductQuery,
+  useProductDetailQuery,
+} from "@api/product/queries";
 import BackButton from "@components/common/Buttons/BackButton";
 import ChatButton from "@components/ProductDetail/Buttons/ChatButton";
 import MoreButton from "@components/ProductDetail/Buttons/MoreButton";
@@ -78,6 +81,11 @@ export default function ProductDetail() {
     navigate(`${ROUTE_PATH.edit}/${productId}`);
   };
 
+  const { onDeleteProduct } = useDeleteProductQuery({
+    productId: numberProductId,
+    onSuccess: goBack,
+  });
+
   const isScroll = !!scrollY && scrollY > 0;
   const isSeller = member.id === productDetailInfo?.product.seller.id;
   const productPrice =
@@ -91,11 +99,7 @@ export default function ProductDetail() {
         leftBtn={<BackButton color="accentText" onClick={onClickBack} />}
         rightBtn={
           isSeller && (
-            <MoreButton
-              productId={numberProductId}
-              onClickBack={goBack}
-              onClickEdit={onClickEdit}
-            />
+            <MoreButton onEdit={onClickEdit} onDelete={onDeleteProduct} />
           )
         }
       />
