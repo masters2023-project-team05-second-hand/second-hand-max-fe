@@ -5,6 +5,7 @@ import NavigationBar from "@components/NavigationBar";
 import { SubInfo } from "@components/ProductDetail/common.style";
 import Products from "@components/ProductList/Products";
 import TopBar from "@components/TopBar";
+import { Loading } from "@components/common/Guide";
 import { TabButtons } from "@components/common/TabButtons";
 import { useIntersect } from "@hooks/useIntersect";
 import { Main, Page, PageContent, Target } from "@styles/common";
@@ -23,8 +24,8 @@ export default function SalesList() {
     fetchNextPage,
   } = useUserSalesInfiniteQuery(activeTabId);
 
-  const ref = useIntersect(() => {
-    if (hasNextPage && !isFetching) {
+  const targetRef = useIntersect(() => {
+    if (hasNextPage) {
       fetchNextPage();
     }
   });
@@ -65,7 +66,11 @@ export default function SalesList() {
             )}
           </>
         )}
-        <Target ref={ref} />
+        {isFetching ? (
+          <Loading messages={["상품 목록 로딩 중"]} />
+        ) : (
+          <Target ref={targetRef} />
+        )}
       </PageContent>
       <NavigationBar />
     </Page>

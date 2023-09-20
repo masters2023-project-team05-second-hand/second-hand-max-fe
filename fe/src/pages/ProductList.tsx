@@ -25,8 +25,8 @@ export default function ProductList() {
     categoryId,
   });
 
-  const ref = useIntersect(() => {
-    if (hasNextPage && !isFetching) {
+  const targetRef = useIntersect(() => {
+    if (hasNextPage) {
       fetchNextPage();
     }
   });
@@ -71,7 +71,11 @@ export default function ProductList() {
         </>
       )}
       <ProductListFAB />
-      <Target ref={ref} />
+      {isFetching ? (
+        <Loading messages={["상품 목록 로딩 중"]} />
+      ) : (
+        <Target ref={targetRef} />
+      )}
       <NavigationBar />
     </Page>
   );
