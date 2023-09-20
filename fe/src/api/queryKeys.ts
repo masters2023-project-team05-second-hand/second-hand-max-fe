@@ -1,7 +1,9 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 
 export const productKeys = createQueryKeys("product", {
-  addresses: { queryKey: ["getAddresses"] },
+  addresses: (searchWord?: string) => ({
+    queryKey: ["getAddresses", searchWord],
+  }),
   categories: { queryKey: ["getCategories"] },
   detail: (id: number) => ({ queryKey: ["getProductDetail", id] }),
   statuses: { queryKey: ["getStatuses"] },

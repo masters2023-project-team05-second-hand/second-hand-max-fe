@@ -16,10 +16,13 @@ import {
 } from ".";
 import { productKeys } from "./../queryKeys";
 
-export const useAddressesInfiniteQuery = (option?: { size: number }) => {
+export const useAddressesInfiniteQuery = (option?: {
+  searchWord?: string;
+  size?: number;
+}) => {
   return useInfiniteQuery({
-    ...productKeys.addresses,
-    queryFn: ({ pageParam }) => getAddresses(pageParam, option?.size),
+    ...productKeys.addresses(option?.searchWord),
+    queryFn: ({ pageParam }) => getAddresses(pageParam, option),
     getNextPageParam: (lastPage, allPages) =>
       lastPage.hasNext ? allPages.length : undefined,
   });
