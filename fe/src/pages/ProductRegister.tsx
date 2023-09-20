@@ -15,9 +15,11 @@ import {
 } from "@components/ProductRegister/constants";
 import { ProductInfo } from "@components/ProductRegister/type";
 import { Error, Loading } from "@components/common/Guide";
+import { useToast } from "@hooks/useToast";
 import { ROUTE_PATH } from "@router/constants";
 import { Page } from "@styles/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import imageCompression from "browser-image-compression";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAddressListValue, useCurrentAddressIdValue } from "store";
@@ -26,6 +28,7 @@ import { styled } from "styled-components";
 export default function ProductRegister() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const addressList = useAddressListValue();
   const currentAddressId = useCurrentAddressIdValue();
@@ -164,38 +167,51 @@ export default function ProductRegister() {
     }
   };
 
-  const onAddNewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onAddNewImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const now = new Date().getTime();
-
-    setProductInfo((prev) => ({
-      ...prev,
-      newImages: prev.newImages
-        ? [...prev.newImages, { id: now, image: file }]
-        : [{ id: now, image: file }],
-    }));
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setProductInfo((prev) => ({
-        ...prev,
-        images: [...prev.images, { id: now, url: reader.result as string }],
-      }));
+    // Memo: option은 상의 후 결정
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
     };
+
+    try {
+      const compressedFile = await imageCompression(file, options);
+      const now = new Date().getTime();
+
+      const reader = new FileReader();
+      reader.readAsDataURL(compressedFile);
+      reader.onload = () => {
+        setProductInfo((prev) => ({
+          ...prev,
+          newImages: prev.newImages?.length
+            ? [...prev.newImages, { id: now, image: compressedFile }]
+            : [{ id: now, image: compressedFile }],
+          images: [...prev.images, { id: now, url: reader.result as string }],
+        }));
+      };
+    } catch (error) {
+      toast({
+        title: "이미지 업로드 실패",
+        message: "이미지 업로드에 실패했습니다",
+        type: "error",
+      });
+    }
   };
 
   const onRemoveImage = (id: number) => {
     // Todo: 이미지 없을 때 처리 로직 추가, 상품 삭제시 alert 모달 띄우기
     // Todo: 상품 생성 시 newImages 삭제 안되는 문제 해결
-    const isNewImage = productInfo.newImages?.find((image) => image.id === id);
+    const isNewImage = productInfo.newImages?.some((image) => image.id === id);
 
     if (!isNewImage) {
       setProductInfo((prev) => {
         return {
           ...prev,
+          images: prev.images.filter((image) => image.id !== id),
           deletedImageIds: prev.deletedImageIds
             ? [...prev.deletedImageIds, id]
             : [id],
@@ -207,6 +223,7 @@ export default function ProductRegister() {
       return {
         ...prev,
         images: prev.images.filter((image) => image.id !== id),
+        newImages: prev.newImages?.filter((image) => image.id !== id),
       };
     });
   };
