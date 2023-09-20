@@ -204,7 +204,7 @@ export default function ProductRegister() {
 
   const onRemoveImage = (id: number) => {
     // Todo: 이미지 없을 때 처리 로직 추가, 상품 삭제시 alert 모달 띄우기
-    // Todo: 상품 생성 시 newImages 삭제 안되는 문제 해결
+
     const isNewImage = productInfo.newImages?.some((image) => image.id === id);
 
     if (!isNewImage) {
