@@ -5,10 +5,17 @@ import ProductBanner from "@components/ChatDetail/ProductBanner";
 import TopBar from "@components/TopBar";
 import BackButton from "@components/common/Buttons/BackButton";
 import { BottomBar, Page, PageContent } from "@styles/common";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ChatDetail() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { partner, product, chats } = mockChatItem;
   const chatList = Object.entries(chats);
+
+  const goBack = () => {
+    navigate(location.state?.prevRoute ?? -1);
+  };
 
   return (
     <Page>
@@ -16,7 +23,7 @@ export default function ChatDetail() {
         title={partner.name}
         backgroundColor="neutralBackgroundBlur"
         isWithBorder={true}
-        leftBtn={<BackButton color="neutralText" />}
+        leftBtn={<BackButton color="neutralText" onClick={goBack} />}
         rightBtn={<ChatMoreButton />}
       />
       <ProductBanner productInfo={product} />
