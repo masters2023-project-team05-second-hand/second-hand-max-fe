@@ -26,3 +26,7 @@ export const formatKoreanDate = (date: string) => {
     day: "numeric",
   });
 };
+
+export function delay(time: number) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
