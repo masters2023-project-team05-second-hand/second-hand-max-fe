@@ -57,8 +57,8 @@ export default function AddressSearch({
     changeCurrentAddressId(item.id);
   };
 
-  const ref = useIntersect(() => {
-    if (hasNextPage && !isFetching) {
+  const targetRef = useIntersect(() => {
+    if (hasNextPage) {
       fetchNextPage();
     }
   });
@@ -93,7 +93,11 @@ export default function AddressSearch({
               </ListItem>
             ))
           )}
-          <Target ref={ref} />
+          {isFetching ? (
+            <Loading messages={["상품 목록 로딩 중"]} />
+          ) : (
+            <Target ref={targetRef} />
+          )}
         </ListPanel>
       )}
     </>
