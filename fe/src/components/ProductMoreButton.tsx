@@ -1,63 +1,34 @@
-import {
-  useDeleteProductQuery,
-  useMutateProductStatus,
-  useProductStatusesQuery,
-} from "@api/product/queries";
 import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
 import { useNavigate } from "react-router-dom";
 import MenuIndicator from "./common/Menu/MenuIndicator";
 import { MenuItemInfo } from "./common/Menu/type";
+import { ROUTE_PATH } from "@router/constants";
 
 type ProductMoreButtonProps = {
   productId: number;
-  currentStatusId: number;
-  invalidateQueryKey: readonly unknown[];
+  openDeleteAlert: () => void;
+  statusListItems: MenuItemInfo[];
 };
 
 export default function ProductMoreButton({
   productId,
-  currentStatusId,
-  invalidateQueryKey,
+  statusListItems,
+  openDeleteAlert,
 }: ProductMoreButtonProps) {
   const navigate = useNavigate();
-
-  const { data: productStatuses, isSuccess } = useProductStatusesQuery();
-  const { onDeleteProduct } = useDeleteProductQuery({
-    productId,
-    invalidateQueryKey,
-  });
-  const { mutate: mutateProductStatus } = useMutateProductStatus({
-    invalidateQueryKey,
-  });
-
-  const getProductStatusList = (): MenuItemInfo[] => {
-    return isSuccess
-      ? productStatuses
-          .filter((status) => status.id !== currentStatusId)
-          .map((productStatus) => ({
-            name: `${productStatus.type} 상태로 전환`,
-            onClick: () => {
-              mutateProductStatus({
-                productId,
-                statusId: productStatus.id,
-              });
-            },
-          }))
-      : [];
-  };
 
   const moreButtonItems = [
     {
       name: "게시글 수정",
       onClick: () => {
-        navigate(`/product-edit/${productId}`);
+        navigate(ROUTE_PATH.edit + `/${productId}`);
       },
     },
-    ...getProductStatusList(),
+    ...statusListItems,
     {
       name: "삭제",
       onClick: () => {
-        onDeleteProduct();
+        openDeleteAlert();
       },
       isWarning: true,
     },
