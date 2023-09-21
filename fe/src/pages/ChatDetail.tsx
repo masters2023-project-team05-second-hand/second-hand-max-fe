@@ -5,16 +5,16 @@ import ProductBanner from "@components/ChatDetail/ProductBanner";
 import TopBar from "@components/TopBar";
 import BackButton from "@components/common/Buttons/BackButton";
 import { BottomBar, Page, PageContent } from "@styles/common";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ChatDetail() {
+  // TODO: ChatRoom으로 route /chatting으로 chat과 분리하면서 변경사항 반영해야 함
   const navigate = useNavigate();
-  const location = useLocation();
   const { partner, product, chats } = mockChatItem;
   const chatList = Object.entries(chats);
 
   const goBack = () => {
-    navigate(location.state?.prevRoute ?? -1);
+    navigate(-1);
   };
 
   return (

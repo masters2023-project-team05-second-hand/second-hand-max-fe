@@ -53,32 +53,34 @@ export default function ProductRegister() {
       addressList[DEFAULT_SELECTED_ADDRESS_INDEX],
   });
 
-  const { data, isSuccess, isLoading, isError } = useProductDetailQuery(
-    numberProductId,
-    !!productId
-  );
+  const {
+    data: productDetailInfo,
+    isSuccess,
+    isLoading,
+    isError,
+  } = useProductDetailQuery(numberProductId, !!productId);
 
   // TODO: 아래 두 Mutation 세부 구현 숨기기 위해 hook으로 분리하기
   const newProductMutation = useMutation(postProduct);
   const editProductMutation = useMutation(patchProduct);
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (isSuccess && productDetailInfo) {
       setProductInfo((prev) => {
         return {
           ...prev,
-          images: data.images,
-          title: data.product.title,
-          categoryId: data.product.category.id,
-          price: data.product.price?.toString() ?? "",
-          content: data.product.contents,
-          address: data.product.address,
+          images: productDetailInfo.images,
+          title: productDetailInfo.product.title,
+          categoryId: productDetailInfo.product.category.id,
+          price: productDetailInfo.product.price?.toString() ?? "",
+          content: productDetailInfo.product.contents,
+          address: productDetailInfo.product.address,
         };
       });
 
-      setSelectedAddressId(data.product.address.id);
+      setSelectedAddressId(productDetailInfo.product.address.id);
     }
-  }, [isSuccess, data]);
+  }, [isSuccess, productDetailInfo]);
 
   const onPostNewProduct = () => {
     const price = productInfo.price.replace(/,/g, "");
@@ -97,7 +99,7 @@ export default function ProductRegister() {
 
     newProductMutation.mutate(formData, {
       onSuccess: (res) => {
-        navigate(`${ROUTE_PATH.detail}/${res.data.productId}`, {
+        navigate(ROUTE_PATH.detail + `/${res.data.productId}`, {
           state: { prevRoute: ROUTE_PATH.home },
         });
         queryClient.invalidateQueries(productKeys.detail(numberProductId));
@@ -138,9 +140,8 @@ export default function ProductRegister() {
       { productId: numberProductId, productInfo: formData },
       {
         onSuccess: () => {
-          navigate(`${ROUTE_PATH.detail}/${productId}`, {
-            state: { prevRoute: ROUTE_PATH.home },
-          });
+          // Memo: state로 productDetailInfo를 넘겨주기???
+          navigate(ROUTE_PATH.detail + `/${productId}`);
           queryClient.invalidateQueries(productKeys.detail(numberProductId));
         },
         onError: () => {
@@ -204,7 +205,6 @@ export default function ProductRegister() {
 
   const onRemoveImage = (id: number) => {
     // Todo: 이미지 없을 때 처리 로직 추가, 상품 삭제시 alert 모달 띄우기
-
     const isNewImage = productInfo.newImages?.some((image) => image.id === id);
 
     if (!isNewImage) {

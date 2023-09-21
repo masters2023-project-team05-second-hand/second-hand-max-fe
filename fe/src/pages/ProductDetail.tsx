@@ -78,7 +78,7 @@ export default function ProductDetail() {
   const onClickEdit = async () => {
     onLeavePage();
     await delay(300);
-    navigate(`${ROUTE_PATH.edit}/${productId}`);
+    navigate(ROUTE_PATH.edit + `/${productId}`);
   };
 
   const { onDeleteProduct } = useDeleteProductQuery({
