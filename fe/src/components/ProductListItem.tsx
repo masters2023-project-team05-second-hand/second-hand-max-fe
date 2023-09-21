@@ -5,7 +5,7 @@ import ProductStatus from "@components/ProductStatus";
 import { ROUTE_PATH } from "@router/constants";
 import { convertPastTimestamp } from "@utils/time";
 import { useNavigate } from "react-router-dom";
-import { useMemberValue } from "store";
+import { useMemberValue, useStatusesValue } from "store";
 import { styled } from "styled-components";
 import ProductMoreButton from "./ProductMoreButton";
 import { TextBold, TextDefault, TextWeak } from "@styles/common";
@@ -13,7 +13,6 @@ import { useState } from "react";
 import {
   useDeleteProductQuery,
   useMutateProductStatus,
-  useProductStatusesQuery,
 } from "@api/product/queries";
 import Alert from "./common/Alert/Alert";
 import { MenuItemInfo } from "./common/Menu/type";
@@ -29,13 +28,13 @@ export default function ProductListItem({
 }: ProductListItemProps) {
   const navigate = useNavigate();
   const { id: memberId } = useMemberValue();
+  const productStatuses = useStatusesValue();
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
   const { onDeleteProduct } = useDeleteProductQuery({
     productId: productItem.productId,
     invalidateQueryKey,
   });
-  const { data: productStatuses, isSuccess } = useProductStatusesQuery();
   const { mutate: mutateProductStatus } = useMutateProductStatus({
     invalidateQueryKey,
   });
@@ -45,7 +44,7 @@ export default function ProductListItem({
   };
 
   const getProductStatusList = (): MenuItemInfo[] => {
-    return isSuccess
+    return productStatuses.length
       ? productStatuses
           .filter((status) => status.id !== productItem.statusId)
           .map((productStatus) => ({
