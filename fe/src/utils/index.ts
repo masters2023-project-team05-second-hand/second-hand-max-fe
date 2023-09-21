@@ -30,3 +30,14 @@ export const formatKoreanDate = (date: string) => {
 export function delay(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
+
+export function getFormattedAddress(addressName: string | undefined) {
+  if (!addressName) {
+    return "";
+  }
+
+  const splittedAddress = addressName.split(" ");
+  const dong = splittedAddress[splittedAddress.length - 1];
+
+  return dong;
+}

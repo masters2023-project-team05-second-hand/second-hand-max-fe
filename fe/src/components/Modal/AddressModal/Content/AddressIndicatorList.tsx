@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import AddressRemoveAlert from "../AddressRemoveAlert";
 import { AddressAddButton, AddressRemoveButton } from "../Buttons";
+import { getFormattedAddress } from "@utils/index";
 
 export default function AddressIndicatorList({
   currentAddresses,
@@ -52,7 +53,7 @@ export default function AddressIndicatorList({
             key={address.id}
             $active={address.id === currentSelectedAddressId}
             onClick={() => changeCurrentAddressId(address.id)}>
-            <span>{address.name}</span>
+            <span>{getFormattedAddress(address.name)}</span>
             <AddressRemoveButton {...{ address, onRemoveClick }} />
           </AddressIndicator>
         ))}

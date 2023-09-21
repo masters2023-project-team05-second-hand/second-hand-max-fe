@@ -94,7 +94,7 @@ export default function AddressSearch({
             ))
           )}
           {isFetching ? (
-            <Loading messages={["상품 목록 로딩 중"]} />
+            <Loading messages={["주소 목록 로딩 중"]} />
           ) : (
             <Target ref={targetRef} />
           )}
