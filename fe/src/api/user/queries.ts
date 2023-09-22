@@ -16,6 +16,7 @@ import {
   postProductLike,
 } from ".";
 import { userKeys } from "./../queryKeys";
+import { Status } from "@api/type";
 
 export const useUserInfoQuery = (
   { enabled }: { enabled: boolean } = { enabled: true }
@@ -103,11 +104,15 @@ export const useUserWishlistInfiniteQuery = (categoryId: number) => {
   });
 };
 
-export const useUserSalesInfiniteQuery = (statusId: number) => {
+export const useUserSalesInfiniteQuery = (
+  statuses: Status[],
+  statusId: number
+) => {
   return useInfiniteQuery({
     ...userKeys.salesProduct(statusId),
     queryFn: ({ pageParam }) =>
       getUserSalesProduct({
+        statuses,
         statusId,
         page: pageParam,
         size: 10,

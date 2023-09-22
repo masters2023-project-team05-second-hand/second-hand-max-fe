@@ -1,5 +1,5 @@
 import { useStatusesValue } from "store";
-import { IS_RESERVATION_ID, IS_SELLING_ID } from "store/constants";
+import { RESERVATION_ID, SELLING_ID } from "store/constants";
 import { styled } from "styled-components";
 
 type ProductStatusProps = {
@@ -10,7 +10,7 @@ export default function ProductStatus({ id }: ProductStatusProps) {
   const productStatuses = useStatusesValue();
 
   const statusType = productStatuses?.find((status) => status.id === id)?.type;
-  const isSelling = id === IS_SELLING_ID;
+  const isSelling = id === SELLING_ID;
 
   return (
     <>
@@ -24,7 +24,7 @@ const Status = styled.div<{ $statusId: number }>`
   padding: 3px 6px;
   border-radius: ${({ theme: { radius } }) => radius[8]};
   background-color: ${({ theme: { color }, $statusId }) =>
-    $statusId === IS_RESERVATION_ID
+    $statusId === RESERVATION_ID
       ? color.accentSecondary
       : color.neutralBorderStrong};
   color: ${({ theme: { color } }) => color.accentText};
