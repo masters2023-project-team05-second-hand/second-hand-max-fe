@@ -1,11 +1,9 @@
+import { checkTokenExpiration } from "@utils/index";
 import { AddressInfo, Member, Status } from "api/type";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DEFAULT_ADDRESS } from "./constants";
 
-// TODO: 로그인 상태 유지하는 방법 고민 (저장된 토큰이 만료된 경우)
-// const accessToken = localStorage.getItem("accessToken");
-
-const isLoginAtom = atom<boolean>(false);
+const isLoginAtom = atom<boolean>(checkTokenExpiration());
 const memberAtom = atom<Member>({ id: -1, nickname: "", profileImgUrl: "" });
 const addressListAtom = atom<AddressInfo[]>([DEFAULT_ADDRESS]);
 const currentAddressIdAtom = atom<number>(DEFAULT_ADDRESS.id);

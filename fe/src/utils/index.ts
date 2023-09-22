@@ -41,3 +41,11 @@ export function getFormattedAddress(addressName: string | undefined) {
 
   return dong;
 }
+
+export const checkTokenExpiration = () => {
+  const expirationTime = localStorage.getItem("expirationTime");
+  const isValidToken =
+    !!expirationTime && Date.now() < parseInt(expirationTime, 10);
+
+  return isValidToken;
+};

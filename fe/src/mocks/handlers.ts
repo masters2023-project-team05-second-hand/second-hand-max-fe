@@ -27,6 +27,7 @@ export const handlers = [
             "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiZXhwIjoxNjkxOTIyNjAzfQ.vCxUGMiv9bnb4JQGwk6NVx6kHi5hG80tDxafIvrfKbA",
           refreshToken:
             "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTcxMDMwMDN9.FgoFySrenum985OrDzwwtaEhu1Iz7IVJtz5M6H8lzX8",
+          expirationTime: 1795346952938,
         },
       })
     );
@@ -51,6 +52,7 @@ export const handlers = [
           "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiZXhwIjoxNjkxOTIyNjAzfQ.vCxUGMiv9bnb4JQGwk6NVx6kHi5hG80tDxafIvrfKbA",
         refreshToken:
           "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTcxMDMwMDN9.FgoFySrenum985OrDzwwtaEhu1Iz7IVJtz5M6H8lzX8",
+        expirationTime: 1795346952938,
       })
     );
   }),
@@ -157,11 +159,11 @@ export const handlers = [
       ctx.json<AddressInfo[]>([
         {
           id: 1,
-          name: "역삼 1동",
+          name: "역삼1동",
         },
         {
           id: 5,
-          name: "역삼 5동",
+          name: "역삼5동",
         },
       ])
     );

@@ -26,6 +26,7 @@ export function Auth() {
     if (isSuccess) {
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("expirationTime", data.expirationTime.toString());
 
       setIsLogin(true);
       navigate(ROUTE_PATH.home);
