@@ -16,6 +16,7 @@ import {
 } from "@api/product/queries";
 import Alert from "./common/Alert/Alert";
 import { MenuItemInfo } from "./common/Menu/type";
+import { getFormattedAddress } from "@utils/index";
 
 type ProductListItemProps = {
   productItem: ProductItem;
@@ -83,7 +84,9 @@ export default function ProductListItem({
                 )}
               </div>
               <div className="info-middle">
-                <TextWeak>{productItem.addressName}</TextWeak>
+                <TextWeak>
+                  {getFormattedAddress(productItem.addressName)}
+                </TextWeak>
                 <TextWeak>・</TextWeak>
                 <TextWeak>
                   {convertPastTimestamp(productItem.createdTime)}

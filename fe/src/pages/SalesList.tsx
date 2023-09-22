@@ -4,7 +4,7 @@ import NavigationBar from "@components/NavigationBar";
 import { SubInfo } from "@components/ProductDetail/common.style";
 import Products from "@components/ProductList/Products";
 import TopBar from "@components/TopBar";
-import { Loading } from "@components/common/Guide";
+import { Error, Loading } from "@components/common/Guide";
 import { TabButtons } from "@components/common/TabButtons";
 import { useIntersect } from "@hooks/useIntersect";
 import { Main, Page, PageContent, Target } from "@styles/common";
@@ -17,7 +17,7 @@ export default function SalesList() {
   const [activeTabId, setActiveTabId] = useState(DEFAULT_TAB.id);
   const {
     data: salesProducts,
-    isSuccess: isSalesProductsSuccess,
+    status,
     hasNextPage,
     isFetching,
     fetchNextPage,
@@ -42,6 +42,22 @@ export default function SalesList() {
         isWithBorder={true}
       />
       <PageContent>
+        {status === "loading" && (
+          <Loading
+            messages={[
+              "상품 목록을 불러오는 중입니다.",
+              "새로고침을 하지 마세요!",
+            ]}
+          />
+        )}
+        {status === "error" && (
+          <Error
+            messages={[
+              "상품 목록을 불러오는데 실패했어요.",
+              "잠시 후 다시 시도해주세요.",
+            ]}
+          />
+        )}
         {!!productStatuses.length && (
           <TabButtons
             activeTabId={activeTabId}
@@ -49,7 +65,7 @@ export default function SalesList() {
             onTabClick={onTabClick}
           />
         )}
-        {isSalesProductsSuccess && (
+        {status === "success" && (
           <>
             {isEmpty ? (
               <>
