@@ -1,6 +1,7 @@
+import { ROUTE_PATH } from "@router/constants";
 import { postRefreshToken } from "api/user";
 import axios, { AxiosError } from "axios";
-import { BASE_API_URL, ERROR_CODE } from "./constants";
+import { BASE_API_URL } from "./constants";
 import { USER_API_PATH } from "./user/constants";
 
 export const fetcher = axios.create({
@@ -21,25 +22,23 @@ fetcher.interceptors.request.use(
   }
 );
 
-// TODO: refresh token이 만료되었을 때, refresh token을 재발급 받고 다시 요청 보내기 (현재 작동 안함)
 fetcher.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status !== ERROR_CODE.UNAUTHORIZED) {
-      return Promise.reject(error);
-    }
+    // TODO: 토큰 만료에 대한 백엔드 에러코드 통일 요청 후 개선하기
+    if (error.response?.status === 403 || error.response?.status === 401) {
+      try {
+        const originalRequest = error.config;
 
-    try {
-      const originalRequest = error.config;
+        if (originalRequest && originalRequest.url !== USER_API_PATH.refresh) {
+          return refreshAccessToken().then(() => fetcher(originalRequest));
+        }
 
-      if (originalRequest && originalRequest.url !== USER_API_PATH.refresh) {
-        return refreshAccessToken().then(() => fetcher(originalRequest));
+        return Promise.reject();
+      } catch {
+        console.error("error", "네트워크 오류가 발생했습니다.");
+        return Promise.reject();
       }
-
-      return Promise.reject();
-    } catch {
-      console.error("error", "네트워크 오류가 발생했습니다.");
-      return Promise.reject();
     }
   }
 );
@@ -51,12 +50,15 @@ const refreshAccessToken = async () => {
     return Promise.reject();
   }
 
+  // TODO: 로그아웃 중복 로직 제거하기 (함수로 빼기)
   try {
     const { data } = await postRefreshToken(refreshToken);
     localStorage.setItem("accessToken", data.accessToken);
   } catch {
+    localStorage.removeItem("expirationTime");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    window.location.href = ROUTE_PATH.home;
 
     return Promise.reject();
   }
