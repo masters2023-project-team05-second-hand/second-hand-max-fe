@@ -10,7 +10,7 @@ import ProductContents from "@components/ProductDetail/ProductContents/ProductCo
 import ProductImageList from "@components/ProductDetail/ProductImageList";
 import TopBar from "@components/TopBar";
 import useAnimation from "@hooks/useAnimation";
-import useScroll from "@hooks/useScroll";
+import useWatchScroll from "@hooks/useWatchScroll";
 import { useToast } from "@hooks/useToast";
 import { ROUTE_PATH } from "@router/constants";
 import { slide } from "@styles/animate";
@@ -24,7 +24,7 @@ import styled from "styled-components";
 
 export default function ProductDetail() {
   const member = useMemberValue();
-  const { scrollY, ref } = useScroll();
+  const { scrollY, ref } = useWatchScroll();
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -79,7 +79,7 @@ export default function ProductDetail() {
   const onClickEdit = async () => {
     onLeavePage();
     await delay(SLIDE_TIME);
-    navigate(ROUTE_PATH.edit + `/${productId}`);
+    navigate(`${ROUTE_PATH.edit}/${productId}`);
   };
 
   const { onDeleteProduct } = useDeleteProductQuery({
