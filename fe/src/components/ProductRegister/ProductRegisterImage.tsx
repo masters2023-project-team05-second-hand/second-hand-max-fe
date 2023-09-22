@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { ProductImageType } from "./type";
 import ImageItem from "./ImageItem";
 import { LIMITED_IMAGE_COUNT } from "./constants";
-import useDrag from "@hooks/useDrag";
+import useDragAndScroll from "@hooks/useDragAndScroll";
 
 type ProductRegisterImageProps = {
   images: ProductImageType[];
@@ -17,7 +17,7 @@ export default function ProductRegisterImage({
   onRemoveImage,
 }: ProductRegisterImageProps) {
   const { ref, onDragStart, onDragEnd, onDragMove } =
-    useDrag<HTMLUListElement>();
+    useDragAndScroll<HTMLUListElement>();
 
   return (
     <ProductImage>
