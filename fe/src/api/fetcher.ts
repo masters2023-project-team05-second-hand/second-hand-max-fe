@@ -58,7 +58,7 @@ const refreshAccessToken = async () => {
     localStorage.removeItem("expirationTime");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    window.location.href = ROUTE_PATH.home;
+    window.location.href = ROUTE_PATH.account;
 
     return Promise.reject();
   }
