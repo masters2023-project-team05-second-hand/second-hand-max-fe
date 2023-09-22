@@ -16,6 +16,38 @@ export type ChatItem = {
   createdTime: string;
 };
 
+export default function ChatList() {
+  // Todo: 채팅 목록 조회 api 붙이기
+  const navigate = useNavigate();
+
+  const onClickItem = (id: number) => {
+    // Todo: 채팅 상세 url 나오면 수정 => 경로에 채팅 id 붙을듯
+    navigate(ROUTE_PATH.chat + `/${id}`);
+  };
+
+  return (
+    <Page>
+      <TopBar
+        title="채팅"
+        backgroundColor="neutralBackgroundBlur"
+        isWithBorder={true}
+      />
+      <PageContent>
+        {mockData.length > 0 ? (
+          mockData.map((item) => (
+            <ChatListItem key={item.id} onClick={onClickItem} chatItem={item} />
+          ))
+        ) : (
+          <Main>
+            <SubInfo>동네 물품 목록이 없습니다</SubInfo>
+          </Main>
+        )}
+      </PageContent>
+      <NavigationBar />
+    </Page>
+  );
+}
+
 const mockData: ChatItem[] = [
   {
     id: 1,
@@ -48,35 +80,3 @@ const mockData: ChatItem[] = [
     createdTime: "2023-09-18T16:07:24",
   },
 ];
-
-export default function ChatList() {
-  // Todo: 채팅 목록 조회 api 붙이기
-  const navigate = useNavigate();
-
-  const onClickItem = (id: number) => {
-    // Todo: 채팅 상세 url 나오면 수정 => 경로에 채팅 id 붙을듯
-    navigate(ROUTE_PATH.chat + `/${id}`);
-  };
-
-  return (
-    <Page>
-      <TopBar
-        title="채팅"
-        backgroundColor="neutralBackgroundBlur"
-        isWithBorder={true}
-      />
-      <PageContent>
-        {mockData.length > 0 ? (
-          mockData.map((item) => (
-            <ChatListItem key={item.id} onClick={onClickItem} chatItem={item} />
-          ))
-        ) : (
-          <Main>
-            <SubInfo>동네 물품 목록이 없습니다</SubInfo>
-          </Main>
-        )}
-      </PageContent>
-      <NavigationBar />
-    </Page>
-  );
-}

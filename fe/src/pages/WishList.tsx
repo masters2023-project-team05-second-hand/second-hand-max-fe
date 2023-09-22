@@ -34,7 +34,7 @@ export default function WishList() {
   };
 
   const targetRef = useIntersect(() => {
-    if (hasNextPage && !isFetching) {
+    if (hasNextPage) {
       fetchNextPage();
     }
   });
@@ -89,7 +89,11 @@ export default function WishList() {
                 userKeys.wishlistProduct(activeTabId).queryKey
               }
             />
-            <Target ref={targetRef} />
+            {isFetching ? (
+              <Loading messages={["상품 목록 로딩 중"]} />
+            ) : (
+              <Target ref={targetRef} />
+            )}
           </PageContent>
         ))}
       <NavigationBar />

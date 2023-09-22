@@ -5,10 +5,17 @@ import ProductBanner from "@components/ChatDetail/ProductBanner";
 import TopBar from "@components/TopBar";
 import BackButton from "@components/common/Buttons/BackButton";
 import { BottomBar, Page, PageContent } from "@styles/common";
+import { useNavigate } from "react-router-dom";
 
 export default function ChatDetail() {
+  // TODO: ChatRoom으로 route /chatting으로 chat과 분리하면서 변경사항 반영해야 함
+  const navigate = useNavigate();
   const { partner, product, chats } = mockChatItem;
   const chatList = Object.entries(chats);
+
+  const goBack = () => {
+    navigate(-1);
+  };
 
   return (
     <Page>
@@ -16,7 +23,7 @@ export default function ChatDetail() {
         title={partner.name}
         backgroundColor="neutralBackgroundBlur"
         isWithBorder={true}
-        leftBtn={<BackButton color="neutralText" />}
+        leftBtn={<BackButton color="neutralText" onClick={goBack} />}
         rightBtn={<ChatMoreButton />}
       />
       <ProductBanner productInfo={product} />

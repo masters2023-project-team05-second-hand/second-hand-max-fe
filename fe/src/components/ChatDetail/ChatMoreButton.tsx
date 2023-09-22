@@ -20,8 +20,10 @@ export default function ChatMoreButton() {
   ];
 
   return (
-    <MenuIndicator itemList={MoreMenuItemList}>
-      <Button color="neutralText" leftIcon={<DotsIcon />} />
+    <>
+      <MenuIndicator itemList={MoreMenuItemList}>
+        <Button color="neutralText" leftIcon={<DotsIcon />} />
+      </MenuIndicator>
       {isLeaveAlertOpen && (
         <Alert
           message={
@@ -31,6 +33,6 @@ export default function ChatMoreButton() {
           closeAlertHandler={closeLeaveAlert}
         />
       )}
-    </MenuIndicator>
+    </>
   );
 }

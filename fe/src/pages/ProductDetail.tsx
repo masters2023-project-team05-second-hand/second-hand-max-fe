@@ -1,4 +1,7 @@
-import { useProductDetailQuery } from "@api/product/queries";
+import {
+  useDeleteProductQuery,
+  useProductDetailQuery,
+} from "@api/product/queries";
 import BackButton from "@components/common/Buttons/BackButton";
 import ChatButton from "@components/ProductDetail/Buttons/ChatButton";
 import MoreButton from "@components/ProductDetail/Buttons/MoreButton";
@@ -6,11 +9,15 @@ import ProductLikeButton from "@components/ProductDetail/Buttons/ProductLikeButt
 import ProductContents from "@components/ProductDetail/ProductContents/ProductContents";
 import ProductImageList from "@components/ProductDetail/ProductImageList";
 import TopBar from "@components/TopBar";
+import useAnimation from "@hooks/useAnimation";
 import useScroll from "@hooks/useScroll";
 import { useToast } from "@hooks/useToast";
 import { ROUTE_PATH } from "@router/constants";
+import { slide } from "@styles/animate";
 import { BottomBar, Page } from "@styles/common";
-import { useNavigate, useParams } from "react-router-dom";
+import { delay } from "@utils/index";
+import { AnimatePresence, motion } from "framer-motion";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useMemberValue } from "store";
 import styled from "styled-components";
 
@@ -19,6 +26,8 @@ export default function ProductDetail() {
   const { scrollY, ref } = useScroll();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isAnimating, onLeavePage } = useAnimation();
 
   const { productId } = useParams();
   const numberProductId = Number(productId);
@@ -26,28 +35,56 @@ export default function ProductDetail() {
   const { data: productDetailInfo, isSuccess: isProductDetailSuccess } =
     useProductDetailQuery(numberProductId, !!productId);
 
+  const showNoChatPartner = () => {
+    toast({
+      type: "info",
+      title: "상품 상세 목록 조회 완료",
+      message: "채팅한 이웃이 없습니다",
+    });
+  };
+
+  const goChatPage = () => {
+    // TODO: 채팅 목록 조회 api 나오면 수정
+    if (isSeller) {
+      navigate(ROUTE_PATH.chat);
+    } else {
+      navigate(ROUTE_PATH.chat);
+    }
+  };
+
   const onClickChat = () => {
     if (!isProductDetailSuccess) {
       return;
     }
 
     if (isSeller && !!productDetailInfo.stats.chatCount) {
-      toast({
-        type: "info",
-        title: "상품 상세 목록 조회 완료",
-        message: "채팅한 이웃이 없습니다",
-      });
+      showNoChatPartner();
       return;
     }
 
-    if (isSeller) {
-      // TODO: 채팅 목록 조회 api 나오면 수정 => 상품 id를 path에 넣어야할듯??
-      navigate(ROUTE_PATH.chat);
-    } else {
-      // TODO: 채팅 상세 url 나오면 수정 => 채팅 id를 path에 넣어야할듯??
-      navigate(ROUTE_PATH.chat);
-    }
+    goChatPage();
   };
+
+  const goBack = () => {
+    navigate(location.state?.prevRoute ?? -1);
+  };
+
+  const onClickBack = async () => {
+    onLeavePage();
+    await delay(300);
+    goBack();
+  };
+
+  const onClickEdit = async () => {
+    onLeavePage();
+    await delay(300);
+    navigate(ROUTE_PATH.edit + `/${productId}`);
+  };
+
+  const { onDeleteProduct } = useDeleteProductQuery({
+    productId: numberProductId,
+    onSuccess: goBack,
+  });
 
   const isScroll = !!scrollY && scrollY > 0;
   const isSeller = member.id === productDetailInfo?.product.seller.id;
@@ -59,18 +96,31 @@ export default function ProductDetail() {
       <TopBar
         backgroundColor="accentPrimary"
         isScrolled={isScroll}
-        leftBtn={<BackButton color="accentText" />}
-        rightBtn={isSeller && <MoreButton />}
+        leftBtn={<BackButton color="accentText" onClick={onClickBack} />}
+        rightBtn={
+          isSeller && (
+            <MoreButton onEdit={onClickEdit} onDelete={onDeleteProduct} />
+          )
+        }
       />
       {isProductDetailSuccess && (
-        <StyledProductDetail>
-          <ProductImageList productImages={productDetailInfo.images} />
-          <ProductContents
-            productInfo={productDetailInfo.product}
-            stats={productDetailInfo.stats}
-            isSeller={isSeller}
-          />
-        </StyledProductDetail>
+        <AnimatePresence>
+          {isAnimating && (
+            <StyledProductDetail
+              key="product"
+              initial="initial"
+              animate="in"
+              exit="out"
+              variants={slide}>
+              <ProductImageList productImages={productDetailInfo.images} />
+              <ProductContents
+                productInfo={productDetailInfo.product}
+                stats={productDetailInfo.stats}
+                isSeller={isSeller}
+              />
+            </StyledProductDetail>
+          )}
+        </AnimatePresence>
       )}
       <BottomBar>
         <ButtonContainer>
@@ -91,7 +141,7 @@ export default function ProductDetail() {
   );
 }
 
-const StyledProductDetail = styled.div`
+const StyledProductDetail = styled(motion.div)`
   position: absolute;
   top: 0;
   width: 100%;
