@@ -12,6 +12,7 @@ import ProductRegisterTitle from "@components/ProductRegister/ProductRegisterTit
 import {
   DEFAULT_CATEGORY_ID,
   DEFAULT_SELECTED_ADDRESS_INDEX,
+  LIMITED_IMAGE_COUNT,
 } from "@components/ProductRegister/constants";
 import { ProductInfo } from "@components/ProductRegister/type";
 import { Error, Loading } from "@components/common/Guide";
@@ -173,6 +174,16 @@ export default function ProductRegister() {
   const onAddNewImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    const isImgMaxCount = productInfo.newImages?.length === LIMITED_IMAGE_COUNT;
+    if (isImgMaxCount) {
+      toast({
+        title: "이미지 최대 갯수 초과",
+        message: "이미지는 최대 10개 업로드 가능합니다",
+        type: "error",
+      });
+      return;
+    }
 
     // Memo: option은 상의 후 결정
     const options = {
