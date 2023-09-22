@@ -1,16 +1,9 @@
+import { checkTokenExpiration } from "@utils/index";
 import { AddressInfo, Member, Status } from "api/type";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DEFAULT_ADDRESS } from "./constants";
 
-// 초기 진입 시
-const initStore = () => {
-  const expirationTime = localStorage.getItem("expirationTime");
-  const isLogin = !!expirationTime && Date.now() < parseInt(expirationTime, 10);
-
-  return isLogin;
-};
-
-const isLoginAtom = atom<boolean>(initStore());
+const isLoginAtom = atom<boolean>(checkTokenExpiration());
 const memberAtom = atom<Member>({ id: -1, nickname: "", profileImgUrl: "" });
 const addressListAtom = atom<AddressInfo[]>([DEFAULT_ADDRESS]);
 const currentAddressIdAtom = atom<number>(DEFAULT_ADDRESS.id);
