@@ -19,6 +19,7 @@ import { delay } from "@utils/index";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useMemberValue } from "store";
+import { SLIDE_TIME } from "store/constants";
 import styled from "styled-components";
 
 export default function ProductDetail() {
@@ -71,13 +72,13 @@ export default function ProductDetail() {
 
   const onClickBack = async () => {
     onLeavePage();
-    await delay(300);
+    await delay(SLIDE_TIME);
     goBack();
   };
 
   const onClickEdit = async () => {
     onLeavePage();
-    await delay(300);
+    await delay(SLIDE_TIME);
     navigate(ROUTE_PATH.edit + `/${productId}`);
   };
 
@@ -107,7 +108,6 @@ export default function ProductDetail() {
         <AnimatePresence>
           {isAnimating && (
             <StyledProductDetail
-              key="product"
               initial="initial"
               animate="in"
               exit="out"

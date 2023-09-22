@@ -57,7 +57,6 @@ const useStatusesAtom = atom(
   (get) => get(statuesAtom),
   (_, set, payload: Status[]) => {
     set(statuesAtom, payload);
-    localStorage.setItem("statuses", JSON.stringify(payload));
   }
 );
 

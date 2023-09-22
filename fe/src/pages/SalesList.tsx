@@ -21,7 +21,7 @@ export default function SalesList() {
     hasNextPage,
     isFetching,
     fetchNextPage,
-  } = useUserSalesInfiniteQuery(activeTabId);
+  } = useUserSalesInfiniteQuery(productStatuses, activeTabId);
 
   const targetRef = useIntersect(() => {
     if (hasNextPage) {
