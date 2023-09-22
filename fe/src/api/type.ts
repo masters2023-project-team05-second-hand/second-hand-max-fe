@@ -29,10 +29,6 @@ export type ProductDetailInfo = {
   product: ProductInfo;
   images: ProductImages[];
   stats: ProductStats;
-  statuses: {
-    id: number;
-    type: string;
-  }[];
 };
 
 export type ProductStats = {
@@ -42,6 +38,7 @@ export type ProductStats = {
 };
 
 export type ProductInfo = {
+  // TODO: 채팅방에서 상대방 이미지 보여주려면 여기 profileImgUrl 추가로 받기
   seller: {
     id: number;
     nickname: string;
@@ -110,5 +107,23 @@ export type ProductItem = {
 
 export type ProductList = {
   products: ProductItem[];
+  hasNext: boolean;
+};
+
+export type Chat = {
+  id: number;
+  content: string;
+  createdTime: string;
+  isMine: boolean;
+  isRead?: boolean; // TODO: 백엔드와 합의 필요
+};
+
+type DailyChatList = {
+  date: string;
+  chats: Chat[];
+};
+
+export type ChatList = {
+  dailyChats: DailyChatList[];
   hasNext: boolean;
 };

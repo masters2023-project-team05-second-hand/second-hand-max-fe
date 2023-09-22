@@ -3,12 +3,15 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import Button from "../common/Buttons/Button";
 
-export default function ChatBar() {
+export default function ChatBar({
+  onMessageSubmit,
+}: {
+  onMessageSubmit: (message: string) => void;
+}) {
   const [message, setMessage] = useState("");
 
   const onSendMessage = () => {
-    // TODO: api 나오면 메세지 보내는 기능 추가
-    console.log(message);
+    onMessageSubmit(message);
   };
 
   return (

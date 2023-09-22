@@ -27,3 +27,7 @@ export const userKeys = createQueryKeys("user", {
     queryKey: ["getUserSalesProduct", statusId],
   }),
 });
+
+export const chatKeys = createQueryKeys("chat", {
+  chatDetail: (roomId: number) => ({ queryKey: ["getChatDetail", roomId] }),
+});
