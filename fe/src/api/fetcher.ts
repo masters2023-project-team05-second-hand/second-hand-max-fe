@@ -1,7 +1,7 @@
 import { ROUTE_PATH } from "@router/constants";
 import { postRefreshToken } from "api/user";
 import axios, { AxiosError } from "axios";
-import { BASE_API_URL } from "./constants";
+import { BASE_API_URL, ERROR_CODE } from "./constants";
 import { USER_API_PATH } from "./user/constants";
 
 export const fetcher = axios.create({
@@ -26,7 +26,10 @@ fetcher.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     // TODO: 토큰 만료에 대한 백엔드 에러코드 통일 요청 후 개선하기
-    if (error.response?.status === 403 || error.response?.status === 401) {
+    if (
+      error.response &&
+      ERROR_CODE.UNAUTHORIZED.includes(error.response.status)
+    ) {
       try {
         const originalRequest = error.config;
 
