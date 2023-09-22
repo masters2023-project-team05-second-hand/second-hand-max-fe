@@ -141,7 +141,9 @@ export default function ProductRegister() {
       {
         onSuccess: () => {
           // Memo: state로 productDetailInfo를 넘겨주기???
-          navigate(ROUTE_PATH.detail + `/${productId}`);
+          navigate(ROUTE_PATH.detail + `/${productId}`, {
+            state: { prevRoute: ROUTE_PATH.home },
+          });
           queryClient.invalidateQueries(productKeys.detail(numberProductId));
         },
         onError: () => {
