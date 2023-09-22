@@ -99,7 +99,7 @@ export default function ProductRegister() {
 
     newProductMutation.mutate(formData, {
       onSuccess: (res) => {
-        navigate(ROUTE_PATH.detail + `/${res.data.productId}`, {
+        navigate(`${ROUTE_PATH.detail}/${res.data.productId}`, {
           state: { prevRoute: ROUTE_PATH.home },
         });
         queryClient.invalidateQueries(productKeys.detail(numberProductId));
@@ -141,7 +141,7 @@ export default function ProductRegister() {
       {
         onSuccess: () => {
           // Memo: state로 productDetailInfo를 넘겨주기???
-          navigate(ROUTE_PATH.detail + `/${productId}`, {
+          navigate(`${ROUTE_PATH.detail}/${productId}`, {
             state: { prevRoute: ROUTE_PATH.home },
           });
           queryClient.invalidateQueries(productKeys.detail(numberProductId));

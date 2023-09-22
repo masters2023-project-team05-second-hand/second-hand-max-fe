@@ -41,7 +41,7 @@ export default function ProductListItem({
   });
 
   const onProductClick = () => {
-    navigate(ROUTE_PATH.detail + `/${productItem.productId}`);
+    navigate(`${ROUTE_PATH.detail}/${productItem.productId}`);
   };
 
   const getProductStatusList = (): MenuItemInfo[] => {

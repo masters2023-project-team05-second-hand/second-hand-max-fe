@@ -22,7 +22,7 @@ export default function ChatList() {
 
   const onClickItem = (id: number) => {
     // Todo: 채팅 상세 url 나오면 수정 => 경로에 채팅 id 붙을듯
-    navigate(ROUTE_PATH.chat + `/${id}`);
+    navigate(`${ROUTE_PATH.chat}/${id}`);
   };
 
   return (
