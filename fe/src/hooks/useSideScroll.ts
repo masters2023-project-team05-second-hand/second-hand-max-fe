@@ -1,7 +1,11 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, MutableRefObject } from "react";
 
-export default function useSideScroll() {
-  const scrollRef = useRef<HTMLUListElement>(null);
+type ReturnType<T extends HTMLElement> = {
+  scrollRef: MutableRefObject<T | null>;
+};
+
+export default function useSideScroll<T extends HTMLElement>(): ReturnType<T> {
+  const scrollRef = useRef<T | null>(null);
 
   useEffect(() => {
     const element = scrollRef.current;
@@ -26,5 +30,5 @@ export default function useSideScroll() {
     };
   }, []);
 
-  return scrollRef;
+  return { scrollRef };
 }
