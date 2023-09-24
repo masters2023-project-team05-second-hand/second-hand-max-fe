@@ -3,7 +3,9 @@ import { styled } from "styled-components";
 import { ProductImageType } from "./type";
 import ImageItem from "./ImageItem";
 import { LIMITED_IMAGE_COUNT } from "./constants";
+import { useEffect, useRef } from "react";
 import useDrag from "@hooks/useDrag";
+import useSideScroll from "@hooks/useSideScroll";
 
 type ProductRegisterImageProps = {
   images: ProductImageType[];
@@ -16,8 +18,14 @@ export default function ProductRegisterImage({
   onAddNewImage,
   onRemoveImage,
 }: ProductRegisterImageProps) {
-  const { ref, onDragStart, onDragEnd, onDragMove } =
-    useDrag<HTMLUListElement>();
+  const imgListRef = useRef(null);
+  const { ref: dragRef, onDragStart, onDragEnd, onDragMove } = useDrag();
+  const { scrollRef } = useSideScroll();
+
+  useEffect(() => {
+    dragRef.current = imgListRef.current;
+    scrollRef.current = imgListRef.current;
+  }, [dragRef, scrollRef]);
 
   return (
     <ProductImage>
@@ -33,7 +41,7 @@ export default function ProductRegisterImage({
         />
       </ProductImageUpload>
       <ImageList
-        ref={ref}
+        ref={imgListRef}
         onMouseDown={onDragStart}
         onMouseMove={onDragMove}
         onMouseUp={onDragEnd}
