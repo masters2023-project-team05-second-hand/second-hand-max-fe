@@ -1,10 +1,10 @@
 import TopBar from "@components/TopBar";
 import Button from "@components/common/Buttons/Button";
 import { useNavigate } from "react-router-dom";
-import { ProductInfo } from "./type";
+import { ProductRegisterInfo } from "./type";
 
 type ProductRegisterHeaderProps = {
-  productInfo: ProductInfo;
+  productInfo: ProductRegisterInfo;
   onSubmit: () => void;
 };
 
