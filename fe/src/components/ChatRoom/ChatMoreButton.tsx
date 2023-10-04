@@ -12,8 +12,8 @@ export default function ChatMoreButton() {
 
   const MoreMenuItemList = [
     {
-      name: "게시글 수정",
-      onClick: () => console.log("게시글 수정"),
+      name: "알람 끄기",
+      onClick: () => console.log("알람 끄기"),
     },
     { name: "신고하기", onClick: () => console.log("신고하기") },
     { name: "채팅방 나가기", onClick: openLeaveAlert, isWarning: true },
