@@ -1,6 +1,6 @@
 export type ProductInfo = {
-  id: number;
+  productId: number;
   title: string;
   price: number;
-  thumbnailImgUrl: string;
+  thumbnailUrl: string;
 };

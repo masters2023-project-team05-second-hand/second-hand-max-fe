@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { ProductInfo } from "./type";
 
 export default function ProductBanner({ product }: { product: ProductInfo }) {
-  const { thumbnailImgUrl, title, price } = product;
+  const { thumbnailUrl, title, price } = product;
 
   return (
     <StyledProductBanner>
-      <Image src={thumbnailImgUrl} alt={`${title} 섬네일 이미지`} />
+      <Image src={thumbnailUrl} alt={`${title} 섬네일 이미지`} />
       <div>
         <TextDefault>{title}</TextDefault>
         <TextBold>{`${price.toLocaleString("ko-KR")}원`}</TextBold>
