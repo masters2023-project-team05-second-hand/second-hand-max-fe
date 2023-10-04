@@ -8,11 +8,11 @@ export default function makeStompClient({
   onSubscribe,
   onDisconnect,
 }: {
-  roomId: number;
+  roomId: string;
   onSubscribe: (message: string) => void;
   onDisconnect?: () => void;
 }) {
-  const destination = `${CHAT_API_PATH.destination}${roomId}`;
+  const destination = `${CHAT_API_PATH.sub}/${roomId}`;
   const client = new Client({
     brokerURL: VITE_STOMP_SERVER_URL,
     connectHeaders: {

@@ -9,7 +9,7 @@ export const postNewChatRoom = async ({
   productId: number;
   message: string;
 }) => {
-  const { data } = await fetcher.post<{ roomId: number }>(
+  const { data } = await fetcher.post<{ roomId: string }>(
     CHAT_API_PATH.chatroom,
     {
       productId,
@@ -20,7 +20,7 @@ export const postNewChatRoom = async ({
   return data;
 };
 
-export const getChatDetail = async (roomId: number) => {
+export const getChatDetail = async (roomId: string) => {
   const baseUrl = `${CHAT_API_PATH.chatroom}/messages`;
   const pathVariable = `?roomId=${roomId}`;
 
@@ -36,7 +36,14 @@ export const getChatList = async (productId?: number) => {
   return data;
 };
 
-export const deleteChatRoom = async (roomId: number) => {
+export const deleteChatRoom = async (roomId: string) => {
   const { data } = await fetcher.delete(`${CHAT_API_PATH.chatroom}/${roomId}`);
+  return data;
+};
+
+export const getChatRoomId = async (productId: number) => {
+  const { data } = await fetcher.get<{ roomId: string }>(
+    `${CHAT_API_PATH.chatroom}/${productId}`
+  );
   return data;
 };

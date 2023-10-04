@@ -1,12 +1,18 @@
 import { chatKeys } from "@api/queryKeys";
 import { useToast } from "@hooks/useToast";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteChatRoom, getChatDetail, getChatList, postNewChatRoom } from ".";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  deleteChatRoom,
+  getChatDetail,
+  getChatList,
+  getChatRoomId,
+  postNewChatRoom,
+} from ".";
 
 export const useMakeRoomMutation = ({
   callback,
 }: {
-  callback: (roomId: number) => void;
+  callback: (roomId: string) => void;
 }) => {
   const { toast } = useToast();
 
@@ -24,7 +30,7 @@ export const useMakeRoomMutation = ({
   });
 };
 
-export const useGetChatDetailQuery = (roomId: number) => {
+export const useGetChatDetailQuery = (roomId: string) => {
   return useQuery({
     ...chatKeys.chatDetail(roomId),
     queryFn: () => getChatDetail(roomId),
@@ -33,23 +39,16 @@ export const useGetChatDetailQuery = (roomId: number) => {
   });
 };
 
-export const useDeleteChatRoom = ({
-  roomId,
-}: // invalidateQueryKey,
-{
-  roomId: number;
-  invalidateQueryKey?: readonly unknown[];
-}) => {
+export const useDeleteChatRoom = ({ productId }: { productId: number }) => {
   const { toast } = useToast();
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const deleteChatRoomMutation = useMutation(deleteChatRoom);
 
-  const onDeleteChatRoom = () => {
+  const onDeleteChatRoom = (roomId: string) => {
     deleteChatRoomMutation.mutate(roomId, {
       onSuccess: () => {
-        // TODO: 채팅방 삭제 후 채팅방 목록 재조회
-        // queryClient.invalidateQueries({ queryKey: invalidateQueryKey });
+        queryClient.invalidateQueries(chatKeys.chatList(productId));
       },
       onError: () => {
         toast({
@@ -70,4 +69,32 @@ export const useGetChatListQuery = (productId?: number) => {
     queryFn: () => getChatList(productId),
     staleTime: Infinity,
   });
+};
+
+export const useGetChatRoomId = ({
+  productId,
+  onSuccess,
+}: {
+  productId: number;
+  onSuccess: (roomId: string) => void;
+}) => {
+  const { toast } = useToast();
+  const { mutate } = useMutation(getChatRoomId);
+
+  const onGetChatRoomId = () => {
+    mutate(productId, {
+      onSuccess: ({ roomId }) => {
+        onSuccess(roomId);
+      },
+      onError: () => {
+        toast({
+          type: "error",
+          title: "채팅방 정보 조회 실패",
+          message: "채팅방 정보 조회에 실패했어요. 잠시 후 다시 시도해주세요.",
+        });
+      },
+    });
+  };
+
+  return { onGetChatRoomId };
 };

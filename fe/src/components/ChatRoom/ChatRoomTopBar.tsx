@@ -7,7 +7,7 @@ export default function ChatRoomTopBar({
   roomId,
   partnerName,
 }: {
-  roomId: number;
+  roomId?: string;
   partnerName: string;
 }) {
   const navigate = useNavigate();

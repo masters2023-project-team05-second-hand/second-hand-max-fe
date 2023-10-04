@@ -4,12 +4,17 @@ import Alert from "@components/common/Alert/Alert";
 import Button from "@components/common/Buttons/Button";
 import MenuIndicator from "@components/common/Menu/MenuIndicator";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ChatRoomLocationState } from "./type";
 
-export default function ChatMoreButton({ roomId }: { roomId: number }) {
+export default function ChatMoreButton({ roomId }: { roomId?: string }) {
   const [isLeaveAlertOpen, setIsLeaveAlertOpen] = useState(false);
   const navigate = useNavigate();
-  const { onDeleteChatRoom } = useDeleteChatRoom({ roomId });
+  const {
+    state: { product },
+  }: { state: ChatRoomLocationState } = useLocation();
+
+  const { onDeleteChatRoom } = useDeleteChatRoom({ productId: product.id });
 
   const openLeaveAlert = () => setIsLeaveAlertOpen(true);
   const closeLeaveAlert = () => setIsLeaveAlertOpen(false);
@@ -24,7 +29,7 @@ export default function ChatMoreButton({ roomId }: { roomId: number }) {
   ];
 
   const leaveChatRoom = () => {
-    roomId && onDeleteChatRoom();
+    roomId && onDeleteChatRoom(roomId);
     navigate(-1);
   };
 

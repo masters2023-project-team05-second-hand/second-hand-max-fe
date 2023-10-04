@@ -38,12 +38,14 @@ export type ProductStats = {
   viewCount: number;
 };
 
+export type SellerInfo = {
+  id: number;
+  nickname: string;
+  profileImgUrl: string;
+};
+
 export type ProductInfo = {
-  seller: {
-    id: number;
-    nickname: string;
-    profileImgUrl: string;
-  };
+  seller: SellerInfo;
   category: CategoryInfo;
   address: AddressInfo;
   title: string;

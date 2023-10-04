@@ -5,7 +5,7 @@ import ChatBar from "@components/ChatRoom/ChatBar";
 import ChatRoomTopBar from "@components/ChatRoom/ChatRoomTopBar";
 import DailyChat, { Chat } from "@components/ChatRoom/DailyChat";
 import ProductBanner from "@components/ChatRoom/ProductBanner";
-import { ProductInfo } from "@components/ChatRoom/type";
+import { ChatRoomLocationState } from "@components/ChatRoom/type";
 import { useToast } from "@hooks/useToast";
 import { Client } from "@stomp/stompjs";
 import { BottomBar, Page, PageContent } from "@styles/common";
@@ -15,18 +15,8 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useMemberValue } from "store";
 
-type ChatRoomLocationState = {
-  product: ProductInfo;
-  partner: {
-    id: number;
-    nickname: string;
-    profileImgUrl: string;
-  };
-};
-
 export default function ChatRoom() {
   const { roomId } = useParams();
-  const numberRoomId = Number(roomId);
 
   const {
     state: { product, partner },
@@ -38,13 +28,13 @@ export default function ChatRoom() {
     data: allChatList,
     isSuccess,
     isError,
-  } = useGetChatDetailQuery(numberRoomId);
+  } = useGetChatDetailQuery(roomId ?? "");
 
   const { mutate: makeChatRoom } = useMakeRoomMutation({
-    callback: (roomId: number) => setCurrentRoomId(roomId),
+    callback: (roomId: string) => setCurrentRoomId(roomId),
   });
 
-  const [currentRoomId, setCurrentRoomId] = useState(numberRoomId);
+  const [currentRoomId, setCurrentRoomId] = useState(roomId);
   const [currentChats, setCurrentChats] = useState<Chat[]>([]);
   const client = useRef<Client | null>(null);
 
@@ -85,6 +75,7 @@ export default function ChatRoom() {
           isMine: false,
         }),
     });
+    client.current.activate();
 
     return () => {
       client.current?.deactivate();
@@ -93,8 +84,10 @@ export default function ChatRoom() {
 
   const sendMessage = (message: string) => {
     client.current?.publish({
-      destination: `${CHAT_API_PATH}/${roomId}`,
-      body: message,
+      destination: `${CHAT_API_PATH.pub}/${roomId}`,
+      body: JSON.stringify({
+        message,
+      }),
     });
     appendNewChat({
       newChat: message,
@@ -131,7 +124,7 @@ export default function ChatRoom() {
     ]);
 
   const chatList = groupChatsByDate(currentChats);
-  const havePrevChats = !!chatList.length; // TODO 확인 필요
+  const havePrevChats = !!chatList.length;
   const onMessageSubmit = havePrevChats ? sendMessage : sendFirstMessage;
 
   return (
