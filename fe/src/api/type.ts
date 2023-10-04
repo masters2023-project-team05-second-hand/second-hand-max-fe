@@ -116,3 +116,24 @@ export type ChatMessage = {
   content: string;
   sentTime: string;
 };
+
+export type ChatItem = {
+  roomId: string;
+  otherMember: {
+    id: number;
+    nickname: string;
+    profileImgUrl: string;
+  };
+  message: {
+    lastMessage: string;
+    lastSentTime: string;
+  };
+  unreadMessageCount: number;
+  product: {
+    productId: number;
+    title: string;
+    thumbnailUrl: string;
+    price: number;
+    status: number; // Memo: 꼭 필요한가?
+  };
+};

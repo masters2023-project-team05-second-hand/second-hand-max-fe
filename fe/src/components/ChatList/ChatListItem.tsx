@@ -1,26 +1,28 @@
-import { ChatItem } from "@pages/ChatList";
+import { ChatItem } from "@api/type";
 import { TextBold, TextDefault, TextWeak } from "@styles/common";
 import { convertPastTimestamp } from "@utils/time";
 import { styled } from "styled-components";
 
 type ChatListItemProps = {
-  onClick: (id: number) => void;
+  onClick: (id: string, chatItem: ChatItem) => void;
   chatItem: ChatItem;
 };
 
 export default function ChatListItem({ onClick, chatItem }: ChatListItemProps) {
   return (
-    <StyledChatListItem onClick={() => onClick(chatItem.id)}>
-      <UserImage src={chatItem.userImage} />
+    <StyledChatListItem onClick={() => onClick(chatItem.roomId, chatItem)}>
+      <UserImage src={chatItem.otherMember.profileImgUrl} />
       <ChatInfo>
         <div className="sub-info">
-          <TextBold>{chatItem.userName}</TextBold>
-          <TextWeak>{convertPastTimestamp(chatItem.createdTime)}</TextWeak>
+          <TextBold>{chatItem.otherMember.nickname}</TextBold>
+          <TextWeak>
+            {convertPastTimestamp(chatItem.message.lastSentTime)}
+          </TextWeak>
         </div>
-        <TextDefault>{chatItem.lastMessage}</TextDefault>
+        <TextDefault>{chatItem.message.lastMessage}</TextDefault>
       </ChatInfo>
-      <Badge>{chatItem.unreadCount}</Badge>
-      <Thumbnail src={chatItem.thumbnailImage} />
+      <Badge>{chatItem.unreadMessageCount}</Badge>
+      <Thumbnail src={chatItem.product.thumbnailUrl} />
     </StyledChatListItem>
   );
 }
