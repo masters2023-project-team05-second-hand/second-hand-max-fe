@@ -30,10 +30,6 @@ export type ProductDetailInfo = {
   product: ProductInfo;
   images: ProductImages[];
   stats: ProductStats;
-  statuses: {
-    id: number;
-    type: string;
-  }[];
 };
 
 export type ProductStats = {
@@ -46,6 +42,7 @@ export type ProductInfo = {
   seller: {
     id: number;
     nickname: string;
+    profileImgUrl: string;
   };
   category: CategoryInfo;
   address: AddressInfo;
@@ -112,4 +109,10 @@ export type ProductItem = {
 export type ProductList = {
   products: ProductItem[];
   hasNext: boolean;
+};
+
+export type ChatMessage = {
+  senderId: number;
+  content: string;
+  sentTime: string;
 };

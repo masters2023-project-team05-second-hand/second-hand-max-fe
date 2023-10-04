@@ -1,17 +1,10 @@
 import { TextBold, TextDefault } from "@styles/common";
 import { HEIGHT } from "@styles/constants";
 import styled from "styled-components";
+import { ProductInfo } from "./type";
 
-export default function ProductBanner({
-  productInfo,
-}: {
-  productInfo: {
-    thumbnailImgUrl: string;
-    title: string;
-    price: number;
-  };
-}) {
-  const { thumbnailImgUrl, title, price } = productInfo;
+export default function ProductBanner({ product }: { product: ProductInfo }) {
+  const { thumbnailImgUrl, title, price } = product;
 
   return (
     <StyledProductBanner>
