@@ -1,7 +1,7 @@
 import { chatKeys } from "@api/queryKeys";
 import { useToast } from "@hooks/useToast";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getChatDetail, getChatList, postNewChatRoom } from ".";
+import { deleteChatRoom, getChatDetail, getChatList, postNewChatRoom } from ".";
 
 export const useMakeRoomMutation = ({
   callback,
@@ -31,6 +31,37 @@ export const useGetChatDetailQuery = (roomId: number) => {
     staleTime: Infinity,
     enabled: !!roomId,
   });
+};
+
+export const useDeleteChatRoom = ({
+  roomId,
+}: // invalidateQueryKey,
+{
+  roomId: number;
+  invalidateQueryKey?: readonly unknown[];
+}) => {
+  const { toast } = useToast();
+  // const queryClient = useQueryClient();
+
+  const deleteChatRoomMutation = useMutation(deleteChatRoom);
+
+  const onDeleteChatRoom = () => {
+    deleteChatRoomMutation.mutate(roomId, {
+      onSuccess: () => {
+        // TODO: 채팅방 삭제 후 채팅방 목록 재조회
+        // queryClient.invalidateQueries({ queryKey: invalidateQueryKey });
+      },
+      onError: () => {
+        toast({
+          type: "error",
+          title: "채팅방 나가기 실패",
+          message: "채팅방 나가기를 실패했어요. 잠시 후 다시 시도해주세요.",
+        });
+      },
+    });
+  };
+
+  return { onDeleteChatRoom };
 };
 
 export const useGetChatListQuery = (productId?: number) => {

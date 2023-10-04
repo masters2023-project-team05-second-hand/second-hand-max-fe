@@ -72,7 +72,7 @@ export default function ChatRoom() {
   }, [allChatList, isSuccess, memberId, isError, toast]);
 
   useEffect(() => {
-    // 비교해보기
+    // TODO: 비교해보기
     if (!currentRoomId) {
       return;
     }
@@ -84,7 +84,6 @@ export default function ChatRoom() {
           newChat,
           isMine: false,
         }),
-      onDisconnect: () => console.log("unsubscribe 해야함"),
     });
 
     return () => {
@@ -92,25 +91,24 @@ export default function ChatRoom() {
     };
   }, [currentRoomId]);
 
-  const sendMessage = (content: string) => {
+  const sendMessage = (message: string) => {
     client.current?.publish({
       destination: `${CHAT_API_PATH}/${roomId}`,
-      body: content,
+      body: message,
     });
     appendNewChat({
-      newChat: content,
+      newChat: message,
       isMine: true,
     });
   };
 
-  const sendFirstMessage = (content: string) => {
+  const sendFirstMessage = (message: string) => {
     makeChatRoom({
       productId: product.id,
-      senderId: memberId,
-      content,
+      message,
     });
     appendNewChat({
-      newChat: content,
+      newChat: message,
       isMine: true,
     });
   };
@@ -138,7 +136,7 @@ export default function ChatRoom() {
 
   return (
     <Page>
-      <ChatRoomTopBar partnerName={partner.nickname} />
+      <ChatRoomTopBar partnerName={partner.nickname} roomId={currentRoomId} />
       <ProductBanner product={product} />
       <PageContent>
         {chatList.map((dailyChatList) => (

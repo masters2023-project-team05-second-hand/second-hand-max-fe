@@ -4,8 +4,10 @@ import BackButton from "@components/common/Buttons/BackButton";
 import { useNavigate } from "react-router-dom";
 
 export default function ChatRoomTopBar({
+  roomId,
   partnerName,
 }: {
+  roomId: number;
   partnerName: string;
 }) {
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ export default function ChatRoomTopBar({
       backgroundColor="neutralBackgroundBlur"
       isWithBorder={true}
       leftBtn={<BackButton color="neutralText" onClick={goBack} />}
-      rightBtn={<ChatMoreButton />}
+      rightBtn={<ChatMoreButton roomId={roomId} />}
     />
   );
 }

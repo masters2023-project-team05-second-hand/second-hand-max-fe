@@ -4,21 +4,16 @@ import { CHAT_API_PATH } from "./constants";
 
 export const postNewChatRoom = async ({
   productId,
-  senderId,
-  content,
+  message,
 }: {
   productId: number;
-  senderId: number;
-  content: string;
+  message: string;
 }) => {
   const { data } = await fetcher.post<{ roomId: number }>(
     CHAT_API_PATH.chatroom,
     {
       productId,
-      message: {
-        senderId,
-        content,
-      },
+      message,
     }
   );
 
@@ -38,5 +33,10 @@ export const getChatList = async (productId?: number) => {
   const pathVariable = productId ? `?productId=${productId}` : "";
 
   const { data } = await fetcher.get<ChatItem[]>(baseUrl + pathVariable);
+  return data;
+};
+
+export const deleteChatRoom = async (roomId: number) => {
+  const { data } = await fetcher.delete(`${CHAT_API_PATH.chatroom}/${roomId}`);
   return data;
 };
