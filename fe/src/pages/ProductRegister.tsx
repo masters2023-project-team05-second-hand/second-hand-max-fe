@@ -14,7 +14,7 @@ import {
   DEFAULT_SELECTED_ADDRESS_INDEX,
   LIMITED_IMAGE_COUNT,
 } from "@components/ProductRegister/constants";
-import { ProductInfo } from "@components/ProductRegister/type";
+import { ProductRegisterInfo } from "@components/ProductRegister/type";
 import { Error, Loading } from "@components/common/Guide";
 import { useToast } from "@hooks/useToast";
 import { ROUTE_PATH } from "@router/constants";
@@ -41,7 +41,7 @@ export default function ProductRegister() {
     currentAddressId
   );
   // Todo: 상태 분리하기 & 상태 관리 라이브러리 쓰기
-  const [productInfo, setProductInfo] = useState<ProductInfo>({
+  const [productInfo, setProductInfo] = useState<ProductRegisterInfo>({
     images: [],
     newImages: [],
     deletedImageIds: [],
@@ -84,21 +84,7 @@ export default function ProductRegister() {
   }, [isSuccess, productDetailInfo]);
 
   const onPostNewProduct = () => {
-    const price = productInfo.price.replace(/,/g, "");
-
-    const formData = new FormData();
-
-    productInfo.newImages?.forEach((image) => {
-      formData.append("images", image.image);
-    });
-
-    formData.append("title", productInfo.title);
-    formData.append("content", productInfo.content);
-    formData.append("categoryId", JSON.stringify(productInfo.categoryId));
-    formData.append("addressId", JSON.stringify(productInfo.address.id));
-    formData.append("price", price);
-
-    newProductMutation.mutate(formData, {
+    newProductMutation.mutate(productInfo, {
       onSuccess: (res) => {
         navigate(`${ROUTE_PATH.detail}/${res.data.productId}`, {
           state: { prevRoute: ROUTE_PATH.home },
@@ -119,29 +105,10 @@ export default function ProductRegister() {
   };
 
   const onPatchProduct = () => {
-    const price = productInfo.price.replace(/,/g, "");
-
-    const formData = new FormData();
-
-    productInfo.newImages?.forEach((image) => {
-      formData.append("newImages", image.image);
-    });
-
-    if (productInfo.deletedImageIds?.length) {
-      formData.append("deletedImageIds", productInfo.deletedImageIds?.join());
-    }
-
-    formData.append("title", productInfo.title);
-    formData.append("content", productInfo.content);
-    formData.append("categoryId", JSON.stringify(productInfo.categoryId));
-    formData.append("addressId", JSON.stringify(productInfo.address.id));
-    formData.append("price", price);
-
     editProductMutation.mutate(
-      { productId: numberProductId, productInfo: formData },
+      { productId: numberProductId, productInfo },
       {
         onSuccess: () => {
-          // Memo: state로 productDetailInfo를 넘겨주기???
           navigate(`${ROUTE_PATH.detail}/${productId}`, {
             state: { prevRoute: ROUTE_PATH.home },
           });
