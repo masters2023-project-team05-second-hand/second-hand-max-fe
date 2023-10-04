@@ -1,4 +1,5 @@
-import { TextBold, TextDefault } from "@styles/common";
+import PriceText from "@components/common/PriceText";
+import { TextDefault } from "@styles/common";
 import { HEIGHT } from "@styles/constants";
 import styled from "styled-components";
 import { ProductInfo } from "./type";
@@ -11,7 +12,7 @@ export default function ProductBanner({ product }: { product: ProductInfo }) {
       <Image src={thumbnailUrl} alt={`${title} 섬네일 이미지`} />
       <div>
         <TextDefault>{title}</TextDefault>
-        <TextBold>{`${price.toLocaleString("ko-KR")}원`}</TextBold>
+        <PriceText productPrice={price} />
       </div>
     </StyledProductBanner>
   );
