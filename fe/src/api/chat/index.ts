@@ -1,5 +1,5 @@
 import { fetcher } from "@api/fetcher";
-import { ChatMessage } from "@api/type";
+import { ChatItem, ChatMessage } from "@api/type";
 import { CHAT_API_PATH } from "./constants";
 
 export const postNewChatRoom = async ({
@@ -30,5 +30,13 @@ export const getChatDetail = async (roomId: number) => {
   const pathVariable = `?roomId=${roomId}`;
 
   const { data } = await fetcher.get<ChatMessage[]>(baseUrl + pathVariable);
+  return data;
+};
+
+export const getChatList = async (productId?: number) => {
+  const baseUrl = `${CHAT_API_PATH.chatroom}`;
+  const pathVariable = productId ? `?productId=${productId}` : "";
+
+  const { data } = await fetcher.get<ChatItem[]>(baseUrl + pathVariable);
   return data;
 };

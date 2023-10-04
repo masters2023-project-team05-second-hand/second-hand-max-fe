@@ -1,7 +1,7 @@
 import { chatKeys } from "@api/queryKeys";
 import { useToast } from "@hooks/useToast";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getChatDetail, postNewChatRoom } from ".";
+import { getChatDetail, getChatList, postNewChatRoom } from ".";
 
 export const useMakeRoomMutation = ({
   callback,
@@ -30,5 +30,13 @@ export const useGetChatDetailQuery = (roomId: number) => {
     queryFn: () => getChatDetail(roomId),
     staleTime: Infinity,
     enabled: !!roomId,
+  });
+};
+
+export const useGetChatListQuery = (productId?: number) => {
+  return useQuery({
+    ...chatKeys.chatList(productId),
+    queryFn: () => getChatList(productId),
+    staleTime: Infinity,
   });
 };

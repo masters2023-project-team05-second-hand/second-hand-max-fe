@@ -30,4 +30,7 @@ export const userKeys = createQueryKeys("user", {
 
 export const chatKeys = createQueryKeys("chat", {
   chatDetail: (roomId: number) => ({ queryKey: ["getChatDetail", roomId] }),
+  chatList: (productId?: number) => ({
+    queryKey: ["getChatList", productId],
+  }),
 });
