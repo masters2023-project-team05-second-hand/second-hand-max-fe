@@ -35,8 +35,6 @@ export default function ProductDetail() {
   const { data: productDetailInfo, isSuccess: isProductDetailSuccess } =
     useProductDetailQuery(numberProductId, !!productId);
 
-  const isSeller = member.id === productDetailInfo?.product.seller.id;
-
   const goBack = () => {
     navigate(location.state?.prevRoute ?? -1);
   };
@@ -59,6 +57,7 @@ export default function ProductDetail() {
   });
 
   const isScroll = !!scrollY && scrollY > 0;
+  const isSeller = member.id === productDetailInfo?.product.seller.id;
 
   return (
     <Page ref={ref}>
