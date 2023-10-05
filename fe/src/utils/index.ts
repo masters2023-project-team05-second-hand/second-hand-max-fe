@@ -33,15 +33,15 @@ export function delay(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-export function getFormattedAddress(addressName: string | undefined) {
-  if (!addressName) {
+export function getLastWord(string: string | undefined) {
+  if (!string) {
     return "";
   }
 
-  const splittedAddress = addressName.split(" ");
-  const dong = splittedAddress[splittedAddress.length - 1];
+  const splittedString = string.split(" ");
+  const lastWord = splittedString[splittedString.length - 1];
 
-  return dong;
+  return lastWord;
 }
 
 export const checkTokenExpiration = () => {
