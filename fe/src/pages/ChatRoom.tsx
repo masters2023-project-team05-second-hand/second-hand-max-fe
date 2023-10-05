@@ -9,7 +9,7 @@ import { useToast } from "@hooks/useToast";
 import useWebSocket from "@hooks/useWebsocket";
 import { BottomBar, Page, PageContent } from "@styles/common";
 import { groupChatsByDate } from "@utils/index";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useMemberValue } from "store";
 
@@ -53,24 +53,27 @@ export default function ChatRoom() {
     }
   }, [allChatList, isSuccess, memberId, isError, toast]);
 
-  const appendNewChat = ({
-    message,
-    sentTime,
-    isMine,
-  }: {
-    message: string;
-    sentTime: string;
-    isMine: boolean;
-  }) =>
-    setCurrentChats((prev) => [
-      ...prev,
-      {
-        id: prev.length,
-        content: message,
-        sentTime,
-        isMine,
-      },
-    ]);
+  const appendNewChat = useCallback(
+    ({
+      message,
+      sentTime,
+      isMine,
+    }: {
+      message: string;
+      sentTime: string;
+      isMine: boolean;
+    }) =>
+      setCurrentChats((prev) => [
+        ...prev,
+        {
+          id: prev.length,
+          content: message,
+          sentTime,
+          isMine,
+        },
+      ]),
+    []
+  );
 
   const { onPostNewChatRoom } = useMakeRoomMutation({
     productId: product.id,
