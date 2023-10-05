@@ -9,7 +9,7 @@ export const postNewChatRoom = async ({
   productId: number;
   message: string;
 }) => {
-  const { data } = await fetcher.post<{ roomId: string }>(
+  const { data } = await fetcher.post<{ roomId: string; sentTime: string }>(
     CHAT_API_PATH.chatroom,
     {
       productId,

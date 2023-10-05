@@ -6,7 +6,6 @@ const { VITE_STOMP_SERVER_URL } = import.meta.env;
 export default function makeStompClient({
   roomId,
   onSubscribe,
-  onDisconnect,
 }: {
   roomId: string;
   onSubscribe: (message: string) => void;
@@ -22,7 +21,7 @@ export default function makeStompClient({
     onConnect: () => {
       client.subscribe(destination, (message) => onSubscribe(message.body));
     },
-    onDisconnect,
+    onDisconnect: () => console.log("TODO: 채팅방 이탈 API 요청할 예정"),
   });
 
   return client;

@@ -30,8 +30,16 @@ export default function ChatRoom() {
     isError,
   } = useGetChatDetailQuery(roomId ?? "");
 
-  const { mutate: makeChatRoom } = useMakeRoomMutation({
-    callback: (roomId: string) => setCurrentRoomId(roomId),
+  const { onPostNewChatRoom } = useMakeRoomMutation({
+    productId: product.id,
+    callback: ({ roomId, message, sentTime }) => {
+      setCurrentRoomId(roomId);
+      appendNewChat({
+        message,
+        sentTime,
+        isMine: true,
+      });
+    },
   });
 
   const [currentRoomId, setCurrentRoomId] = useState(roomId);
@@ -69,18 +77,21 @@ export default function ChatRoom() {
 
     client.current = makeStompClient({
       roomId: currentRoomId,
-      onSubscribe: (newChat) =>
+      onSubscribe: (newChat) => {
+        const { message, sentTime, senderId } = JSON.parse(newChat);
         appendNewChat({
-          newChat,
-          isMine: false,
-        }),
+          message,
+          sentTime,
+          isMine: senderId === memberId,
+        });
+      },
     });
     client.current.activate();
 
     return () => {
       client.current?.deactivate();
     };
-  }, [currentRoomId]);
+  }, [currentRoomId, memberId]);
 
   const sendMessage = (message: string) => {
     client.current?.publish({
@@ -89,36 +100,27 @@ export default function ChatRoom() {
         message,
       }),
     });
-    appendNewChat({
-      newChat: message,
-      isMine: true,
-    });
   };
 
   const sendFirstMessage = (message: string) => {
-    makeChatRoom({
-      productId: product.id,
-      message,
-    });
-    appendNewChat({
-      newChat: message,
-      isMine: true,
-    });
+    onPostNewChatRoom(message);
   };
 
   const appendNewChat = ({
-    newChat,
+    message,
+    sentTime,
     isMine,
   }: {
-    newChat: string;
+    message: string;
+    sentTime: string;
     isMine: boolean;
   }) =>
     setCurrentChats((prev) => [
       ...prev,
       {
         id: prev.length,
-        content: newChat,
-        sentTime: new Date().toISOString(),
+        content: message,
+        sentTime,
         isMine,
       },
     ]);
