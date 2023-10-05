@@ -20,8 +20,14 @@ export default function useWebSocket({
   const pubMessage = (message: string) => {
     client.current?.publish({
       destination: `${CHAT_API_PATH.pub}/${currentRoomId}`,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      // TODO: 헤더 파싱 문제로 임시로 Body에 추가해둔 Authorization 삭제하기
       body: JSON.stringify({
         message,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       }),
     });
   };

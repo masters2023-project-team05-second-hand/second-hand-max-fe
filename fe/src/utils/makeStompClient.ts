@@ -19,7 +19,15 @@ export default function makeStompClient({
       "Content-Type": "application/json",
     },
     onConnect: () => {
-      client.subscribe(destination, (message) => onSubscribe(message.body));
+      client.subscribe(
+        destination,
+        (message) => {
+          onSubscribe(message.body);
+        },
+        {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      );
     },
     onDisconnect: () => console.log("TODO: 채팅방 이탈 API 요청할 예정"),
   });
