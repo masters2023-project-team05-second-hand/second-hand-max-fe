@@ -1,4 +1,3 @@
-import { CHAT_API_PATH } from "@api/chat/constants";
 import { useGetChatDetailQuery, useMakeRoomMutation } from "@api/chat/queries";
 import { ChatMessage } from "@api/type";
 import ChatBar from "@components/ChatRoom/ChatBar";
@@ -7,44 +6,29 @@ import DailyChat, { Chat } from "@components/ChatRoom/DailyChat";
 import ProductBanner from "@components/ChatRoom/ProductBanner";
 import { ChatRoomLocationState } from "@components/ChatRoom/type";
 import { useToast } from "@hooks/useToast";
-import { Client } from "@stomp/stompjs";
+import useWebSocket from "@hooks/useWebsocket";
 import { BottomBar, Page, PageContent } from "@styles/common";
 import { groupChatsByDate } from "@utils/index";
-import makeStompClient from "@utils/makeStompClient";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useMemberValue } from "store";
 
 export default function ChatRoom() {
   const { roomId } = useParams();
-
   const {
     state: { product, partner },
   }: { state: ChatRoomLocationState } = useLocation();
   const { id: memberId } = useMemberValue();
   const { toast } = useToast();
 
+  const [currentRoomId, setCurrentRoomId] = useState(roomId);
+  const [currentChats, setCurrentChats] = useState<Chat[]>([]);
+
   const {
     data: allChatList,
     isSuccess,
     isError,
   } = useGetChatDetailQuery(roomId ?? "");
-
-  const { onPostNewChatRoom } = useMakeRoomMutation({
-    productId: product.id,
-    callback: ({ roomId, message, sentTime }) => {
-      setCurrentRoomId(roomId);
-      appendNewChat({
-        message,
-        sentTime,
-        isMine: true,
-      });
-    },
-  });
-
-  const [currentRoomId, setCurrentRoomId] = useState(roomId);
-  const [currentChats, setCurrentChats] = useState<Chat[]>([]);
-  const client = useRef<Client | null>(null);
 
   useEffect(() => {
     if (isSuccess) {
@@ -69,43 +53,6 @@ export default function ChatRoom() {
     }
   }, [allChatList, isSuccess, memberId, isError, toast]);
 
-  useEffect(() => {
-    // TODO: 비교해보기
-    if (!currentRoomId) {
-      return;
-    }
-
-    client.current = makeStompClient({
-      roomId: currentRoomId,
-      onSubscribe: (newChat) => {
-        const { message, sentTime, senderId } = JSON.parse(newChat);
-        appendNewChat({
-          message,
-          sentTime,
-          isMine: senderId === memberId,
-        });
-      },
-    });
-    client.current.activate();
-
-    return () => {
-      client.current?.deactivate();
-    };
-  }, [currentRoomId, memberId]);
-
-  const sendMessage = (message: string) => {
-    client.current?.publish({
-      destination: `${CHAT_API_PATH.pub}/${roomId}`,
-      body: JSON.stringify({
-        message,
-      }),
-    });
-  };
-
-  const sendFirstMessage = (message: string) => {
-    onPostNewChatRoom(message);
-  };
-
   const appendNewChat = ({
     message,
     sentTime,
@@ -125,9 +72,27 @@ export default function ChatRoom() {
       },
     ]);
 
+  const { onPostNewChatRoom } = useMakeRoomMutation({
+    productId: product.id,
+    callback: ({ roomId, message, sentTime }) => {
+      setCurrentRoomId(roomId);
+      appendNewChat({
+        message,
+        sentTime,
+        isMine: true,
+      });
+    },
+  });
+
+  const { pubMessage } = useWebSocket({
+    currentRoomId: roomId,
+    memberId,
+    appendNewChat,
+  });
+
   const chatList = groupChatsByDate(currentChats);
   const havePrevChats = !!chatList.length;
-  const onMessageSubmit = havePrevChats ? sendMessage : sendFirstMessage;
+  const onMessageSubmit = havePrevChats ? pubMessage : onPostNewChatRoom;
 
   return (
     <Page>
