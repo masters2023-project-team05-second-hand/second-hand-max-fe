@@ -119,21 +119,26 @@ export type ChatMessage = {
 
 export type ChatItem = {
   roomId: string;
-  otherMember: {
-    id: number;
-    nickname: string;
-    profileImgUrl: string;
-  };
-  message: {
-    lastMessage: string;
-    lastSentTime: string;
-  };
+  otherMember: ChatItemPartner;
+  message: ChatItemMessage;
   unreadMessageCount: number;
-  product: {
-    productId: number;
-    title: string;
-    thumbnailUrl: string;
-    price: number;
-    status: number; // Memo: 꼭 필요한가?
-  };
+  product: ChatItemProduct;
+};
+
+export type ChatItemPartner = {
+  id: number;
+  nickname: string;
+  profileImgUrl: string;
+};
+
+export type ChatItemMessage = {
+  lastMessage: string;
+  lastSentTime: string;
+};
+
+export type ChatItemProduct = {
+  productId: number;
+  title: string;
+  thumbnailUrl: string;
+  price: number;
 };

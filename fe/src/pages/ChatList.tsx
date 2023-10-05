@@ -21,8 +21,8 @@ export default function ChatList() {
     isError,
   } = useGetChatListQuery(numberProductId);
 
-  const onClickItem = (id: string, chatItem: ChatItem) => {
-    navigate(`${ROUTE_PATH.chatting}/${id}`, {
+  const onClickItem = (chatItem: ChatItem) => {
+    navigate(`${ROUTE_PATH.chatting}/${chatItem.roomId}`, {
       state: {
         product: chatItem.product,
         partner: chatItem.otherMember,

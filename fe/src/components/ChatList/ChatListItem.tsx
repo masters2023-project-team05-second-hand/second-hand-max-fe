@@ -4,13 +4,13 @@ import { convertPastTimestamp } from "@utils/time";
 import { styled } from "styled-components";
 
 type ChatListItemProps = {
-  onClick: (id: string, chatItem: ChatItem) => void;
+  onClick: (chatItem: ChatItem) => void;
   chatItem: ChatItem;
 };
 
 export default function ChatListItem({ onClick, chatItem }: ChatListItemProps) {
   return (
-    <StyledChatListItem onClick={() => onClick(chatItem.roomId, chatItem)}>
+    <StyledChatListItem onClick={() => onClick(chatItem)}>
       <UserImage src={chatItem.otherMember.profileImgUrl} />
       <ChatInfo>
         <div className="sub-info">
