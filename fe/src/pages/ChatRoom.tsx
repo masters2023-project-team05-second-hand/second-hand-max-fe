@@ -1,3 +1,4 @@
+import { CHAT_API_PATH } from "@api/chat/constants";
 import { useGetChatDetailQuery, useMakeRoomMutation } from "@api/chat/queries";
 import { ChatMessage } from "@api/type";
 import ChatBar from "@components/ChatRoom/ChatBar";
@@ -6,10 +7,11 @@ import DailyChat, { Chat } from "@components/ChatRoom/DailyChat";
 import ProductBanner from "@components/ChatRoom/ProductBanner";
 import { ChatRoomLocationState } from "@components/ChatRoom/type";
 import { useToast } from "@hooks/useToast";
-import useWebSocket from "@hooks/useWebsocket";
+import { Client } from "@stomp/stompjs";
 import { BottomBar, Page, PageContent } from "@styles/common";
 import { groupChatsByDate } from "@utils/index";
-import { useCallback, useEffect, useState } from "react";
+import makeStompClient from "@utils/makeStompClient";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useMemberValue } from "store";
 
@@ -87,11 +89,45 @@ export default function ChatRoom() {
     },
   });
 
-  const { pubMessage } = useWebSocket({
-    currentRoomId: roomId,
-    memberId,
-    appendNewChat,
-  });
+  // TODO: custom hook으로 분리하기
+  const client = useRef<Client | null>(null);
+  const pubMessage = (message: string) => {
+    client.current?.publish({
+      destination: `${CHAT_API_PATH.pub}/${currentRoomId}`,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      // TODO: BE-B팀 헤더 파싱 문제로 임시로 Body에 추가해둔 Authorization 삭제하기
+      body: JSON.stringify({
+        message,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+    });
+  };
+
+  useEffect(() => {
+    if (!currentRoomId) {
+      return;
+    }
+
+    client.current = makeStompClient({
+      roomId: currentRoomId,
+      onSubscribe: (newChat) => {
+        const { message, sentTime, senderId } = JSON.parse(newChat);
+        appendNewChat({
+          message,
+          sentTime,
+          isMine: senderId === memberId,
+        });
+      },
+    });
+    client.current.activate();
+
+    return () => {
+      client.current?.deactivate();
+    };
+  }, [currentRoomId, memberId, appendNewChat]);
 
   const chatList = groupChatsByDate(currentChats);
   const havePrevChats = !!chatList.length;
