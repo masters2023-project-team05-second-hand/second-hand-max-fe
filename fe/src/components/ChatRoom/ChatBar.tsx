@@ -16,6 +16,10 @@ export default function ChatBar({
   };
 
   const onEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+
     e.key === "Enter" && !!message && sendMessage();
   };
 
@@ -26,6 +30,7 @@ export default function ChatBar({
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={onEnterPress}
+        autoFocus
       />
       <Button
         size={{ width: 32, height: 32 }}
