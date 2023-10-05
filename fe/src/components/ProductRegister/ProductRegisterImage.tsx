@@ -55,9 +55,9 @@ export default function ProductRegisterImage({
   };
 
   const onAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files!;
+    const files = e.target.files;
 
-    if (files?.length === 0) return;
+    if (files === null) return;
 
     const isImgMaxCount = images.length === LIMITED_IMAGE_COUNT;
     if (isImgMaxCount) {
