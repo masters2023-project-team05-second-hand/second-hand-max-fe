@@ -1,9 +1,9 @@
-import { ChatProductInfo, SellerInfo } from "@api/type";
+import { ChatItemProduct, SellerInfo } from "@api/type";
 import { GoToChatRoomButton } from "./GoToChatRoomButton";
 import { GoToProductChatsButton } from "./GoToProductChatsButton";
 
 export type ChatInfo = {
-  product: ChatProductInfo;
+  product: ChatItemProduct;
   seller: SellerInfo;
   chatCount: number;
 };
