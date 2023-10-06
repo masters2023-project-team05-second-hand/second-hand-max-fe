@@ -16,7 +16,7 @@ export function GoToProductChatsButton({
   const showNoChatPartner = () => {
     toast({
       type: "info",
-      title: "상품 상세 목록 조회 완료",
+      title: "상품 채팅 목록 조회 완료",
       message: "채팅한 이웃이 없습니다",
     });
   };
