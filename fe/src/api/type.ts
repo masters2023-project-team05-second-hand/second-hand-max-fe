@@ -131,11 +131,21 @@ export type ChatItem = {
     lastSentTime: string;
   };
   unreadMessageCount: number;
-  product: {
-    productId: number;
-    title: string;
-    thumbnailUrl: string;
-    price: number;
-    status: number; // Memo: 꼭 필요한가?
+  product: ChatProductInfo;
+};
+
+export type ChatProductInfo = {
+  productId: number;
+  title: string;
+  price: number;
+  thumbnailUrl: string;
+};
+
+export type ChatRoomLocationState = {
+  product: ChatProductInfo;
+  partner: {
+    id: number;
+    nickname: string;
+    profileImgUrl: string;
   };
 };

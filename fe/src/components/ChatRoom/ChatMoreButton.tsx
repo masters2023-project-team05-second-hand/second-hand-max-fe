@@ -1,11 +1,11 @@
 import { useDeleteChatRoom } from "@api/chat/queries";
+import { ChatRoomLocationState } from "@api/type";
 import { ReactComponent as DotsIcon } from "@assets/icon/dots.svg";
 import Alert from "@components/common/Alert/Alert";
 import Button from "@components/common/Buttons/Button";
 import MenuIndicator from "@components/common/Menu/MenuIndicator";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ChatRoomLocationState } from "./type";
 
 export default function ChatMoreButton({ roomId }: { roomId?: string }) {
   const [isLeaveAlertOpen, setIsLeaveAlertOpen] = useState(false);
@@ -14,7 +14,9 @@ export default function ChatMoreButton({ roomId }: { roomId?: string }) {
     state: { product },
   }: { state: ChatRoomLocationState } = useLocation();
 
-  const { onDeleteChatRoom } = useDeleteChatRoom({ productId: product.id });
+  const { onDeleteChatRoom } = useDeleteChatRoom({
+    productId: product.productId,
+  });
 
   const openLeaveAlert = () => setIsLeaveAlertOpen(true);
   const closeLeaveAlert = () => setIsLeaveAlertOpen(false);

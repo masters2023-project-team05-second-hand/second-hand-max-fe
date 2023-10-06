@@ -27,7 +27,7 @@ export function GoToChatRoomButton({
   };
 
   const { onGetChatRoomId } = useGetChatRoomId({
-    productId: product.id,
+    productId: product.productId,
     onSuccess: moveToChatRoom,
   });
 

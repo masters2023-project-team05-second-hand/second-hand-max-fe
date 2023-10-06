@@ -1,11 +1,10 @@
 import { CHAT_API_PATH } from "@api/chat/constants";
 import { useGetChatDetailQuery, useMakeRoomMutation } from "@api/chat/queries";
-import { ChatMessage } from "@api/type";
+import { ChatMessage, ChatRoomLocationState } from "@api/type";
 import ChatBar from "@components/ChatRoom/ChatBar";
 import ChatRoomTopBar from "@components/ChatRoom/ChatRoomTopBar";
 import DailyChat, { Chat } from "@components/ChatRoom/DailyChat";
 import ProductBanner from "@components/ChatRoom/ProductBanner";
-import { ChatRoomLocationState } from "@components/ChatRoom/type";
 import { useToast } from "@hooks/useToast";
 import { Client } from "@stomp/stompjs";
 import { BottomBar, Page, PageContent } from "@styles/common";
@@ -78,7 +77,7 @@ export default function ChatRoom() {
   );
 
   const { onPostNewChatRoom } = useMakeRoomMutation({
-    productId: product.id,
+    productId: product.productId,
     callback: ({ roomId, message, sentTime }) => {
       setCurrentRoomId(roomId);
       appendNewChat({

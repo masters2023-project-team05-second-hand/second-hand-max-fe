@@ -1,10 +1,9 @@
-import { SellerInfo } from "@api/type";
-import { ProductInfo } from "@components/ChatRoom/type";
+import { ChatProductInfo, SellerInfo } from "@api/type";
 import { GoToChatRoomButton } from "./GoToChatRoomButton";
 import { GoToProductChatsButton } from "./GoToProductChatsButton";
 
 export type ChatInfo = {
-  product: ProductInfo;
+  product: ChatProductInfo;
   seller: SellerInfo;
   chatCount: number;
 };
@@ -18,7 +17,7 @@ export default function ChatButton({ isSeller, chatInfo }: ChatButtonProps) {
   const { product, seller, chatCount } = chatInfo;
 
   return isSeller ? (
-    <GoToProductChatsButton {...{ chatCount, productId: product.id }} />
+    <GoToProductChatsButton {...{ chatCount, productId: product.productId }} />
   ) : (
     <GoToChatRoomButton {...{ product, seller }} />
   );

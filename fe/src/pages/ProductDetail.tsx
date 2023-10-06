@@ -102,7 +102,7 @@ export default function ProductDetail() {
               isSeller={isSeller}
               chatInfo={{
                 product: {
-                  id: numberProductId,
+                  productId: numberProductId,
                   title: productDetailInfo.product.title,
                   price: productDetailInfo.product.price,
                   thumbnailUrl: productDetailInfo.images[0].url,

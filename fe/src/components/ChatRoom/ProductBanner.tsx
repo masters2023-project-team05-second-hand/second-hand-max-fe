@@ -1,10 +1,14 @@
+import { ChatProductInfo } from "@api/type";
 import PriceText from "@components/common/PriceText";
 import { TextDefault } from "@styles/common";
 import { HEIGHT } from "@styles/constants";
 import styled from "styled-components";
-import { ProductInfo } from "./type";
 
-export default function ProductBanner({ product }: { product: ProductInfo }) {
+export default function ProductBanner({
+  product,
+}: {
+  product: ChatProductInfo;
+}) {
   const { thumbnailUrl, title, price } = product;
 
   return (
