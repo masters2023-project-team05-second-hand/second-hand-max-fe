@@ -105,7 +105,7 @@ export default function ChatRoom() {
 
   const sendFirstMessage = (content: string) => {
     makeChatRoom({
-      productId: product.productId,
+      productId: product.id,
       senderId: memberId,
       content,
     });
