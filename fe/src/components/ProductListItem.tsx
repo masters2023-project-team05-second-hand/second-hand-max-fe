@@ -8,7 +8,7 @@ import { ReactComponent as MessageIcon } from "@assets/icon/message.svg";
 import ProductStatus from "@components/ProductStatus";
 import { ROUTE_PATH } from "@router/constants";
 import { TextDefault, TextWeak } from "@styles/common";
-import { getFormattedAddress } from "@utils/index";
+import { getLastWord } from "@utils/index";
 import { convertPastTimestamp } from "@utils/time";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -84,9 +84,7 @@ export default function ProductListItem({
                 )}
               </div>
               <div className="info-middle">
-                <TextWeak>
-                  {getFormattedAddress(productItem.addressName)}
-                </TextWeak>
+                <TextWeak>{getLastWord(productItem.addressName)}</TextWeak>
                 <TextWeak>・</TextWeak>
                 <TextWeak>
                   {convertPastTimestamp(productItem.createdTime)}

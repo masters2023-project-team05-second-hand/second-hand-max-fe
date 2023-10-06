@@ -121,28 +121,32 @@ export type ChatMessage = {
 
 export type ChatItem = {
   roomId: string;
-  otherMember: {
-    id: number;
-    nickname: string;
-    profileImgUrl: string;
-  };
-  message: {
-    lastMessage: string;
-    lastSentTime: string;
-  };
+  otherMember: ChatItemPartner;
+  message: ChatItemMessage;
   unreadMessageCount: number;
-  product: ChatProductInfo;
+  product: ChatItemProduct;
 };
 
-export type ChatProductInfo = {
+export type ChatItemPartner = {
+  id: number;
+  nickname: string;
+  profileImgUrl: string;
+};
+
+export type ChatItemMessage = {
+  lastMessage: string;
+  lastSentTime: string;
+};
+
+export type ChatItemProduct = {
   productId: number;
   title: string;
-  price: number;
   thumbnailUrl: string;
+  price: number;
 };
 
 export type ChatRoomLocationState = {
-  product: ChatProductInfo;
+  product: ChatItemProduct;
   partner: {
     id: number;
     nickname: string;

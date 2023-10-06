@@ -36,18 +36,14 @@ export const router = createBrowserRouter(
           />
           <Route path={ROUTE_PATH.sales} element={<SalesList />} />
           <Route path={ROUTE_PATH.wish} element={<WishList />} />
-          <Route path={ROUTE_PATH.chat} element={<ChatList />}>
-            <Route
-              path={`${ROUTE_PATH.chat}/:productId`}
-              element={<ChatList />}
-            />
-          </Route>
-          <Route path={ROUTE_PATH.chatting} element={<ChatRoom />}>
-            <Route
-              path={`${ROUTE_PATH.chatting}/:roomId`}
-              element={<ChatRoom />}
-            />
-          </Route>
+          <Route
+            path={`${ROUTE_PATH.chat}/:productId?`}
+            element={<ChatList />}
+          />
+          <Route
+            path={`${ROUTE_PATH.chatting}/:roomId?`}
+            element={<ChatRoom />}
+          />
         </Route>
       </Route>
       <Route path={ROUTE_PATH.account} element={<MyAccount />} />
