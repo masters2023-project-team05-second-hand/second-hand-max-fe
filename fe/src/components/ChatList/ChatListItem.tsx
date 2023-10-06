@@ -1,16 +1,28 @@
 import { ChatItem } from "@api/type";
+import { ROUTE_PATH } from "@router/constants";
 import { TextBold, TextDefault, TextWeak } from "@styles/common";
 import { convertPastTimestamp } from "@utils/time";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 type ChatListItemProps = {
-  onClick: (chatItem: ChatItem) => void;
   chatItem: ChatItem;
 };
 
-export default function ChatListItem({ onClick, chatItem }: ChatListItemProps) {
+export default function ChatListItem({ chatItem }: ChatListItemProps) {
+  const navigate = useNavigate();
+
+  const onClickItem = () => {
+    navigate(`${ROUTE_PATH.chatting}/${chatItem.roomId}`, {
+      state: {
+        product: chatItem.product,
+        partner: chatItem.otherMember,
+      },
+    });
+  };
+
   return (
-    <StyledChatListItem onClick={() => onClick(chatItem)}>
+    <StyledChatListItem onClick={onClickItem}>
       <UserImage src={chatItem.otherMember.profileImgUrl} />
       <ChatInfo>
         <div className="sub-info">
