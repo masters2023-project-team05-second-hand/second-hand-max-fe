@@ -1,16 +1,13 @@
 import { useGetChatListQuery } from "@api/chat/queries";
-import { ChatItem } from "@api/type";
 import ChatListItem from "@components/ChatList/ChatListItem";
 import NavigationBar from "@components/NavigationBar";
 import { SubInfo } from "@components/ProductDetail/common.style";
 import TopBar from "@components/TopBar";
 import { Error, Loading } from "@components/common/Guide";
-import { ROUTE_PATH } from "@router/constants";
 import { Main, Page, PageContent } from "@styles/common";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function ChatList() {
-  const navigate = useNavigate();
   const { productId } = useParams();
   const numberProductId = Number(productId);
 
@@ -20,15 +17,6 @@ export default function ChatList() {
     isLoading,
     isError,
   } = useGetChatListQuery(numberProductId);
-
-  const onClickItem = (id: string, chatItem: ChatItem) => {
-    navigate(`${ROUTE_PATH.chatting}/${id}`, {
-      state: {
-        product: chatItem.product,
-        partner: chatItem.otherMember,
-      },
-    });
-  };
 
   return (
     <Page>
@@ -42,11 +30,7 @@ export default function ChatList() {
           <>
             {chatList.length > 0 ? (
               chatList.map((item) => (
-                <ChatListItem
-                  key={item.roomId}
-                  onClick={onClickItem}
-                  chatItem={item}
-                />
+                <ChatListItem key={item.roomId} chatItem={item} />
               ))
             ) : (
               <Main>

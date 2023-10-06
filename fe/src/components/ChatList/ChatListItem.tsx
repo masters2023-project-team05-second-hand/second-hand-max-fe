@@ -1,28 +1,40 @@
 import { ChatItem } from "@api/type";
+import { ROUTE_PATH } from "@router/constants";
 import { TextBold, TextDefault, TextWeak } from "@styles/common";
 import { convertPastTimestamp } from "@utils/time";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 type ChatListItemProps = {
-  onClick: (id: string, chatItem: ChatItem) => void;
   chatItem: ChatItem;
 };
 
-export default function ChatListItem({ onClick, chatItem }: ChatListItemProps) {
+export default function ChatListItem({ chatItem }: ChatListItemProps) {
+  const navigate = useNavigate();
+  const { roomId, otherMember, message, unreadMessageCount, product } =
+    chatItem;
+
+  const onClickItem = () => {
+    navigate(`${ROUTE_PATH.chatting}/${roomId}`, {
+      state: {
+        product: product,
+        partner: otherMember,
+      },
+    });
+  };
+
   return (
-    <StyledChatListItem onClick={() => onClick(chatItem.roomId, chatItem)}>
-      <UserImage src={chatItem.otherMember.profileImgUrl} />
+    <StyledChatListItem onClick={onClickItem}>
+      <UserImage src={otherMember.profileImgUrl} />
       <ChatInfo>
         <div className="sub-info">
-          <TextBold>{chatItem.otherMember.nickname}</TextBold>
-          <TextWeak>
-            {convertPastTimestamp(chatItem.message.lastSentTime)}
-          </TextWeak>
+          <TextBold>{otherMember.nickname}</TextBold>
+          <TextWeak>{convertPastTimestamp(message.lastSentTime)}</TextWeak>
         </div>
-        <TextDefault>{chatItem.message.lastMessage}</TextDefault>
+        <TextDefault>{message.lastMessage}</TextDefault>
       </ChatInfo>
-      <Badge>{chatItem.unreadMessageCount}</Badge>
-      <Thumbnail src={chatItem.product.thumbnailUrl} />
+      <Badge>{unreadMessageCount}</Badge>
+      <Thumbnail src={product.thumbnailUrl} />
     </StyledChatListItem>
   );
 }
