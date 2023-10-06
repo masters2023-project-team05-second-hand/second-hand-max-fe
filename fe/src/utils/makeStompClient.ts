@@ -6,13 +6,12 @@ const { VITE_STOMP_SERVER_URL } = import.meta.env;
 export default function makeStompClient({
   roomId,
   onSubscribe,
-  onDisconnect,
 }: {
-  roomId: number;
+  roomId: string;
   onSubscribe: (message: string) => void;
   onDisconnect?: () => void;
 }) {
-  const destination = `${CHAT_API_PATH.destination}${roomId}`;
+  const destination = `${CHAT_API_PATH.sub}/${roomId}`;
   const client = new Client({
     brokerURL: VITE_STOMP_SERVER_URL,
     connectHeaders: {
@@ -20,9 +19,17 @@ export default function makeStompClient({
       "Content-Type": "application/json",
     },
     onConnect: () => {
-      client.subscribe(destination, (message) => onSubscribe(message.body));
+      client.subscribe(
+        destination,
+        (message) => {
+          onSubscribe(message.body);
+        },
+        {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      );
     },
-    onDisconnect,
+    onDisconnect: () => console.log("TODO: 채팅방 이탈 API 요청할 예정"),
   });
 
   return client;

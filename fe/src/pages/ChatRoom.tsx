@@ -1,52 +1,35 @@
 import { CHAT_API_PATH } from "@api/chat/constants";
 import { useGetChatDetailQuery, useMakeRoomMutation } from "@api/chat/queries";
-import { ChatMessage } from "@api/type";
+import { ChatMessage, ChatRoomLocationState } from "@api/type";
 import ChatBar from "@components/ChatRoom/ChatBar";
 import ChatRoomTopBar from "@components/ChatRoom/ChatRoomTopBar";
 import DailyChat, { Chat } from "@components/ChatRoom/DailyChat";
 import ProductBanner from "@components/ChatRoom/ProductBanner";
-import { ProductInfo } from "@components/ChatRoom/type";
 import { useToast } from "@hooks/useToast";
 import { Client } from "@stomp/stompjs";
 import { BottomBar, Page, PageContent } from "@styles/common";
 import { groupChatsByDate } from "@utils/index";
 import makeStompClient from "@utils/makeStompClient";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useMemberValue } from "store";
 
-type ChatRoomLocationState = {
-  product: ProductInfo;
-  partner: {
-    id: number;
-    nickname: string;
-    profileImgUrl: string;
-  };
-};
-
 export default function ChatRoom() {
   const { roomId } = useParams();
-  const numberRoomId = Number(roomId);
-
   const {
     state: { product, partner },
   }: { state: ChatRoomLocationState } = useLocation();
   const { id: memberId } = useMemberValue();
   const { toast } = useToast();
 
+  const [currentRoomId, setCurrentRoomId] = useState(roomId);
+  const [currentChats, setCurrentChats] = useState<Chat[]>([]);
+
   const {
     data: allChatList,
     isSuccess,
     isError,
-  } = useGetChatDetailQuery(numberRoomId);
-
-  const { mutate: makeChatRoom } = useMakeRoomMutation({
-    callback: (roomId: number) => setCurrentRoomId(roomId),
-  });
-
-  const [currentRoomId, setCurrentRoomId] = useState(numberRoomId);
-  const [currentChats, setCurrentChats] = useState<Chat[]>([]);
-  const client = useRef<Client | null>(null);
+  } = useGetChatDetailQuery(roomId ?? "");
 
   useEffect(() => {
     if (isSuccess) {
@@ -71,74 +54,87 @@ export default function ChatRoom() {
     }
   }, [allChatList, isSuccess, memberId, isError, toast]);
 
+  const appendNewChat = useCallback(
+    ({
+      message,
+      sentTime,
+      isMine,
+    }: {
+      message: string;
+      sentTime: string;
+      isMine: boolean;
+    }) =>
+      setCurrentChats((prev) => [
+        ...prev,
+        {
+          id: prev.length,
+          content: message,
+          sentTime,
+          isMine,
+        },
+      ]),
+    []
+  );
+
+  const { onPostNewChatRoom } = useMakeRoomMutation({
+    productId: product.productId,
+    callback: ({ roomId, message, sentTime }) => {
+      setCurrentRoomId(roomId);
+      appendNewChat({
+        message,
+        sentTime,
+        isMine: true,
+      });
+    },
+  });
+
+  // TODO: custom hook으로 분리하기
+  const client = useRef<Client | null>(null);
+  const pubMessage = (message: string) => {
+    client.current?.publish({
+      destination: `${CHAT_API_PATH.pub}/${currentRoomId}`,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      // TODO: BE-B팀 헤더 파싱 문제로 임시로 Body에 추가해둔 Authorization 삭제하기
+      body: JSON.stringify({
+        message,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+    });
+  };
+
   useEffect(() => {
-    // 비교해보기
     if (!currentRoomId) {
       return;
     }
 
     client.current = makeStompClient({
       roomId: currentRoomId,
-      onSubscribe: (newChat) =>
+      onSubscribe: (newChat) => {
+        const { message, sentTime, senderId } = JSON.parse(newChat);
         appendNewChat({
-          newChat,
-          isMine: false,
-        }),
-      onDisconnect: () => console.log("unsubscribe 해야함"),
+          message,
+          sentTime,
+          isMine: senderId === memberId,
+        });
+      },
     });
+    client.current.activate();
 
     return () => {
       client.current?.deactivate();
     };
-  }, [currentRoomId]);
-
-  const sendMessage = (content: string) => {
-    client.current?.publish({
-      destination: `${CHAT_API_PATH}/${roomId}`,
-      body: content,
-    });
-    appendNewChat({
-      newChat: content,
-      isMine: true,
-    });
-  };
-
-  const sendFirstMessage = (content: string) => {
-    makeChatRoom({
-      productId: product.id,
-      senderId: memberId,
-      content,
-    });
-    appendNewChat({
-      newChat: content,
-      isMine: true,
-    });
-  };
-
-  const appendNewChat = ({
-    newChat,
-    isMine,
-  }: {
-    newChat: string;
-    isMine: boolean;
-  }) =>
-    setCurrentChats((prev) => [
-      ...prev,
-      {
-        id: prev.length,
-        content: newChat,
-        sentTime: new Date().toISOString(),
-        isMine,
-      },
-    ]);
+  }, [currentRoomId, memberId, appendNewChat]);
 
   const chatList = groupChatsByDate(currentChats);
-  const havePrevChats = !!chatList.length; // TODO 확인 필요
-  const onMessageSubmit = havePrevChats ? sendMessage : sendFirstMessage;
+  const havePrevChats = !!chatList.length;
+  const onMessageSubmit = havePrevChats ? pubMessage : onPostNewChatRoom;
 
   return (
     <Page>
-      <ChatRoomTopBar partnerName={partner.nickname} />
+      <ChatRoomTopBar partnerName={partner.nickname} roomId={currentRoomId} />
       <ProductBanner product={product} />
       <PageContent>
         {chatList.map((dailyChatList) => (

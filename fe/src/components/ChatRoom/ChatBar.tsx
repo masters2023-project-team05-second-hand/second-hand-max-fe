@@ -9,14 +9,18 @@ export default function ChatBar({
   onMessageSubmit: (content: string) => void;
 }) {
   const [message, setMessage] = useState("");
-  const onEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      onMessageSubmit(message);
-    }
+
+  const sendMessage = () => {
+    onMessageSubmit(message);
+    setMessage("");
   };
 
-  const onSendMessage = () => {
-    onMessageSubmit(message);
+  const onEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+
+    e.key === "Enter" && !!message && sendMessage();
   };
 
   return (
@@ -26,6 +30,7 @@ export default function ChatBar({
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={onEnterPress}
+        autoFocus
       />
       <Button
         size={{ width: 32, height: 32 }}
@@ -33,7 +38,8 @@ export default function ChatBar({
         leftIcon={<SendIcon />}
         color="accentText"
         backgroundColor="accentPrimary"
-        onClick={onSendMessage}
+        onClick={sendMessage}
+        disabled={!message}
       />
     </StyledChatBar>
   );
