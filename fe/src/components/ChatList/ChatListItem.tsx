@@ -11,30 +11,30 @@ type ChatListItemProps = {
 
 export default function ChatListItem({ chatItem }: ChatListItemProps) {
   const navigate = useNavigate();
+  const { roomId, otherMember, message, unreadMessageCount, product } =
+    chatItem;
 
   const onClickItem = () => {
-    navigate(`${ROUTE_PATH.chatting}/${chatItem.roomId}`, {
+    navigate(`${ROUTE_PATH.chatting}/${roomId}`, {
       state: {
-        product: chatItem.product,
-        partner: chatItem.otherMember,
+        product: product,
+        partner: otherMember,
       },
     });
   };
 
   return (
     <StyledChatListItem onClick={onClickItem}>
-      <UserImage src={chatItem.otherMember.profileImgUrl} />
+      <UserImage src={otherMember.profileImgUrl} />
       <ChatInfo>
         <div className="sub-info">
-          <TextBold>{chatItem.otherMember.nickname}</TextBold>
-          <TextWeak>
-            {convertPastTimestamp(chatItem.message.lastSentTime)}
-          </TextWeak>
+          <TextBold>{otherMember.nickname}</TextBold>
+          <TextWeak>{convertPastTimestamp(message.lastSentTime)}</TextWeak>
         </div>
-        <TextDefault>{chatItem.message.lastMessage}</TextDefault>
+        <TextDefault>{message.lastMessage}</TextDefault>
       </ChatInfo>
-      <Badge>{chatItem.unreadMessageCount}</Badge>
-      <Thumbnail src={chatItem.product.thumbnailUrl} />
+      <Badge>{unreadMessageCount}</Badge>
+      <Thumbnail src={product.thumbnailUrl} />
     </StyledChatListItem>
   );
 }
