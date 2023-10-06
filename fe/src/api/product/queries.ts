@@ -147,10 +147,7 @@ export const useGetProductListInfiniteQuery = ({
   });
 };
 
-export const useMutateNewProduct = (
-  invalidateQueryKey?: readonly unknown[]
-) => {
-  const queryClient = useQueryClient();
+export const useMutateNewProduct = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -159,7 +156,6 @@ export const useMutateNewProduct = (
       navigate(`${ROUTE_PATH.detail}/${res.data.productId}`, {
         state: { prevRoute: ROUTE_PATH.home },
       });
-      queryClient.invalidateQueries(invalidateQueryKey);
     },
     onError: () => {
       toast({

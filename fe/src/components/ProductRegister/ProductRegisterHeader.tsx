@@ -20,8 +20,7 @@ export default function ProductRegisterHeader({
   const numberProductId = Number(productId);
   const invalidateQueryKey = productKeys.detail(numberProductId).queryKey;
 
-  const { mutate: mutateNewProduct } = useMutateNewProduct(invalidateQueryKey);
-
+  const { mutate: mutateNewProduct } = useMutateNewProduct();
   const { mutate: mutatePatchProduct } = useMutatePatchProduct({
     productId: numberProductId,
     invalidateQueryKey,
