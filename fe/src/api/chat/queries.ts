@@ -85,7 +85,6 @@ export const useGetChatListQuery = (productId?: number) => {
   return useQuery({
     ...chatKeys.chatList(productId),
     queryFn: () => getChatList(productId),
-    staleTime: Infinity,
   });
 };
 
