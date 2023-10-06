@@ -33,7 +33,7 @@ export default function ChatListItem({ chatItem }: ChatListItemProps) {
         </div>
         <TextDefault>{message.lastMessage}</TextDefault>
       </ChatInfo>
-      {unreadMessageCount && <Badge>{unreadMessageCount}</Badge>}
+      {!!unreadMessageCount && <Badge>{unreadMessageCount}</Badge>}
       <Thumbnail src={product.thumbnailUrl} />
     </StyledChatListItem>
   );
