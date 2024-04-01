@@ -7,6 +7,7 @@
 - 라이브러리: React
 - 사용언어: TypeScript
 - 상태관리: react-query, jotai
+- CSS: styled-components
 - 번들러: vite
 - 자세한 프로젝트 진행 과정이 궁금하다면 [Wiki](https://github.com/masters2023-project-team05-second-hand/second-hand-max-fe/wiki)를 참고해주세요!
 
