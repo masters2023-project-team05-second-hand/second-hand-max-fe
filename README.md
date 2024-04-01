@@ -4,6 +4,10 @@
 - 당근마켓을 참고한 동네 위치 기반 개인 간의 중고거래 서비스
 - 기간: 2023.08 - 2023.10. (6주)
 - 참여 인원: FE 2명 / BE 2명씩 2팀
+- 라이브러리: React
+- 사용언어: TypeScript
+- 상태관리: react-query, jotai
+- 번들러: vite
 - 자세한 프로젝트 진행 과정이 궁금하다면 [Wiki](https://github.com/masters2023-project-team05-second-hand/second-hand-max-fe/wiki)를 참고해주세요!
 
 ## 2. 미니 데모
