@@ -6,7 +6,10 @@
 - 참여 인원: FE 2명 / BE 2명씩 2팀
 - 자세한 프로젝트 진행 과정이 궁금하다면 [Wiki](https://github.com/masters2023-project-team05-second-hand/second-hand-max-fe/wiki)를 참고해주세요!
 
-### 프론트엔드
+## 2. 미니 데모
+![gajidemo](https://github.com/masters2023-project-team05-second-hand/second-hand-max-fe/assets/101464713/c68f4162-b3a6-4ecc-859d-1d260a5eda4c)
+
+## 3. FE 팀원 소개
 
 |[조이](https://github.com/youzysu) | [토코](https://github.com/aaaz425) |
 | :---: | :---: |
